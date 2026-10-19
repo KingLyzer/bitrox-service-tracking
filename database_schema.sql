@@ -425,4 +425,42 @@ CREATE TABLE `webpush_subscriptions` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------------------
+-- 16. DAHİLİ SOHBET (chat_rooms, chat_messages, chat_participants)
+-- --------------------------------------------------------------------
+DROP TABLE IF EXISTS `chat_messages`;
+DROP TABLE IF EXISTS `chat_participants`;
+DROP TABLE IF EXISTS `chat_rooms`;
+
+CREATE TABLE `chat_rooms` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `room_name` VARCHAR(150) NOT NULL,
+  `room_type` VARCHAR(50) DEFAULT 'group',
+  `is_private` TINYINT(1) DEFAULT 0,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `chat_participants` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `room_id` INT NOT NULL,
+  `user_name` VARCHAR(100) NOT NULL,
+  `joined_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_participant_room` (`room_id`),
+  INDEX `idx_participant_user` (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `chat_messages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `room_id` INT NOT NULL,
+  `sender_name` VARCHAR(100) NOT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_message_room` (`room_id`),
+  INDEX `idx_message_sender` (`sender_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Varsayılan Genel Sohbet Odası
+INSERT INTO `chat_rooms` (`id`, `room_name`, `room_type`, `is_private`) VALUES
+(1, '#genel-it', 'group', 0);
+
 SET FOREIGN_KEY_CHECKS = 1;
