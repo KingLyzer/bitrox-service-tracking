@@ -102,7 +102,7 @@ CREATE TABLE `users` (
 
 -- Varsayılan Admin Kullanıcısı: admin / admin123
 INSERT INTO `users` (`id`, `username`, `password_hash`, `full_name`, `role_id`, `email`, `phone`, `is_active`, `is_superadmin`) VALUES
-(1, 'admin', '$2b$10$eE.rL2rN/hS5nCgG7pB8Z.58LgW6Fj/T1l3cR7qgE9y8qE1vQ5e4q', 'Sistem Yöneticisi', 1, 'admin@example.com', '5550000000', 1, 1);
+(1, 'admin', '$2a$10$L.RG3Y5WLeVTS/bm/zro.ufb7l.hiXMefL5TKIjT3VwDA6c2zN.US', 'Sistem Yöneticisi', 1, 'admin@example.com', '5550000000', 1, 1);
 
 -- --------------------------------------------------------------------
 -- 4. SERVİS FİŞLERİ (service_tickets & operations)
