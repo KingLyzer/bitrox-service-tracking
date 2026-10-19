@@ -1,12 +1,16 @@
 {
   "name": "service-tracker",
   "version": "2.3.2",
-  "description": "Servis ve Toner Takip Sistemi",
+  "description": "Snipe-IT Entegre Açık Kaynak IT Servis, Toner ve Envanter Takip Sistemi",
   "author": {
-    "name": "Open Source Community",
+    "name": "Kinglyzer",
     "email": "admin@example.com"
   },
-  "homepage": "https://github.com",
+  "homepage": "https://github.com/KingLyzer/bitrox-service-tracking",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KingLyzer/bitrox-service-tracking.git"
+  },
   "main": "electron/main.js",
   "scripts": {
     "predev": "electron-builder install-app-deps",

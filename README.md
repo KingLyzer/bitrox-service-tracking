@@ -1,73 +1,71 @@
-# 🛠️ ServiceTracker — Kurumsal Servis, Bakım ve IT Envanter Takip Portalı
+# 🛠️ Bitrox ServiceTracker — Snipe-IT Entegre IT Servis & Envanter Yönetim Portalı
 
 ![Version](https://img.shields.io/badge/version-2.3.2-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Snipe--IT](https://img.shields.io/badge/Snipe--IT-API%20v1%20Entegre-orange.svg)
 ![React](https://img.shields.io/badge/React-18-61dafb.svg)
 ![Node](https://img.shields.io/badge/Node.js-18%2B-339933.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1.svg)
 ![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8%2B-black.svg)
 
-**ServiceTracker**, modern kurumsal IT departmanları, teknik servis ekipleri ve envanter yöneticileri için geliştirilmiş; arıza kayıtlarından lojistiğe, periyodik bakımdan BitLocker güvenliğine kadar tüm operasyonları tek bir çatı altında toplayan açık kaynaklı ve beyaz etiketli (white-label) bir yönetim sistemidir.
+**Bitrox ServiceTracker**, kurumsal IT departmanları, teknik servis birimleri ve bilgi işlem ekipleri için özel olarak tasarlanmış açık kaynaklı, beyaz etiketli (white-label) bir **IT Operasyon ve Servis Masası (Service Desk)** yönetim portalıdır.
+
+> 💡 **Önemli Not:** Bu projenin **yaklaşık %80'lik omurgası popüler açık kaynak envanter yönetim yazılımı [Snipe-IT](https://snipeitapp.com/) ile derinlemesine entegre çalışacak şekilde tasarlanmıştır.** Snipe-IT demirbaş ve kullanıcı yönetimini üstlenirken; **ServiceTracker** arıza servis fişleri, toner sarf malzeme takip süreçleri, periyodik bakım takvimi, kargo lojistiği ve yapay zeka operasyon desteğini tek ekranda buluşturur.
 
 ---
 
-## ✨ Öne Çıkan Özellikler ve Modüller
+## ⚡ Sistemin Kalbi: Neden Snipe-IT Entegrasyonu Kritik?
 
-### 1. 🔧 Teknik Servis Fişleri
-- Seri numarası veya barkod ile hızlı kabul ve arıza kaydı oluşturma.
-- Snipe-IT envanteriyle anlık entegrasyon (cihaz ve zimmetli personeli otomatik eşleme).
-- Aşama takibi (*Yeni Kayıt ➔ Onarımda ➔ Parça Bekliyor ➔ Dış Servis ➔ Tamamlandı / Teslim Edildi*).
-- Kullanılan yedek parça, işçilik maliyeti ve ıslak imzalı servis fişi çıktısı alma.
+Snipe-IT, dünyada en çok tercih edilen IT demirbaş ve envanter yönetim (ITAM) platformlarından biridir. Ancak saha operasyonlarında IT ekiplerinin ihtiyaç duyduğu şu kritik süreçler Snipe-IT'de bulunmaz:
 
-### 2. 🗓️ Master Operasyon Takvimi
-- Tüm kurumsal IT hareketlerinin (Servis Fişleri, Kargo Sevkiyatları, Toner Değişimleri, Periyodik Bakım ve Kişisel IT Notları) tek ekranda renk kodlarıyla izlenmesi.
-- Açılır-kapanır (*Slide-in*) Günlük Operasyon Raporu paneli.
-- Kişisel not ve hatırlatıcı ekleme (önem derecesine göre renk rozetleri).
+- ❌ Arıza fişi açma, teknisyen atama, yedek parça ve onarım aşamalarını takip etme,
+- ❌ Islak imzalı arıza ve teslimat formları oluşturma,
+- ❌ Yazıcıların toner değişim geçmişini, sayaç (sayfa) verilerini ve sarf malzeme sarfiyatını izleme,
+- ❌ IT departmanına gelen/giden kargo sevkiyatlarını ve etiketleme süreçlerini yürütme,
+- ❌ İşletme bazında periyodik donanım ve yazılım bakım planları hazırlayıp resmi tutanak basma.
 
-### 3. 🖨️ Toner ve Sarf Malzeme Takibi
-- Model, renk ve kritik eşik bazında toner stok takibi.
-- Kullanıcı ve yazıcı bazında çıkış logları, sayaç (sayfa sayısı) kayıtları.
-- Kritik seviyeye inen tonerler için otomatik sistem alarmları.
+**Bitrox ServiceTracker**, tam da bu boşluğu doldurur! Snipe-IT API'si ile iki yönlü entegrasyon kurarak tüm bu operasyonları otomatikleştirir:
 
-### 4. 📦 Kargo ve Lojistik Yönetimi
-- Gelen ve Giden kargoların kurye, takip no, irsaliye ve alıcı bilgileriyle kaydedilmesi.
-- Kargo hareketine doğrudan bağlı servis fişi ve zimmetli cihaz ilişkilendirme.
-- Termal yazıcılar için tek tıkla standart kargo gönderi/kabul etiketi basımı.
+### 🔗 Snipe-IT ile Entegre Çalışan Başlıca Modüller:
+1. **🔧 Servis Fişleri:** Müşteri/personel seçildiğinde, o kişinin üzerine Snipe-IT'de zimmetli olan tüm bilgisayar, telefon veya monitörler otomatik olarak listelenir. Tek tıkla ilgili cihaz seçilerek seri no ve demirbaş bilgileriyle servis kabulü yapılır.
+2. **🖨️ Toner ve Sarf Takibi:** Snipe-IT'de kayıtlı olan yazıcılar, departmanlar ve kullanıcılar üzerinden sayaç loglu toner çıkışları yapılır.
+3. **👤 360° Kullanıcı Görünümü (User360):** Bir personelin profiline girildiğinde; Snipe-IT'deki aktif zimmetleri (laptop, lisans, aksesuar vb.), yerel veritabanındaki servis geçmişi, toner alımları ve kargo hareketleri tek ekranda birleşir.
+4. **📦 Envanter ve Cihaz Senkronizasyonu:** Snipe-IT'deki tüm cihazlar ve kullanıcılar periyodik olarak önbelleklenir (caching), böylece anlık aramalar ve filtrelemeler milisaniyeler içinde gerçekleşir.
+5. **🛡️ Periyodik Bakım:** Snipe-IT'de kayıtlı kurumsal bilgisayarlar seçilerek 9 adımlı bakım protokolü uygulanır ve işletme müdürü imzalı resmi tutanaklar oluşturulur.
+6. **🤖 Bito AI & Snipe-IT Asistanı:** Entegre yapay zeka asistanı, Snipe-IT veritabanını tarayarak *"Ali Yılmaz'ın üzerindeki laptop hangisi?"* veya *"Muhasebedeki arızalı cihazlar neler?"* gibi sorulara anında yanıt verir.
 
-### 5. 🔐 BitLocker Anahtar Kasası
-- Kurumsal bilgisayarların BitLocker kurtarma anahtarları (Recovery Key) ve Key ID kayıtları.
-- Şifreli metin yedekleri, TXT/PDF dosya ekleri ve hızlı panoya kopyalama desteği.
+---
 
-### 6. 🛡️ Periyodik Bakım Yönetimi
-- İşletme ve dönem bazında periyodik donanım ve yazılım bakım planları.
-- 9 zorunlu kontrol adımı (Toz temizliği, fan, portlar, antivirüs, lisans, performans vb.).
-- İşletme Müdürü ve Teknisyen imzalı resmi Excel/PDF teslim tutanağı ve detaylı teknik kontrol raporu.
+## ✨ Tüm Modüller ve Özellikler
 
-### 7. 👤 360 Derece Kullanıcı Görünümü (User360)
-- Bir personelin üzerine zimmetli tüm cihazlar, geçmiş servis kayıtları, toner teslimatları ve kargo geçmişi tek ekranda.
-
-### 8. 💬 Dahili İletişim & Bito AI Asistan
-- Ekranın sağ altına sıfır oturan modern masaüstü sohbet barı.
-- IT personeli arasında anlık mesajlaşma (*Socket.IO* tabanlı).
-- Kurumsal verileri analiz edebilen yapay zeka operasyon asistanı (**Bito AI**).
-
-### 9. 🔔 Web Push Bildirimleri & Özelleştirilebilir Temalar
-- Arka planda çalışan VAPID destekli masaüstü / tarayıcı bildirimleri.
-- Koyu, Açık, Cyberpunk, Aurora, Sakura gibi onlarca canlı tema seçeneği.
+| Modül | Açıklama |
+|---|---|
+| **🔧 Teknik Servis Fişleri** | Barkod/Seri no ile hızlı kayıt, durum aşamaları (*Yeni, Onarımda, Parça Bekliyor, Dış Servis, Teslim Edildi*), yedek parça maliyetleri ve PDF fiş çıktısı. |
+| **🗓️ Master Operasyon Takvimi** | Servis fişleri, kargo hareketleri, toner çıkışları ve periyodik bakımların tek bir renk kodlu takvimde interaktif takibi. |
+| **🖨️ Toner & Sarf Malzeme** | Model, renk, kritik stok seviyesi alarmları, yazıcı sayaç kayıtları ve departman sarfiyat analizleri. |
+| **📦 Kargo & Lojistik** | Gelen ve giden kargoların kurye/takip no takibi, termal barkodlu kargo etiketi basımı. |
+| **🔐 BitLocker Anahtar Kasası** | Bilgisayarların kurtarma anahtarları (Recovery Key) ve Key ID'lerinin güvenli depolanması, TXT/PDF dışa aktarımı. |
+| **🛡️ Periyodik Bakım Yönetimi** | 9 zorunlu kontrol adımı (toz temizliği, antivirüs, lisans vb.) ve resmi teslim-tesellüm tutanağı. |
+| **👤 360° Personel Görünümü** | Personelin tüm IT geçmişi (zimmetleri, fişleri, tonerleri, kargoları) tek sayfada. |
+| **💬 Dahili Mesajlaşma & AI** | Ekranın sağ altına sıfır oturan masaüstü sohbet barı, IT ekibi içi anlık sohbet (*Socket.IO*) ve Bito AI asistanı. |
+| **🔔 Web Push & Temalar** | Tarayıcı masaüstü bildirimleri ve 15+ modern görsel tema (Cyberpunk, Aurora, Sakura, Dark vb.). |
 
 ---
 
 ## 🚀 Hızlı Başlangıç & Kurulum
 
-### Gereksinimler
+### Sistem Gereksinimleri
 - **Node.js**: v18.0.0 veya üzeri
 - **MySQL / MariaDB**: v8.0 veya üzeri
 - **npm** veya **yarn**
+- *(Önerilen)* Aktif bir **Snipe-IT** sunucusu (API erişimi açık)
 
-### 1. Depoyu İndirin
+---
+
+### 1. Depoyu Klonlayın
 ```bash
-git clone https://github.com/your-username/servicetracker.git
-cd servicetracker
+git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+cd bitrox-service-tracking
 ```
 
 ### 2. Bağımlılıkları Yükleyin
@@ -75,30 +73,30 @@ cd servicetracker
 npm install
 ```
 
-### 3. Veritabanını Hazırlayın
-MySQL sunucunuza bağlanın ve proje kök dizinindeki `database_schema.sql` dosyasını çalıştırın:
+### 3. Veritabanını Kurun
+MySQL sunucunuzda proje kök dizinindeki hazır `database_schema.sql` dosyasını çalıştırın:
 ```bash
 mysql -u root -p < database_schema.sql
 ```
-*Bu komut `servicetracker_db` adında temiz bir veritabanı oluşturur, tabloları hazırlar ve varsayılan yönetici hesabını ekler.*
+*Bu komut `servicetracker_db` adında boş, temiz bir veritabanı kurar ve varsayılan yönetici hesabını oluşturur.*
 
-### 4. Çevre Değişkenlerini Tanımlayın
-Kök dizindeki `.env.example` dosyasını `.env` olarak kopyalayın:
+### 4. Çevre Değişkenlerini Yapılandırın
+Kök dizindeki `.env.example` dosyasını kopyalayarak `.env` oluşturun:
 ```bash
 cp .env.example .env
 ```
-`.env` dosyasını açıp kendi MySQL bağlantı bilgilerinizi girin:
+`.env` dosyasını açıp kendi MySQL veritabanı bilgilerinizi girin:
 ```env
 PORT=9999
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASS=your_password
+DB_PASS=veritabani_sifreniz
 DB_NAME=servicetracker_db
 ```
 
 ### 5. Uygulamayı Başlatın
-* **Geliştirme Modu (Frontend + Backend):**
+* **Geliştirme Ortamı (Vite + Node Server):**
   ```bash
   npm run dev
   ```
@@ -115,25 +113,29 @@ DB_NAME=servicetracker_db
 
 ## 🔑 Varsayılan Giriş Bilgileri
 
-Kurulum tamamlandığında aşağıdaki varsayılan hesapla sisteme giriş yapabilirsiniz:
+Kurulum tamamlandıktan sonra tarayıcınızdan `http://localhost:9999` (veya sunucu IP adresiniz) adresine gidin:
 
-| Alan | Bilgi |
+| Alan | Varsayılan Değer |
 |---|---|
 | **Kullanıcı Adı** | `admin` |
 | **Şifre** | `admin123` |
-| **Rol** | `Super Admin` (Tam Yetki) |
+| **Yetki Düzeyi** | `Super Admin` |
 
-> ⚠️ **Güvenlik Uyarısı:** Sisteme ilk giriş yaptıktan sonra lütfen **Profil** veya **Ayarlar -> Kullanıcı Yönetimi** bölümünden şifrenizi değiştiriniz.
+> ⚠️ **Önemli:** Sisteme giriş yaptıktan sonra lütfen **Ayarlar ➔ Kullanıcı Yönetimi** veya **Profil** sekmesinden varsayılan şifreyi değiştiriniz.
 
 ---
 
-## 🌐 Snipe-IT Entegrasyonu (İsteğe Bağlı)
+## 🌐 Snipe-IT Entegrasyonunun Yapılandırılması (Adım Adım)
 
-Eğer mevcut bir Snipe-IT envanter sunucunuz varsa:
+Sistemin servis fişi, toner ve envanter kabiliyetlerini tam kapasite kullanmak için Snipe-IT bağlantısını tanımlayın:
+
 1. `admin` kullanıcısıyla sisteme giriş yapın.
-2. Sağ üstteki **Ayarlar ➔ Genel Ayarlar** sekmesine gidin.
-3. **Snipe-IT Sunucu URL** ve **API Anahtarınızı** girip kaydedin.
-4. Sistem otomatik olarak kullanıcı ve demirbaş verilerini çekmeye başlayacaktır.
+2. Sağ üst menüden **⚙️ Ayarlar ➔ Genel Ayarlar** sayfasına gidin.
+3. **Snipe-IT Entegrasyonu** bölümünü bulun:
+   - **Snipe-IT Sunucu URL:** Örn: `https://envanter.sirketiniz.com`
+   - **Snipe-IT API Token (Bearer Token):** Snipe-IT arayüzünden `Admin -> Manage API Keys` kısmından oluşturduğunuz token'ı yapıştırın.
+4. **Kaydet** butonuna basın.
+5. Sistem arka planda Snipe-IT ile el sıkışacak; kullanıcıları, demirbaşları, departman ve lokasyonları yerel önbellek tablolarına aktarmaya başlayacaktır.
 
 ---
 
