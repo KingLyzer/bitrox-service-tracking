@@ -604,7 +604,7 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
           </div>
 
           <div class="footer-info">
-            <span>Created by Open Source Community</span>
+            <span>Created by Bitrox</span>
             <span>Belge Basım Tarihi: ${escapeHtml(formatDateTime(new Date()))}</span>
           </div>
         </body>

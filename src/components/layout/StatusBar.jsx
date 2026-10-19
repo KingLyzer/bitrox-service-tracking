@@ -51,7 +51,7 @@ export default function StatusBar({ notification }) {
 
       <span style={styles.right}>
         <span style={{ ...styles.item, opacity: 0.85 }}>
-          {isMobile ? '' : 'Created by '}<strong style={{ color: 'var(--color-primary, #60a5fa)' }}>Open Source Community</strong>
+          {isMobile ? '' : 'Created by '}<strong style={{ color: 'var(--color-primary, #60a5fa)' }}>Bitrox</strong>
         </span>
         {!isMobile && user?.full_name && (
           <>

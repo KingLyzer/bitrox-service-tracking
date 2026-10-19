@@ -582,7 +582,7 @@ export default function PublicSharePage({ token }) {
           color: '#64748b',
           letterSpacing: '0.3px'
         }}>
-          Created by <strong style={{ color: '#94a3b8' }}>Open Source Community</strong> • Güvenli Bağlantı
+          Created by <strong style={{ color: '#94a3b8' }}>Bitrox</strong> • Güvenli Bağlantı
         </div>
       </div>
     </div>

@@ -139,7 +139,7 @@ export default function Login() {
         <div style={s.cardFooter}>
           <div style={s.statusPill}>
             <span style={s.statusDot} />
-            <span>Created by <strong>Open Source Community</strong> &bull; v2.3.2</span>
+            <span>Created by <strong>Bitrox</strong> &bull; v2.3.2</span>
           </div>
         </div>
       </div>
