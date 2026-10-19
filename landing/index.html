@@ -23,8 +23,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Custom Stylesheet with Cache Busting -->
+  <link rel="stylesheet" href="style.css?v=3.0.0" />
 </head>
 <body>
 
@@ -34,10 +34,10 @@
   <nav class="navbar" id="navbar">
     <div class="container nav-container">
       <a href="#" class="brand-logo">
-        <img src="assets/logo.png" alt="Bitrox Logo" style="height: 38px; width: auto; object-fit: contain; border-radius: 8px;" />
-        <span>Bitrox <span class="gradient-text">ServiceTracker</span></span>
-        <span class="brand-badge">v2.3.2</span>
-        <span class="free-pill-badge"><i class="fa-solid fa-gift"></i> %100 Ücretsiz</span>
+        <img src="assets/logo.png" alt="Bitrox Logo" class="brand-logo-img" />
+        <span class="brand-title">Bitrox <span class="gradient-text">ServiceTracker</span></span>
+        <span class="brand-badge desktop-only">v2.3.2</span>
+        <span class="free-pill-badge desktop-only"><i class="fa-solid fa-gift"></i> %100 Ücretsiz</span>
       </a>
 
       <ul class="nav-links">
@@ -591,30 +591,30 @@
   <!-- ========================================================================
        Support & Feedback Section (Geliştirme & Hata Bildirimi)
        ======================================================================== -->
-  <section class="support-section" id="support" style="padding: 70px 0 30px;">
+  <section class="support-section" id="support">
     <div class="container">
-      <div class="support-card" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 24px; padding: 48px 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45); text-align: center; position: relative; overflow: hidden; backdrop-filter: blur(12px);">
-        <div style="position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%); border-radius: 50%;"></div>
+      <div class="support-card">
+        <div class="support-glow"></div>
         
-        <div style="display: inline-flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; font-size: 1.8rem; margin-bottom: 20px;">
+        <div class="support-icon-box">
           <i class="fa-solid fa-envelope-open-text"></i>
         </div>
 
-        <h3 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 12px; color: #fff;">
+        <h3 class="support-title">
           Geliştirme Önerisi & Hata Bildirimi
         </h3>
         
-        <p style="max-width: 660px; margin: 0 auto 28px; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65;">
+        <p class="support-desc">
           Bitrox ServiceTracker'ı deneyimlerken karşılaştığınız bir hata mı var veya sisteme eklenmesini istediğiniz harika bir fikir mi buldunuz? Doğrudan teknik ekibimize mail atarak projeye katkıda bulunabilirsiniz.
         </p>
 
-        <div style="display: inline-flex; align-items: center; gap: 16px; background: rgba(9, 14, 26, 0.9); padding: 14px 28px; border-radius: 99px; border: 1px solid rgba(249, 115, 22, 0.45); box-shadow: 0 6px 24px rgba(249, 115, 22, 0.18); flex-wrap: wrap; justify-content: center;">
-          <span style="font-size: 0.95rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px;">
-            <i class="fa-solid fa-headset" style="color: #fb923c;"></i> Destek & Öneri Hattı:
+        <div class="support-pill-wrapper">
+          <span class="support-pill-label">
+            <i class="fa-solid fa-headset"></i> Destek & Öneri Hattı:
           </span>
-          <a href="mailto:admin@bitrox.com.tr?subject=Bitrox%20ServiceTracker%20Hata%20/%20Gelistirme%20Bildirimi" style="font-size: 1.12rem; font-weight: 800; color: #fb923c; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-            admin@bitrox.com.tr
-            <i class="fa-solid fa-paper-plane" style="font-size: 0.9rem;"></i>
+          <a href="mailto:admin@bitrox.com.tr?subject=Bitrox%20ServiceTracker%20Hata%20/%20Gelistirme%20Bildirimi" class="support-pill-link">
+            <span>admin@bitrox.com.tr</span>
+            <i class="fa-solid fa-paper-plane"></i>
           </a>
         </div>
       </div>
