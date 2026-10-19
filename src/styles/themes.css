@@ -1,0 +1,1407 @@
+/* ══════════════════════════════════════════════════════════════════════
+   SERVICE TRACKER — MODERN THEMES ENGINE
+   ══════════════════════════════════════════════════════════════════════ */
+
+
+
+/* ──────────────────────────────────────────────────────────────────────
+   1. 🎃 HALLOWEEN (CADILAR BAYRAMI — Spooky Dark & Neon Orange)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='halloween'] {
+  --color-primary: #ff7700;
+  --color-primary-hover: #ff9933;
+  --color-primary-light: #ffa94d;
+  --color-primary-bg: rgba(255, 119, 0, 0.15);
+
+  --color-accent: #9d4edd;
+  --color-accent-hover: #c77dff;
+  --color-accent-bg: rgba(157, 78, 221, 0.15);
+
+  --color-bg: #0c0714;
+  --color-bg-dark: #07040c;
+  --color-surface: #170d24;
+  --color-surface-alt: #1f1230;
+  --color-border: #3c1e5c;
+  --color-border-dark: #582b85;
+
+  --color-text: #f3e8ff;
+  --color-text-secondary: #c4b5fd;
+  --color-text-muted: #8b5cf6;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #ffaa00;
+  --color-warning-bg: rgba(255, 170, 0, 0.15);
+  --color-info: #a855f7;
+  --color-info-bg: rgba(168, 85, 247, 0.15);
+  --color-orange: #ff7700;
+  --color-orange-bg: rgba(255, 119, 0, 0.15);
+
+  --input-bg: #1f1230;
+  --input-border: #3c1e5c;
+  --input-focus: #ff7700;
+
+  --toolbar-bg: #07040c;
+  --toolbar-border: #3c1e5c;
+  --statusbar-bg: #07040c;
+
+  --tabbar-bg: #07040c;
+  --tab-inactive-bg: #170d24;
+  --tab-hover-bg: #1f1230;
+  --tab-active-bg: #170d24;
+
+  --grid-header-bg: #1f1230;
+  --grid-header-text: #c4b5fd;
+  --grid-border: #3c1e5c;
+  --grid-row-alt: #170d24;
+  --grid-row-hover: rgba(255, 119, 0, 0.14);
+
+  --sidebar-bg: #07040c;
+  --sidebar-border: #3c1e5c;
+  --sidebar-text: #c4b5fd;
+  --sidebar-hover: rgba(255, 119, 0, 0.1);
+  --sidebar-active: linear-gradient(90deg, rgba(255, 119, 0, 0.3), rgba(157, 78, 221, 0.1));
+  --sidebar-active-text: #ffa94d;
+
+  --modal-overlay: rgba(7, 4, 12, 0.82);
+  --modal-bg: #170d24;
+  --modal-border: #582b85;
+  --modal-shadow: 0 24px 64px rgba(255, 119, 0, 0.15);
+  --modal-header: #07040c;
+  --modal-header-text: #ff9933;
+  --modal-footer: #1f1230;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   2. ❄️ CHRISTMAS & NEW YEAR (YILBAŞI / NOEL — Kadife Kırmızı, Çam Yeşili & Şömine Altını)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='christmas'] {
+  --color-primary: #dc2626;
+  --color-primary-hover: #ef4444;
+  --color-primary-light: #f87171;
+  --color-primary-bg: rgba(220, 38, 38, 0.16);
+
+  --color-accent: #fbbf24;
+  --color-accent-hover: #f59e0b;
+  --color-accent-bg: rgba(251, 191, 36, 0.18);
+
+  --color-bg: #06111e;
+  --color-bg-dark: #030810;
+  --color-surface: #0a1f18;
+  --color-surface-alt: #0f2c22;
+  --color-border: #1b4537;
+  --color-border-dark: #265c4a;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #fef08a;
+  --color-text-muted: #94a3b8;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.18);
+  --color-danger: #dc2626;
+  --color-danger-bg: rgba(220, 38, 38, 0.18);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.18);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.18);
+  --color-orange: #fb923c;
+  --color-orange-bg: rgba(251, 146, 60, 0.18);
+
+  --input-bg: #091a14;
+  --input-border: #1b4537;
+  --input-focus: #fbbf24;
+
+  --toolbar-bg: #040c15;
+  --toolbar-border: #1b4537;
+  --statusbar-bg: #040c15;
+
+  --tabbar-bg: #040c15;
+  --tab-inactive-bg: #091a14;
+  --tab-hover-bg: #0f2c22;
+  --tab-active-bg: #0d271f;
+
+  --grid-header-bg: #0f2c22;
+  --grid-header-text: #fef08a;
+  --grid-border: #1b4537;
+  --grid-row-alt: #071712;
+  --grid-row-hover: rgba(220, 38, 38, 0.14);
+
+  --sidebar-bg: #040c15;
+  --sidebar-border: #1b4537;
+  --sidebar-text: #e2e8f0;
+  --sidebar-hover: rgba(251, 191, 36, 0.12);
+  --sidebar-active: linear-gradient(90deg, rgba(220, 38, 38, 0.35), rgba(251, 191, 36, 0.15));
+  --sidebar-active-text: #fef08a;
+
+  --modal-overlay: rgba(3, 8, 16, 0.88);
+  --modal-bg: #0a1f18;
+  --modal-border: #fbbf24;
+  --modal-shadow: 0 0 35px rgba(220, 38, 38, 0.25), 0 0 50px rgba(251, 191, 36, 0.15);
+  --modal-header: #040c15;
+  --modal-header-text: #fef08a;
+  --modal-footer: #0f2c22;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   3. 🌙 RAMADAN (ŞEHR-İ RAMAZAN — Kandil, Hilal, Gece Mavisi & Altın)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='ramadan'] {
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-primary-light: #fef08a;
+  --color-primary-bg: rgba(245, 158, 11, 0.15);
+
+  --color-accent: #10b981;
+  --color-accent-hover: #34d399;
+  --color-accent-bg: rgba(16, 185, 129, 0.15);
+
+  --color-bg: #080d1a;
+  --color-bg-dark: #04070e;
+  --color-surface: #111a2e;
+  --color-surface-alt: #17233d;
+  --color-border: #233559;
+  --color-border-dark: #334b7d;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --input-bg: #17233d;
+  --input-border: #233559;
+  --input-focus: #f59e0b;
+
+  --toolbar-bg: #04070e;
+  --toolbar-border: #233559;
+  --statusbar-bg: #04070e;
+
+  --tabbar-bg: #04070e;
+  --tab-inactive-bg: #17233d;
+  --tab-hover-bg: #111a2e;
+  --tab-active-bg: #111a2e;
+
+  --grid-header-bg: #17233d;
+  --grid-header-text: #fef08a;
+  --grid-border: #233559;
+  --grid-row-alt: #141f38;
+  --grid-row-hover: rgba(245, 158, 11, 0.15);
+
+  --sidebar-bg: #04070e;
+  --sidebar-border: #233559;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: rgba(245, 158, 11, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(245, 158, 11, 0.28), rgba(16, 185, 129, 0.12));
+  --sidebar-active-text: #fef08a;
+
+  --modal-overlay: rgba(4, 7, 14, 0.85);
+  --modal-bg: #111a2e;
+  --modal-border: #f59e0b;
+  --modal-shadow: 0 24px 64px rgba(245, 158, 11, 0.2);
+  --modal-header: #04070e;
+  --modal-header-text: #fef08a;
+  --modal-footer: #17233d;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   4. ⚡ CYBERPUNK 2077 (NIGHT CITY — Electric Yellow, Cyber Cyan & Carbon Obsidian)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='cyberpunk'] {
+  --color-primary: #fcee0a;
+  --color-primary-hover: #fff33b;
+  --color-primary-light: #fff86b;
+  --color-primary-bg: rgba(252, 238, 10, 0.16);
+  --color-primary-text: #050608;
+
+  --color-accent: #00f0ff;
+  --color-accent-hover: #33f3ff;
+  --color-accent-bg: rgba(0, 240, 255, 0.16);
+
+  --color-bg: #07080c;
+  --color-bg-dark: #030406;
+  --color-surface: #0e1219;
+  --color-surface-alt: #141b25;
+  --color-border: #1e283a;
+  --color-border-dark: #2a374f;
+
+  --color-text: #f3f4f6;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+
+  --color-success: #00ff88;
+  --color-success-bg: rgba(0, 255, 136, 0.15);
+  --color-danger: #ff003c;
+  --color-danger-bg: rgba(255, 0, 60, 0.18);
+  --color-warning: #fcee0a;
+  --color-warning-bg: rgba(252, 238, 10, 0.18);
+  --color-info: #00f0ff;
+  --color-info-bg: rgba(0, 240, 255, 0.18);
+  --color-orange: #ff5500;
+  --color-orange-bg: rgba(255, 85, 0, 0.18);
+
+  --input-bg: #090d14;
+  --input-border: #222d3e;
+  --input-focus: #fcee0a;
+
+  --toolbar-bg: #05070a;
+  --toolbar-border: #1a2333;
+  --statusbar-bg: #05070a;
+
+  --tabbar-bg: #05070a;
+  --tab-inactive-bg: #0f141e;
+  --tab-hover-bg: #141c2a;
+  --tab-active-bg: #111724;
+
+  --grid-header-bg: #111724;
+  --grid-header-text: #00f0ff;
+  --grid-border: #1e283a;
+  --grid-row-alt: #0a0e15;
+  --grid-row-hover: rgba(252, 238, 10, 0.14);
+
+  --sidebar-bg: #05070a;
+  --sidebar-border: #1a2333;
+  --sidebar-text: #94a3b8;
+  --sidebar-hover: rgba(252, 238, 10, 0.12);
+  --sidebar-active: linear-gradient(90deg, rgba(252, 238, 10, 0.35), rgba(0, 240, 255, 0.12));
+  --sidebar-active-text: #fcee0a;
+
+  --modal-overlay: rgba(3, 4, 6, 0.90);
+  --modal-bg: #0e1219;
+  --modal-border: #fcee0a;
+  --modal-shadow: 0 0 35px rgba(252, 238, 10, 0.25), 0 0 70px rgba(0, 240, 255, 0.12);
+  --modal-header: #05070a;
+  --modal-header-text: #fcee0a;
+  --modal-footer: #141b25;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   4. 🌊 OCEAN BREEZE (OKYANUS DERİNLİĞİ — Deep Navy & Cyan)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='ocean'] {
+  --color-primary: #06b6d4;
+  --color-primary-hover: #22d3ee;
+  --color-primary-light: #67e8f9;
+  --color-primary-bg: rgba(6, 182, 212, 0.15);
+
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-bg: rgba(59, 130, 246, 0.15);
+
+  --color-bg: #031424;
+  --color-bg-dark: #020c17;
+  --color-surface: #07253d;
+  --color-surface-alt: #0a314f;
+  --color-border: #124b78;
+  --color-border-dark: #1b669f;
+
+  --color-text: #ecfeff;
+  --color-text-secondary: #a5f3fc;
+  --color-text-muted: #67e8f9;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #fb923c;
+  --color-orange-bg: rgba(251, 146, 60, 0.15);
+
+  --input-bg: #0a314f;
+  --input-border: #124b78;
+  --input-focus: #06b6d4;
+
+  --toolbar-bg: #020c17;
+  --toolbar-border: #124b78;
+  --statusbar-bg: #020c17;
+
+  --tabbar-bg: #020c17;
+  --tab-inactive-bg: #0a314f;
+  --tab-hover-bg: #07253d;
+  --tab-active-bg: #07253d;
+
+  --grid-header-bg: #0a314f;
+  --grid-header-text: #a5f3fc;
+  --grid-border: #124b78;
+  --grid-row-alt: #0a314f;
+  --grid-row-hover: rgba(6, 182, 212, 0.12);
+
+  --sidebar-bg: #020c17;
+  --sidebar-border: #124b78;
+  --sidebar-text: #a5f3fc;
+  --sidebar-hover: rgba(6, 182, 212, 0.1);
+  --sidebar-active: linear-gradient(90deg, rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.1));
+  --sidebar-active-text: #67e8f9;
+
+  --modal-overlay: rgba(2, 12, 23, 0.85);
+  --modal-bg: #07253d;
+  --modal-border: #1b669f;
+  --modal-shadow: 0 24px 64px rgba(6, 182, 212, 0.18);
+  --modal-header: #020c17;
+  --modal-header-text: #67e8f9;
+  --modal-footer: #0a314f;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   5. 🌅 SUNSET GLOW (GÜN BATIMI — Deep Rose, Amber & Violet)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='sunset'] {
+  --color-primary: #f43f5e;
+  --color-primary-hover: #fb7185;
+  --color-primary-light: #fda4af;
+  --color-primary-bg: rgba(244, 63, 94, 0.15);
+
+  --color-accent: #f59e0b;
+  --color-accent-hover: #fbbf24;
+  --color-accent-bg: rgba(245, 158, 11, 0.15);
+
+  --color-bg: #180d1e;
+  --color-bg-dark: #0f0714;
+  --color-surface: #26162f;
+  --color-surface-alt: #311c3c;
+  --color-border: #4f2860;
+  --color-border-dark: #703a89;
+
+  --color-text: #fff1f2;
+  --color-text-secondary: #fecdd3;
+  --color-text-muted: #fda4af;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #e11d48;
+  --color-danger-bg: rgba(225, 29, 72, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #a855f7;
+  --color-info-bg: rgba(168, 85, 247, 0.15);
+  --color-orange: #fb923c;
+  --color-orange-bg: rgba(251, 146, 60, 0.15);
+
+  --input-bg: #311c3c;
+  --input-border: #4f2860;
+  --input-focus: #f43f5e;
+
+  --toolbar-bg: #0f0714;
+  --toolbar-border: #4f2860;
+  --statusbar-bg: #0f0714;
+
+  --tabbar-bg: #0f0714;
+  --tab-inactive-bg: #311c3c;
+  --tab-hover-bg: #26162f;
+  --tab-active-bg: #26162f;
+
+  --grid-header-bg: #311c3c;
+  --grid-header-text: #fecdd3;
+  --grid-border: #4f2860;
+  --grid-row-alt: #311c3c;
+  --grid-row-hover: rgba(244, 63, 94, 0.14);
+
+  --sidebar-bg: #0f0714;
+  --sidebar-border: #4f2860;
+  --sidebar-text: #fecdd3;
+  --sidebar-hover: rgba(244, 63, 94, 0.1);
+  --sidebar-active: linear-gradient(90deg, rgba(244, 63, 94, 0.3), rgba(245, 158, 11, 0.1));
+  --sidebar-active-text: #fda4af;
+
+  --modal-overlay: rgba(15, 7, 20, 0.85);
+  --modal-bg: #26162f;
+  --modal-border: #703a89;
+  --modal-shadow: 0 24px 64px rgba(244, 63, 94, 0.18);
+  --modal-header: #0f0714;
+  --modal-header-text: #fda4af;
+  --modal-footer: #311c3c;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   6. 🌸 SAKURA (KİRAZ ÇİÇEĞİ — Soft Spring Pink & Cherry Blossom)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='sakura'] {
+  --color-primary: #e11d48;
+  --color-primary-hover: #f43f5e;
+  --color-primary-light: #fda4af;
+  --color-primary-bg: rgba(225, 29, 72, 0.12);
+
+  --color-accent: #db2777;
+  --color-accent-hover: #ec4899;
+  --color-accent-bg: rgba(219, 39, 119, 0.12);
+
+  --color-bg: #f9d5df;
+  --color-bg-dark: #f2b8c9;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fff0f5;
+  --color-border: #f4aabf;
+  --color-border-dark: #e88ba4;
+
+  --color-text: #4c1122;
+  --color-text-secondary: #881337;
+  --color-text-muted: #be185d;
+
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-danger: #e11d48;
+  --color-danger-bg: #ffe4e6;
+  --color-warning: #d97706;
+  --color-warning-bg: #fef3c7;
+  --color-info: #0284c7;
+  --color-info-bg: #e0f2fe;
+  --color-orange: #ea580c;
+  --color-orange-bg: #ffedd5;
+
+  --input-bg: #ffffff;
+  --input-border: #f4aabf;
+  --input-focus: #e11d48;
+
+  --toolbar-bg: #881337;
+  --toolbar-border: #9f1239;
+  --toolbar-text: #fff1f2;
+  --statusbar-bg: #881337;
+  --statusbar-text: #fecdd3;
+
+  --tabbar-bg: #f2b8c9;
+  --tab-inactive-bg: #fce7ef;
+  --tab-hover-bg: #fff0f5;
+  --tab-active-bg: #ffffff;
+
+  --grid-header-bg: #fce7ef;
+  --grid-header-text: #881337;
+  --grid-border: #f4aabf;
+  --grid-row-alt: #fff5f8;
+  --grid-row-hover: #ffe4e6;
+
+  --sidebar-bg: #881337;
+  --sidebar-border: #9f1239;
+  --sidebar-text: #fecdd3;
+  --sidebar-hover: rgba(255, 255, 255, 0.12);
+  --sidebar-active: linear-gradient(90deg, rgba(225, 29, 72, 0.4), rgba(219, 39, 119, 0.15));
+  --sidebar-active-text: #ffffff;
+
+  --modal-overlay: rgba(76, 17, 34, 0.65);
+  --modal-bg: #ffffff;
+  --modal-border: #f4aabf;
+  --modal-shadow: 0 24px 64px rgba(136, 19, 55, 0.25);
+  --modal-header: #881337;
+  --modal-header-text: #fff1f2;
+  --modal-footer: #fff0f5;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   7. 🍂 AUTUMN (SONBAHAR / GÜZ MASALI — Warm Amber, Rust & Golden Leaf)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='autumn'] {
+  --color-primary: #f97316;
+  --color-primary-hover: #fb923c;
+  --color-primary-light: #fdba74;
+  --color-primary-bg: rgba(249, 115, 22, 0.15);
+
+  --color-accent: #eab308;
+  --color-accent-hover: #facc15;
+  --color-accent-bg: rgba(234, 179, 8, 0.15);
+
+  --color-bg: #1f120c;
+  --color-bg-dark: #140b07;
+  --color-surface: #2e1a12;
+  --color-surface-alt: #26150e;
+  --color-border: #4a2d1f;
+  --color-border-dark: #633a28;
+
+  --color-text: #fff7ed;
+  --color-text-secondary: #fed7aa;
+  --color-text-muted: #fdba74;
+
+  --color-success: #84cc16;
+  --color-success-bg: rgba(132, 204, 22, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #ea580c;
+  --color-orange-bg: rgba(234, 88, 12, 0.15);
+
+  --input-bg: #26150e;
+  --input-border: #4a2d1f;
+  --input-focus: #f97316;
+
+  --toolbar-bg: #140b07;
+  --toolbar-border: #4a2d1f;
+  --statusbar-bg: #140b07;
+
+  --tabbar-bg: #140b07;
+  --tab-inactive-bg: #26150e;
+  --tab-hover-bg: #2e1a12;
+  --tab-active-bg: #2e1a12;
+
+  --grid-header-bg: #26150e;
+  --grid-header-text: #fed7aa;
+  --grid-border: #4a2d1f;
+  --grid-row-alt: #24130d;
+  --grid-row-hover: rgba(249, 115, 22, 0.14);
+
+  --sidebar-bg: #140b07;
+  --sidebar-border: #4a2d1f;
+  --sidebar-text: #fed7aa;
+  --sidebar-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(249, 115, 22, 0.35), rgba(234, 179, 8, 0.15));
+  --sidebar-active-text: #fed7aa;
+
+  --modal-overlay: rgba(20, 11, 7, 0.85);
+  --modal-bg: #2e1a12;
+  --modal-border: #f97316;
+  --modal-shadow: 0 24px 64px rgba(249, 115, 22, 0.2);
+  --modal-header: #140b07;
+  --modal-header-text: #fed7aa;
+  --modal-footer: #26150e;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   8. ☀️ SUMMER (YAZ / TROPİK SAHİL & GÜNEŞ CENNETİ — Turkuaz Okyanus, Altın Güneş & Gün Batımı)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='summer'] {
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-primary-light: #fef08a;
+  --color-primary-bg: rgba(245, 158, 11, 0.16);
+
+  --color-accent: #06b6d4;
+  --color-accent-hover: #22d3ee;
+  --color-accent-bg: rgba(6, 182, 212, 0.18);
+
+  --color-bg: #041624;
+  --color-bg-dark: #020d17;
+  --color-surface: rgba(8, 38, 58, 0.85);
+  --color-surface-alt: rgba(12, 50, 76, 0.88);
+  --color-border: rgba(245, 158, 11, 0.25);
+  --color-border-dark: rgba(245, 158, 11, 0.4);
+
+  --color-text: #f0fdfa;
+  --color-text-secondary: #ccfbf1;
+  --color-text-muted: #99f6e4;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.18);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.18);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.18);
+  --color-info: #06b6d4;
+  --color-info-bg: rgba(6, 182, 212, 0.18);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.18);
+
+  --input-bg: rgba(6, 28, 44, 0.9);
+  --input-border: rgba(245, 158, 11, 0.3);
+  --input-focus: #f59e0b;
+
+  --toolbar-bg: rgba(3, 15, 25, 0.94);
+  --toolbar-border: rgba(245, 158, 11, 0.25);
+  --statusbar-bg: rgba(3, 15, 25, 0.95);
+
+  --tabbar-bg: rgba(3, 15, 25, 0.92);
+  --tab-inactive-bg: rgba(8, 38, 58, 0.7);
+  --tab-hover-bg: rgba(14, 58, 88, 0.85);
+  --tab-active-bg: rgba(12, 50, 76, 0.95);
+
+  --grid-header-bg: rgba(8, 38, 58, 0.95);
+  --grid-header-text: #fef08a;
+  --grid-border: rgba(245, 158, 11, 0.2);
+  --grid-row-alt: rgba(5, 24, 38, 0.65);
+  --grid-row-hover: rgba(245, 158, 11, 0.14);
+
+  --sidebar-bg: rgba(3, 15, 25, 0.95);
+  --sidebar-border: rgba(245, 158, 11, 0.22);
+  --sidebar-text: #ccfbf1;
+  --sidebar-hover: rgba(245, 158, 11, 0.12);
+  --sidebar-active: linear-gradient(90deg, rgba(245, 158, 11, 0.28), rgba(6, 182, 212, 0.15));
+  --sidebar-active-text: #fef08a;
+
+  --modal-overlay: rgba(2, 10, 18, 0.88);
+  --modal-bg: rgba(8, 38, 58, 0.98);
+  --modal-border: rgba(245, 158, 11, 0.45);
+  --modal-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.2);
+  --modal-header: rgba(3, 15, 25, 0.98);
+  --modal-header-text: #fef08a;
+  --modal-footer: rgba(6, 28, 44, 0.98);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   9. 🌌 AURORA BOREALIS (KUZEY IŞIKLARI — Arctic Obsidian, Emerald & Violet)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='aurora'] {
+  --color-primary: #10b981;
+  --color-primary-hover: #34d399;
+  --color-primary-light: #6ee7b7;
+  --color-primary-bg: rgba(16, 185, 129, 0.15);
+
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #a78bfa;
+  --color-accent-bg: rgba(139, 92, 246, 0.15);
+
+  --color-bg: #030712;
+  --color-bg-dark: #02040a;
+  --color-surface: #0b1329;
+  --color-surface-alt: #101c3d;
+  --color-border: #1e293b;
+  --color-border-dark: #334155;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.15);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-info: #06b6d4;
+  --color-info-bg: rgba(6, 182, 212, 0.15);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --input-bg: #101c3d;
+  --input-border: #1e293b;
+  --input-focus: #10b981;
+
+  --toolbar-bg: #02040a;
+  --toolbar-border: #1e293b;
+  --statusbar-bg: #02040a;
+
+  --tabbar-bg: #02040a;
+  --tab-inactive-bg: #101c3d;
+  --tab-hover-bg: #0b1329;
+  --tab-active-bg: #0b1329;
+
+  --grid-header-bg: #101c3d;
+  --grid-header-text: #6ee7b7;
+  --grid-border: #1e293b;
+  --grid-row-alt: #0e1733;
+  --grid-row-hover: rgba(16, 185, 129, 0.14);
+
+  --sidebar-bg: #02040a;
+  --sidebar-border: #1e293b;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: rgba(16, 185, 129, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(16, 185, 129, 0.28), rgba(139, 92, 246, 0.15));
+  --sidebar-active-text: #6ee7b7;
+
+  --modal-overlay: rgba(2, 4, 10, 0.85);
+  --modal-bg: #0b1329;
+  --modal-border: #10b981;
+  --modal-shadow: 0 24px 64px rgba(16, 185, 129, 0.2);
+  --modal-header: #02040a;
+  --modal-header-text: #6ee7b7;
+  --modal-footer: #101c3d;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   10. 🌧️ RAINY ESKİŞEHİR (YAĞMURLU PORSUK — Slate & Amber Streetlight Glow)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='rainy_eskisehir'] {
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-primary-light: #fde68a;
+  --color-primary-bg: rgba(245, 158, 11, 0.15);
+
+  --color-accent: #38bdf8;
+  --color-accent-hover: #7dd3fc;
+  --color-accent-bg: rgba(56, 189, 248, 0.15);
+
+  --color-bg: #090d16;
+  --color-bg-dark: #05070c;
+  --color-surface: #111827;
+  --color-surface-alt: #162033;
+  --color-border: #1f293d;
+  --color-border-dark: #2d3b55;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --input-bg: #162033;
+  --input-border: #1f293d;
+  --input-focus: #f59e0b;
+
+  --toolbar-bg: #05070c;
+  --toolbar-border: #1f293d;
+  --statusbar-bg: #05070c;
+
+  --tabbar-bg: #05070c;
+  --tab-inactive-bg: #162033;
+  --tab-hover-bg: #111827;
+  --tab-active-bg: #111827;
+
+  --grid-header-bg: #162033;
+  --grid-header-text: #fde68a;
+  --grid-border: #1f293d;
+  --grid-row-alt: #131c2e;
+  --grid-row-hover: rgba(245, 158, 11, 0.14);
+
+  --sidebar-bg: #05070c;
+  --sidebar-border: #1f293d;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: rgba(245, 158, 11, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(245, 158, 11, 0.28), rgba(56, 189, 248, 0.12));
+  --sidebar-active-text: #fde68a;
+
+  --modal-overlay: rgba(5, 7, 12, 0.85);
+  --modal-bg: #111827;
+  --modal-border: #f59e0b;
+  --modal-shadow: 0 24px 64px rgba(245, 158, 11, 0.2);
+  --modal-header: #05070c;
+  --modal-header-text: #fde68a;
+  --modal-footer: #162033;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   11. ⚔️ DESERT GOLD (ANTİK MISIR & ÇÖL ALTINI — Obsidian & 24K Gold)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='desert_gold'] {
+  --color-primary: #eab308;
+  --color-primary-hover: #facc15;
+  --color-primary-light: #fef08a;
+  --color-primary-bg: rgba(234, 179, 8, 0.15);
+
+  --color-accent: #b45309;
+  --color-accent-hover: #d97706;
+  --color-accent-bg: rgba(180, 83, 9, 0.15);
+
+  --color-bg: #0c0a09;
+  --color-bg-dark: #050404;
+  --color-surface: rgba(28, 25, 23, 0.90);
+  --color-surface-alt: rgba(41, 37, 36, 0.92);
+  --color-border: #44403c;
+  --color-border-dark: #57534e;
+
+  --color-text: #fefce8;
+  --color-text-secondary: #fef08a;
+  --color-text-muted: #ca8a04;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #eab308;
+  --color-warning-bg: rgba(234, 179, 8, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --input-bg: #292524;
+  --input-border: #44403c;
+  --input-focus: #eab308;
+
+  --toolbar-bg: rgba(5, 4, 4, 0.88);
+  --toolbar-border: #44403c;
+  --statusbar-bg: rgba(5, 4, 4, 0.88);
+
+  --tabbar-bg: rgba(5, 4, 4, 0.88);
+  --tab-inactive-bg: rgba(41, 37, 36, 0.7);
+  --tab-hover-bg: rgba(28, 25, 23, 0.9);
+  --tab-active-bg: rgba(28, 25, 23, 0.95);
+
+  --grid-header-bg: #292524;
+  --grid-header-text: #fef08a;
+  --grid-border: #44403c;
+  --grid-row-alt: #231f1d;
+  --grid-row-hover: rgba(234, 179, 8, 0.14);
+
+  --sidebar-bg: #050404;
+  --sidebar-border: #44403c;
+  --sidebar-text: #fefce8;
+  --sidebar-hover: rgba(234, 179, 8, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(234, 179, 8, 0.3), rgba(180, 83, 9, 0.15));
+  --sidebar-active-text: #fef08a;
+
+  --modal-overlay: rgba(5, 4, 4, 0.85);
+  --modal-bg: #1c1917;
+  --modal-border: #eab308;
+  --modal-shadow: 0 24px 64px rgba(234, 179, 8, 0.2);
+  --modal-header: #050404;
+  --modal-header-text: #fef08a;
+  --modal-footer: #292524;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   12. ☕ COZY COFFEE (KAHVE & AHŞAP BARISTA — Espresso Dark & Latte Warmth)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='cozy_coffee'] {
+  --color-primary: #d97706;
+  --color-primary-hover: #f59e0b;
+  --color-primary-light: #fde68a;
+  --color-primary-bg: rgba(217, 119, 6, 0.15);
+
+  --color-accent: #92400e;
+  --color-accent-hover: #b45309;
+  --color-accent-bg: rgba(146, 64, 14, 0.15);
+
+  --color-bg: #120a05;
+  --color-bg-dark: #0a0502;
+  --color-surface: #1c1008;
+  --color-surface-alt: #27170c;
+  --color-border: #422817;
+  --color-border-dark: #5c3821;
+
+  --color-text: #fef3c7;
+  --color-text-secondary: #fed7aa;
+  --color-text-muted: #b45309;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+  --color-orange: #ea580c;
+  --color-orange-bg: rgba(234, 88, 12, 0.15);
+
+  --input-bg: #27170c;
+  --input-border: #422817;
+  --input-focus: #d97706;
+
+  --toolbar-bg: #0a0502;
+  --toolbar-border: #422817;
+  --statusbar-bg: #0a0502;
+
+  --tabbar-bg: #0a0502;
+  --tab-inactive-bg: #27170c;
+  --tab-hover-bg: #1c1008;
+  --tab-active-bg: #1c1008;
+
+  --grid-header-bg: #27170c;
+  --grid-header-text: #fde68a;
+  --grid-border: #422817;
+  --grid-row-alt: #22140a;
+  --grid-row-hover: rgba(217, 119, 6, 0.14);
+
+  --sidebar-bg: #0a0502;
+  --sidebar-border: #422817;
+  --sidebar-text: #fef3c7;
+  --sidebar-hover: rgba(217, 119, 6, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(217, 119, 6, 0.3), rgba(146, 64, 14, 0.15));
+  --sidebar-active-text: #fde68a;
+
+  --modal-overlay: rgba(10, 5, 2, 0.85);
+  --modal-bg: #1c1008;
+  --modal-border: #d97706;
+  --modal-shadow: 0 24px 64px rgba(217, 119, 6, 0.2);
+  --modal-header: #0a0502;
+  --modal-header-text: #fde68a;
+  --modal-footer: #27170c;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   13. 🎮 RETRO ARCADE (8-BİT PİKSEL NOSTALJİ — CRT Neon & Synthwave)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='retro_arcade'] {
+  --color-primary: #22c55e;
+  --color-primary-hover: #4ade80;
+  --color-primary-light: #86efac;
+  --color-primary-bg: rgba(34, 197, 94, 0.15);
+
+  --color-accent: #f43f5e;
+  --color-accent-hover: #fb7185;
+  --color-accent-bg: rgba(244, 63, 94, 0.15);
+
+  --color-bg: #0a0815;
+  --color-bg-dark: #05040a;
+  --color-surface: #130f26;
+  --color-surface-alt: #1c1738;
+  --color-border: #2f275c;
+  --color-border-dark: #443884;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  --color-success: #22c55e;
+  --color-success-bg: rgba(34, 197, 94, 0.15);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.15);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-info: #06b6d4;
+  --color-info-bg: rgba(6, 182, 212, 0.15);
+  --color-orange: #ff7700;
+  --color-orange-bg: rgba(255, 119, 0, 0.15);
+
+  --input-bg: #1c1738;
+  --input-border: #2f275c;
+  --input-focus: #22c55e;
+
+  --toolbar-bg: #05040a;
+  --toolbar-border: #2f275c;
+  --statusbar-bg: #05040a;
+
+  --tabbar-bg: #05040a;
+  --tab-inactive-bg: #1c1738;
+  --tab-hover-bg: #130f26;
+  --tab-active-bg: #130f26;
+
+  --grid-header-bg: #1c1738;
+  --grid-header-text: #86efac;
+  --grid-border: #2f275c;
+  --grid-row-alt: #17132f;
+  --grid-row-hover: rgba(34, 197, 94, 0.14);
+
+  --sidebar-bg: #05040a;
+  --sidebar-border: #2f275c;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: rgba(34, 197, 94, 0.08);
+  --sidebar-active: linear-gradient(90deg, rgba(34, 197, 94, 0.28), rgba(244, 63, 94, 0.15));
+  --sidebar-active-text: #86efac;
+
+  --modal-overlay: rgba(5, 4, 10, 0.85);
+  --modal-bg: #130f26;
+  --modal-border: #22c55e;
+  --modal-shadow: 0 24px 64px rgba(34, 197, 94, 0.2);
+  --modal-header: #05040a;
+  --modal-header-text: #86efac;
+  --modal-footer: #1c1738;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   7. CUSTOM WALLPAPER OVERLAY SUPPORT
+   ────────────────────────────────────────────────────────────────────── */
+.custom-wallpaper-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.custom-wallpaper-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--color-bg);
+  opacity: 0.85;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   8. UNIVERSAL THEMED AG-GRID ENGINE (GUARANTEED ACTIVE THEME MATCH)
+   ────────────────────────────────────────────────────────────────────── */
+.ag-theme-quartz,
+.ag-theme-quartz-dark,
+[class*="ag-theme-quartz"] {
+  --ag-background-color: var(--color-surface) !important;
+  --ag-odd-row-background-color: var(--color-surface-alt) !important;
+  --ag-header-background-color: var(--grid-header-bg, var(--color-surface-alt)) !important;
+  --ag-header-foreground-color: var(--grid-header-text, var(--color-text-secondary)) !important;
+  --ag-foreground-color: var(--color-text) !important;
+  --ag-data-color: var(--color-text) !important;
+  --ag-secondary-foreground-color: var(--color-text-secondary) !important;
+  --ag-row-hover-color: var(--grid-row-hover, var(--color-primary-bg)) !important;
+  --ag-border-color: var(--color-border) !important;
+  --ag-row-border-color: var(--color-border) !important;
+  --ag-header-cell-hover-background-color: var(--color-primary-bg) !important;
+  --ag-selected-row-background-color: var(--color-primary-bg) !important;
+  --ag-control-panel-background-color: var(--color-surface-alt) !important;
+  --ag-panel-background-color: var(--color-surface) !important;
+  --ag-input-focus-border-color: var(--color-primary) !important;
+  --ag-font-family: var(--font-family) !important;
+}
+
+.ag-theme-quartz .ag-root-wrapper,
+.ag-theme-quartz-dark .ag-root-wrapper,
+[class*="ag-theme-quartz"] .ag-root-wrapper {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ag-theme-quartz .ag-header,
+.ag-theme-quartz-dark .ag-header,
+[class*="ag-theme-quartz"] .ag-header {
+  background-color: var(--grid-header-bg, var(--color-surface-alt)) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.ag-theme-quartz .ag-row,
+.ag-theme-quartz-dark .ag-row,
+[class*="ag-theme-quartz"] .ag-row {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.ag-theme-quartz .ag-row-odd,
+.ag-theme-quartz-dark .ag-row-odd,
+[class*="ag-theme-quartz"] .ag-row-odd {
+  background-color: var(--color-surface-alt) !important;
+}
+
+.ag-theme-quartz .ag-row:hover,
+.ag-theme-quartz-dark .ag-row:hover,
+[class*="ag-theme-quartz"] .ag-row:hover {
+  background-color: var(--grid-row-hover, var(--color-primary-bg)) !important;
+}
+
+.ag-theme-quartz .ag-paging-panel,
+.ag-theme-quartz-dark .ag-paging-panel,
+[class*="ag-theme-quartz"] .ag-paging-panel {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-secondary) !important;
+  border-top: 1px solid var(--color-border) !important;
+}
+
+.ag-theme-quartz .ag-paging-panel select,
+.ag-theme-quartz-dark .ag-paging-panel select,
+.ag-theme-quartz .ag-paging-panel button,
+.ag-theme-quartz-dark .ag-paging-panel button {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ── UNIVERSAL AG-GRID POPUP & DROPDOWN ENGINE FIX ── */
+.ag-popup {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: visible !important;
+  z-index: 999999 !important;
+}
+
+.ag-popup .ag-select-list,
+.ag-popup .ag-picker-field-list,
+.ag-select-list {
+  background-color: var(--color-surface, #1e293b) !important;
+  color: var(--color-text, #f8fafc) !important;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.15)) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75) !important;
+  padding: 4px !important;
+  min-width: 80px !important;
+  z-index: 999999 !important;
+}
+
+.ag-popup .ag-select-list-item,
+.ag-popup .ag-picker-field-list-item,
+.ag-select-list-item {
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  color: var(--color-text, #f8fafc) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.ag-popup .ag-select-list-item:hover,
+.ag-popup .ag-select-list-item.ag-select-list-item-hover,
+.ag-select-list-item:hover {
+  background-color: var(--color-primary-bg, rgba(59, 130, 246, 0.2)) !important;
+  color: var(--color-primary, #3b82f6) !important;
+}
+
+.ag-paging-page-size {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.ag-paging-page-size .ag-picker-field-wrapper {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  padding: 3px 8px !important;
+  min-height: 26px !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.ag-paging-page-size .ag-picker-field-wrapper:hover {
+  border-color: var(--color-primary) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   9. ⚡ CYBERPUNK 2077 NIGHT CITY — HIGH PERFORMANCE COMPONENT STYLING
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Cyber Clean Geometric Buttons (Ultra-fast, Zero Clip-Path Lag) ── */
+[data-theme='cyberpunk'] .btn {
+  border-radius: 3px !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+[data-theme='cyberpunk'] .btn-primary {
+  background: #fcee0a !important;
+  color: #050608 !important;
+  border-color: #fcee0a !important;
+  box-shadow: 0 2px 10px rgba(252, 238, 10, 0.35) !important;
+}
+
+[data-theme='cyberpunk'] .btn-primary:hover:not(:disabled) {
+  background: #fff33b !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 16px rgba(252, 238, 10, 0.6) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme='cyberpunk'] .btn-secondary {
+  background: #111724 !important;
+  color: #00f0ff !important;
+  border-color: #25344d !important;
+}
+
+[data-theme='cyberpunk'] .btn-secondary:hover:not(:disabled) {
+  background: #182337 !important;
+  border-color: #00f0ff !important;
+  box-shadow: 0 2px 10px rgba(0, 240, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+[data-theme='cyberpunk'] .btn-danger {
+  background: #ff003c !important;
+  color: #ffffff !important;
+  border-color: #ff003c !important;
+  box-shadow: 0 2px 10px rgba(255, 0, 60, 0.35) !important;
+}
+
+[data-theme='cyberpunk'] .btn-danger:hover:not(:disabled) {
+  background: #ff2255 !important;
+  box-shadow: 0 4px 16px rgba(255, 0, 60, 0.6) !important;
+}
+
+/* ── HUD Angular Tabs ── */
+[data-theme='cyberpunk'] .tab {
+  border-radius: 3px 3px 0 0 !important;
+  letter-spacing: 0.3px;
+  border-top: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+[data-theme='cyberpunk'] .tab.active {
+  background: #111724 !important;
+  color: #fcee0a !important;
+  border-top: 2px solid #fcee0a !important;
+  box-shadow: inset 0 2px 8px rgba(252, 238, 10, 0.2) !important;
+}
+
+/* ── Cyber HUD Cards ── */
+[data-theme='cyberpunk'] .card {
+  border-radius: 0 !important;
+  border: 1px solid #1e283a !important;
+  border-left: 3px solid #fcee0a !important;
+  background: #0e1219 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme='cyberpunk'] .card-header {
+  border-bottom: 1px solid #1e283a !important;
+  background: #090d14 !important;
+  color: #00f0ff !important;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* ── Angled Modal Containers ── */
+[data-theme='cyberpunk'] .modal-content,
+[data-theme='cyberpunk'] .modal-container,
+[data-theme='cyberpunk'] .modal-box {
+  border-radius: 0 !important;
+  border: 1px solid #fcee0a !important;
+  box-shadow: 0 0 35px rgba(252, 238, 10, 0.25), 0 0 70px rgba(0, 240, 255, 0.12) !important;
+}
+
+/* ── Inputs & Form Controls ── */
+[data-theme='cyberpunk'] input:not([type=checkbox]):not([type=radio]),
+[data-theme='cyberpunk'] select,
+[data-theme='cyberpunk'] textarea {
+  border-radius: 2px !important;
+  border-color: #222d3e !important;
+  background: #090d14 !important;
+  color: #f3f4f6 !important;
+}
+
+[data-theme='cyberpunk'] input:focus,
+[data-theme='cyberpunk'] select:focus,
+[data-theme='cyberpunk'] textarea:focus {
+  border-color: #fcee0a !important;
+  box-shadow: 0 0 10px rgba(252, 238, 10, 0.35) !important;
+}
+
+/* ── Cyber Badges ── */
+[data-theme='cyberpunk'] .badge {
+  border-radius: 2px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+/* ── Custom Night City Scrollbars ── */
+[data-theme='cyberpunk'] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+[data-theme='cyberpunk'] ::-webkit-scrollbar-track {
+  background: #07080c;
+}
+[data-theme='cyberpunk'] ::-webkit-scrollbar-thumb {
+  background: #25344d;
+  border-radius: 0;
+}
+[data-theme='cyberpunk'] ::-webkit-scrollbar-thumb:hover {
+  background: #fcee0a;
+  box-shadow: 0 0 10px #fcee0a;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   10. 🍂 AUTUMN (SONBAHAR MASALI) — DEDICATED COMPONENT OVERRIDES
+   ══════════════════════════════════════════════════════════════════════ */
+[data-theme='autumn'] .btn-primary {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+  border-color: #ea580c !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35) !important;
+}
+
+[data-theme='autumn'] .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme='autumn'] .card {
+  border: 1px solid #4a2d1f !important;
+  background: #25140d !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme='autumn'] .card-header {
+  background: #1c0e09 !important;
+  border-bottom: 1px solid #4a2d1f !important;
+  color: #fed7aa !important;
+}
+
+[data-theme='autumn'] .tab.active {
+  background: #25140d !important;
+  color: #fed7aa !important;
+  border-top: 2px solid #f97316 !important;
+  box-shadow: inset 0 2px 6px rgba(249, 115, 22, 0.2) !important;
+}
+
+[data-theme='autumn'] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+[data-theme='autumn'] ::-webkit-scrollbar-track {
+  background: #140b07;
+}
+[data-theme='autumn'] ::-webkit-scrollbar-thumb {
+  background: #543322;
+  border-radius: 4px;
+}
+[data-theme='autumn'] ::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   11. 🎄 CHRISTMAS & NEW YEAR (YILBAŞI & NOEL MASALI) — DEDICATED STYLING
+   ══════════════════════════════════════════════════════════════════════ */
+[data-theme='christmas'] .btn-primary {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #fbbf24 !important;
+  box-shadow: 0 3px 12px rgba(220, 38, 38, 0.4), 0 0 8px rgba(251, 191, 36, 0.25) !important;
+  font-weight: 700;
+}
+
+[data-theme='christmas'] .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
+  box-shadow: 0 5px 20px rgba(220, 38, 38, 0.6), 0 0 14px rgba(251, 191, 36, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme='christmas'] .btn-secondary {
+  background: #0d271f !important;
+  color: #fef08a !important;
+  border-color: #265c4a !important;
+}
+
+[data-theme='christmas'] .btn-secondary:hover:not(:disabled) {
+  background: #143d31 !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3) !important;
+}
+
+[data-theme='christmas'] .card {
+  border: 1px solid #1b4537 !important;
+  background: #0a1f18 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme='christmas'] .card-header {
+  background: #061611 !important;
+  border-bottom: 1px solid #1b4537 !important;
+  color: #fef08a !important;
+}
+
+[data-theme='christmas'] .tab.active {
+  background: #0d271f !important;
+  color: #fef08a !important;
+  border-top: 2px solid #fbbf24 !important;
+  box-shadow: inset 0 2px 6px rgba(251, 191, 36, 0.25) !important;
+}
+
+[data-theme='christmas'] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+[data-theme='christmas'] ::-webkit-scrollbar-track {
+  background: #040c15;
+}
+[data-theme='christmas'] ::-webkit-scrollbar-thumb {
+  background: #1b4537;
+  border-radius: 4px;
+}
+[data-theme='christmas'] ::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.7);
+}
+
+
+
+

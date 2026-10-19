@@ -1,0 +1,553 @@
+.peazip-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-surface);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+/* 1. Main Toolbar (Removed, but keeping a dropdown button style) */
+.pz-tool-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  padding: 0 12px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.1s;
+}
+
+.pz-tool-dropdown-btn:hover {
+  background: var(--grid-row-hover);
+  border-color: var(--color-primary);
+}
+
+.pz-tool-dropdown-btn span {
+  font-size: 10px;
+}
+
+/* 2. Address / Navigation Bar */
+.pz-address-bar-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+}
+
+.pz-nav-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.pz-nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.pz-nav-btn:hover:not(:disabled) {
+  background: var(--grid-row-hover);
+  color: var(--color-primary);
+}
+
+.pz-nav-btn:disabled {
+  color: var(--color-border);
+  cursor: default;
+}
+
+.pz-address-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  background: var(--color-surface);
+  height: 30px;
+  border-radius: 2px;
+  font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pz-address-crumb {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.pz-address-crumb:hover {
+  background: var(--grid-row-hover);
+  color: var(--color-primary);
+}
+
+.pz-address-sep {
+  color: var(--color-text-muted);
+  margin: 0 6px;
+}
+
+.pz-search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  height: 30px;
+  border-radius: 2px;
+  padding: 0 8px;
+  width: 220px;
+}
+
+.pz-search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+  background: transparent;
+  margin-left: 6px;
+  color: var(--color-text);
+}
+
+.pz-search-icon {
+  font-size: 14px;
+  color: var(--color-primary);
+}
+
+/* 3. Split View (Sidebar & File Table) */
+.pz-split-view {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.pz-sidebar {
+  width: 220px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.pz-sidebar-group {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  padding: 8px 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.pz-sidebar-item {
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+}
+
+.pz-sidebar-item:hover {
+  background: var(--color-surface-alt);
+}
+
+.pz-sidebar-item.active {
+  background: var(--grid-row-hover);
+  color: var(--color-primary);
+  font-weight: 500;
+  border-right: 3px solid var(--color-primary);
+}
+
+.pz-sidebar-item .icon {
+  font-size: 16px;
+}
+
+.pz-file-view {
+  flex: 1;
+  background: var(--color-surface);
+  overflow-y: auto;
+}
+
+.pz-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.pz-table th {
+  text-align: left;
+  padding: 8px 12px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 10;
+  user-select: none;
+}
+
+.pz-table th:hover {
+  background: var(--color-surface-alt);
+}
+
+.pz-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid transparent;
+  color: var(--color-text);
+}
+
+.pz-tr {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pz-tr:hover {
+  background: var(--color-surface-alt);
+}
+
+.pz-tr.selected {
+  background: var(--sidebar-active);
+}
+.pz-tr.selected:hover {
+  background: var(--grid-row-hover);
+}
+
+.pz-name-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pz-file-icon {
+  font-size: 16px;
+}
+
+.pz-file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Custom Scrollbars */
+.pz-sidebar::-webkit-scrollbar,
+.pz-file-view::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.pz-sidebar::-webkit-scrollbar-thumb,
+.pz-file-view::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+.pz-sidebar::-webkit-scrollbar-track,
+.pz-file-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Context Menu */
+.pz-context-menu {
+  position: fixed;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  padding: 4px 0;
+  min-width: 160px;
+  z-index: 9999;
+  border-radius: 2px;
+  font-family: var(--font-family);
+}
+
+.pz-context-item {
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.pz-context-item:hover {
+  background: var(--grid-row-hover);
+}
+
+.pz-context-item.danger {
+  color: var(--color-danger);
+}
+.pz-context-item.danger:hover {
+  background: var(--color-danger-bg);
+}
+
+.pz-context-item.disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+.pz-context-item.disabled:hover {
+  background: transparent;
+}
+
+.pz-context-sep {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 0;
+}
+
+.pz-inline-rename-input {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0 4px;
+  margin: 0;
+  border: 1px solid var(--color-primary);
+  outline: none;
+  background: var(--color-surface);
+  color: var(--color-text);
+  width: 100%;
+  max-width: 300px;
+  height: 22px;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+/* Upload Progress Overlay */
+.pz-upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 18, 18, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.pz-upload-card {
+  width: 420px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pz-upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pz-upload-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.pz-upload-percent {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.pz-upload-filename {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--color-surface-alt);
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.pz-upload-progress-bg {
+  width: 100%;
+  height: 8px;
+  background: var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pz-upload-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light, #5dade2) 100%);
+  border-radius: 4px;
+  transition: width 0.1s ease-out;
+}
+
+.pz-upload-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.pz-upload-bytes {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.pz-upload-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: pz-spin 0.8s linear infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pz-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Drag & Drop Overlay */
+.pz-drag-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(79, 70, 229, 0.15);
+  border: 3px dashed var(--color-primary);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  pointer-events: none;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.pz-drag-overlay-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  padding: 24px 36px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pz-drag-overlay-icon {
+  font-size: 42px;
+}
+
+.pz-drag-overlay-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary-light);
+}
+
+.pz-drag-overlay-subtext {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .pz-address-bar-wrapper {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 8px;
+  }
+  
+  .pz-nav-buttons {
+    order: 0;
+    gap: 2px;
+  }
+  
+  .pz-nav-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 15px;
+  }
+
+  .pz-address-bar {
+    order: 1;
+    flex: 1 1 120px;
+    height: 28px;
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+
+  .pz-tool-dropdown-btn {
+    order: 2;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  .pz-search-box {
+    order: 3;
+    width: 100%;
+    height: 28px;
+    margin-top: 2px;
+  }
+
+  .pz-sidebar {
+    display: none !important;
+  }
+
+  .pz-split-view {
+    flex-direction: column;
+  }
+
+  .pz-file-view {
+    width: 100%;
+  }
+
+  .pz-table th:nth-child(2),
+  .pz-table th:nth-child(4),
+  .pz-table td:nth-child(2),
+  .pz-table td:nth-child(4) {
+    display: none;
+  }
+
+  .pz-table th, .pz-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .pz-file-name {
+    font-size: 12px;
+    max-width: 160px;
+  }
+}

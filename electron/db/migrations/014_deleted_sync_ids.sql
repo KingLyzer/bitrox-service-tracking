@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS deleted_sync_ids (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  table_name TEXT NOT NULL,
+  sync_id TEXT NOT NULL,
+  deleted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(table_name, sync_id)
+);

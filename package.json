@@ -1,0 +1,119 @@
+{
+  "name": "service-tracker",
+  "version": "2.3.2",
+  "description": "Servis ve Toner Takip Sistemi",
+  "author": {
+    "name": "Open Source Community",
+    "email": "admin@example.com"
+  },
+  "homepage": "https://github.com",
+  "main": "electron/main.js",
+  "scripts": {
+    "predev": "electron-builder install-app-deps",
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "build": "vite build",
+    "build:linux": "vite build && electron-builder --linux",
+    "build:win": "vite build && electron-builder --win",
+    "build:all": "vite build && electron-builder --linux --win",
+    "electron": "electron .",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "rebuild-sqlite": "node_modules/.bin/electron-rebuild -f -w better-sqlite3",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "ag-grid-community": "^35.2.1",
+    "ag-grid-react": "^35.2.1",
+    "archiver": "^8.0.0",
+    "axios": "^1.6.8",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.5.1",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "express": "^4.19.2",
+    "form-data": "^4.0.6",
+    "jsbarcode": "^3.12.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.3",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.7.5",
+    "three": "^0.185.1",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.3.3",
+    "electron-builder": "^26.8.1",
+    "postcss": "^8.5.26",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "^4.62.5",
+    "source-map-js": "^1.2.1",
+    "vite": "^5.1.4",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.company.servicetracker",
+    "productName": "Servis ve Toner Takip Sistemi",
+    "copyright": "IT Departmanı",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "assets/**/*"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Utility",
+      "executableName": "ServisTakipSistemi",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Servis Takip Sistemi"
+    },
+    "deb": {
+      "priority": "optional",
+      "compression": "xz",
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libsecret-1-0"
+      ]
+    }
+  }
+}

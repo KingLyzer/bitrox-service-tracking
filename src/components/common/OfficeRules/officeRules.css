@@ -1,0 +1,204 @@
+/* ── Teknik Ofis Kuralları Okuma Penceresi ────────────────────────────── */
+
+.rules-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: rulesFadeIn 0.15s ease-out;
+}
+
+@keyframes rulesFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rules-modal-container {
+  width: min(840px, 95vw);
+  height: min(860px, 90vh);
+  background: var(--color-surface, #1e293b);
+  border: 1px solid var(--color-border, #334155);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ────────────────────────────────────────── */
+.rules-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--color-surface-alt, #0f172a);
+  border-bottom: 1px solid var(--color-border, #334155);
+  flex-shrink: 0;
+}
+
+.rules-header-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text, #f8fafc);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rules-header-subtitle {
+  margin: 3px 0 0 0;
+  font-size: 12.5px;
+  color: var(--color-text-muted, #94a3b8);
+}
+
+.rules-close-btn {
+  background: transparent;
+  border: 1px solid var(--color-border, #475569);
+  color: var(--color-text, #cbd5e1);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.rules-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* ── Body (Metin Alanı) ────────────────────────────── */
+.rules-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 30px;
+  background: var(--color-surface, #1e293b);
+  color: var(--color-text, #e2e8f0);
+}
+
+.rules-doc-header {
+  text-align: center;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--color-border, #334155);
+}
+
+.rules-doc-title {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fbbf24;
+  letter-spacing: 0.5px;
+}
+
+.rules-doc-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text-muted, #94a3b8);
+  line-height: 1.5;
+}
+
+/* ── Maddeler ──────────────────────────────────────── */
+.rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rule-item {
+  display: block;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--color-border, #334155);
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+}
+
+.rule-item-title {
+  margin: 0 0 10px 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #f59e0b;
+  line-height: 1.4;
+}
+
+.rule-item-text {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-text, #e2e8f0);
+}
+
+.rule-item-text:last-child {
+  margin-bottom: 0;
+}
+
+.rule-item-bullets {
+  margin: 6px 0 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rule-item-bullets li {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-text, #e2e8f0);
+}
+
+/* ── Footer ─────────────────────────────────────────── */
+.rules-modal-footer {
+  padding: 12px 24px;
+  background: var(--color-surface-alt, #0f172a);
+  border-top: 1px solid var(--color-border, #334155);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.rules-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.rules-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text, #e2e8f0);
+  border: 1px solid var(--color-border, #475569);
+}
+
+.rules-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.rules-btn-primary {
+  background: #f59e0b;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.rules-btn-primary:hover {
+  background: #fbbf24;
+}
