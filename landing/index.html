@@ -37,6 +37,7 @@
         <img src="assets/logo.png" alt="Bitrox Logo" style="height: 38px; width: auto; object-fit: contain; border-radius: 8px;" />
         <span>Bitrox <span class="gradient-text">ServiceTracker</span></span>
         <span class="brand-badge">v2.3.2</span>
+        <span class="free-pill-badge"><i class="fa-solid fa-gift"></i> %100 Ücretsiz</span>
       </a>
 
       <ul class="nav-links">
@@ -110,8 +111,12 @@
 
           <div class="hero-trust-badges">
             <div class="trust-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>%100 Açık Kaynak & MIT</span>
+              <i class="fa-solid fa-gift" style="color: #34d399;"></i>
+              <span><strong>%100 Tamamen Ücretsiz</strong></span>
+            </div>
+            <div class="trust-item">
+              <i class="fa-solid fa-code-branch" style="color: #60a5fa;"></i>
+              <span>Açık Kaynak (MIT)</span>
             </div>
             <div class="trust-item">
               <i class="fa-solid fa-circle-check"></i>
@@ -186,8 +191,8 @@
           <div class="stat-label">Snipe-IT Omurga Entegrasyonu</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number gradient-text">0 ₺</div>
-          <div class="stat-label">Lisans Ücreti (MIT Lisansı)</div>
+          <div class="stat-number gradient-green">%100</div>
+          <div class="stat-label">Tamamen Ücretsiz & Açık Kaynak</div>
         </div>
         <div class="stat-card">
           <div class="stat-number gradient-blue">100%</div>
@@ -557,6 +562,39 @@
   </section>
 
   <!-- ========================================================================
+       Support & Feedback Section (Geliştirme & Hata Bildirimi)
+       ======================================================================== -->
+  <section class="support-section" id="support" style="padding: 70px 0 30px;">
+    <div class="container">
+      <div class="support-card" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 24px; padding: 48px 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45); text-align: center; position: relative; overflow: hidden; backdrop-filter: blur(12px);">
+        <div style="position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%); border-radius: 50%;"></div>
+        
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; font-size: 1.8rem; margin-bottom: 20px;">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+
+        <h3 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 12px; color: #fff;">
+          Geliştirme Önerisi & Hata Bildirimi
+        </h3>
+        
+        <p style="max-width: 660px; margin: 0 auto 28px; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65;">
+          Bitrox ServiceTracker'ı deneyimlerken karşılaştığınız bir hata mı var veya sisteme eklenmesini istediğiniz harika bir fikir mi buldunuz? Doğrudan teknik ekibimize mail atarak projeye katkıda bulunabilirsiniz.
+        </p>
+
+        <div style="display: inline-flex; align-items: center; gap: 16px; background: rgba(9, 14, 26, 0.9); padding: 14px 28px; border-radius: 99px; border: 1px solid rgba(249, 115, 22, 0.45); box-shadow: 0 6px 24px rgba(249, 115, 22, 0.18); flex-wrap: wrap; justify-content: center;">
+          <span style="font-size: 0.95rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-headset" style="color: #fb923c;"></i> Destek & Öneri Hattı:
+          </span>
+          <a href="mailto:admin@bitrox.com.tr?subject=Bitrox%20ServiceTracker%20Hata%20/%20Gelistirme%20Bildirimi" style="font-size: 1.12rem; font-weight: 800; color: #fb923c; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            admin@bitrox.com.tr
+            <i class="fa-solid fa-paper-plane" style="font-size: 0.9rem;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
        Footer
        ======================================================================== -->
   <footer class="footer">
@@ -569,7 +607,7 @@
             <span>Bitrox ServiceTracker</span>
           </div>
           <p>
-            Kurumsal IT departmanları, servis birimleri ve envanter ekipleri için açık kaynaklı ve beyaz etiketli IT yönetim portalı.
+            Kurumsal IT departmanları, servis birimleri ve envanter ekipleri için %100 ücretsiz, açık kaynaklı IT yönetim portalı.
           </p>
         </div>
 
@@ -595,12 +633,17 @@
 
         <div class="footer-col">
           <h5>Topluluk & Destek</h5>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;">
-            Projeye katkıda bulunmak veya soru sormak için GitHub Issues alanını kullanabilirsiniz.
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">
+            Hata bildirimleri, yeni özellik önerileri ve destek talepleriniz için:
           </p>
-          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" class="btn btn-github btn-sm" style="display: inline-flex;">
-            <i class="fa-brands fa-github"></i> Star Verin ⭐
+          <a href="mailto:admin@bitrox.com.tr" class="footer-link" style="color: #fb923c; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px;">
+            <i class="fa-solid fa-envelope"></i> admin@bitrox.com.tr
           </a>
+          <div>
+            <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" class="btn btn-github btn-sm" style="display: inline-flex;">
+              <i class="fa-brands fa-github"></i> Star Verin ⭐
+            </a>
+          </div>
         </div>
 
       </div>
