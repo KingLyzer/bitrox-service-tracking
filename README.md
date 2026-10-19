@@ -95,18 +95,20 @@ DB_PASS=veritabani_sifreniz
 DB_NAME=servicetracker_db
 ```
 
-### 5. Uygulamayı Başlatın
-* **Geliştirme Ortamı (Vite + Node Server):**
+### 5. Frontend'i Derleyin ve Uygulamayı Başlatın
+Web arayüzünün derlenmesi ve sunucunun yayına alınması:
+```bash
+# 1. Arayüzü derleyin (üretim dosyalarını dist/ klasörüne hazırlar)
+npm run build
+
+# 2. Sunucuyu başlatın
+npm start
+# (veya arka planda kesintisiz çalışması için: pm2 start server/server.js --name "servicetracker")
+```
+
+* **Geliştirme Ortamı (Vite + Node Server - Canlı Yenileme):**
   ```bash
   npm run dev
-  ```
-* **Sadece Web / Sunucu Modu:**
-  ```bash
-  node server/server.js
-  ```
-* **Üretim (Production) Derlemesi:**
-  ```bash
-  npm run build
   ```
 
 ---

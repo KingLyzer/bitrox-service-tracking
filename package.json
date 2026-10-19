@@ -13,6 +13,8 @@
   },
   "main": "electron/main.js",
   "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
     "predev": "electron-builder install-app-deps",
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
     "build": "vite build",
