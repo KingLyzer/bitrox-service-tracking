@@ -133,7 +133,10 @@ require('./routes/user360')(app, ctx);
 require('./routes/misc')(app, ctx);
 
 // ── Serve static React frontend ─────────────────────────────
-const CLIENT_DIR = path.join(__dirname, 'client');
+const distDir = path.join(__dirname, '..', 'dist');
+const CLIENT_DIR = fsSync.existsSync(path.join(distDir, 'index.html'))
+  ? distDir
+  : path.join(__dirname, 'client');
 app.use(express.static(CLIENT_DIR, {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('index.html')) {
