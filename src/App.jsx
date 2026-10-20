@@ -95,7 +95,20 @@ function ToastContainer() {
 
 function ModuleContent({ module, tabId, tabData }) {
   const { hasPermission } = useAuth();
+  const { isSnipeItEnabled } = useApp();
   const permission = MODULE_PERMISSIONS[module];
+
+  if (module === 'Inventory' && !isSnipeItEnabled) {
+    return (
+      <div className="flex-center flex-column" style={{ height: '100%', gap: 14, textAlign: 'center', padding: 20 }}>
+        <div style={{ fontSize: 48 }}>☁️</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text)' }}>Envanter Modülü Devre Dışı</div>
+        <div style={{ color: 'var(--color-text-secondary)', fontSize: 13, maxWidth: 420 }}>
+          Snipe-IT entegrasyonu sistem ayarlarından kapatıldığı için envanter ve demirbaş listeleme modülü aktif değildir.
+        </div>
+      </div>
+    );
+  }
 
   let isAllowed = true;
   if (module === 'DocsAndLabels') {

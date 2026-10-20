@@ -28,7 +28,7 @@ const TOOLBAR_ITEMS = [
 
 export default function Toolbar() {
   const { user, logout, hasPermission } = useAuth();
-  const { openTab, activeTab, theme, openThemeModal, settings, showNotification, triggerRefresh } = useApp();
+  const { openTab, activeTab, theme, openThemeModal, settings, showNotification, triggerRefresh, isSnipeItEnabled, isAiEnabled } = useApp();
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateProgress, setUpdateProgress] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -97,8 +97,9 @@ export default function Toolbar() {
   const allowedItems = TOOLBAR_ITEMS.filter((item) => {
     if (item.sep) return true;
     if (item.id === 'settings') return false;
+    if (item.id === 'inventory' && !isSnipeItEnabled) return false;
+    if (item.id === 'snipe-ai' && (!isAdmin || !isAiEnabled)) return false;
     if (item.adminOnly && !isAdmin) return false;
-    if (item.id === 'snipe-ai' && !isAdmin) return false;
     if (item.tab) {
       if (item.tab.module === 'DocsAndLabels') {
         const canDocs = hasPermission('docs_forms', 'can_view') || hasPermission('address_label', 'can_view') || hasPermission('handover', 'can_view');
@@ -111,6 +112,15 @@ export default function Toolbar() {
       }
     }
     return true;
+  }).map(item => {
+    if (item.id === 'users' && !isSnipeItEnabled) {
+      return {
+        ...item,
+        label: 'Personel',
+        tab: { ...item.tab, label: 'Personel' }
+      };
+    }
+    return item;
   });
 
   const filteredNavItems = allowedItems.filter((item, index, array) => {
@@ -282,9 +292,11 @@ export default function Toolbar() {
                 </button>
               )}
 
-              <button className="toolbar-dropdown-item" onClick={handleSnipeSync} disabled={syncing}>
-                <span style={{ fontSize: 16 }}>🔄</span> {syncing ? 'Senkronize Ediliyor...' : 'Snipe-IT Senkronize Et'}
-              </button>
+              {isSnipeItEnabled && (
+                <button className="toolbar-dropdown-item" onClick={handleSnipeSync} disabled={syncing}>
+                  <span style={{ fontSize: 16 }}>🔄</span> {syncing ? 'Senkronize Ediliyor...' : 'Snipe-IT Senkronize Et'}
+                </button>
+              )}
 
               <div className="toolbar-dropdown-sep" />
               
@@ -402,14 +414,16 @@ export default function Toolbar() {
                 <span>Temalar & Görünüm</span>
               </button>
 
-              <button
-                className="mobile-drawer-item"
-                onClick={handleSnipeSync}
-                disabled={syncing}
-              >
-                <span style={{ fontSize: 18 }}>🔄</span>
-                <span>{syncing ? 'Senkronize Ediliyor...' : 'Snipe-IT Senkronize Et'}</span>
-              </button>
+              {isSnipeItEnabled && (
+                <button
+                  className="mobile-drawer-item"
+                  onClick={handleSnipeSync}
+                  disabled={syncing}
+                >
+                  <span style={{ fontSize: 18 }}>🔄</span>
+                  <span>{syncing ? 'Senkronize Ediliyor...' : 'Snipe-IT Senkronize Et'}</span>
+                </button>
+              )}
             </div>
 
             {/* Drawer User Info Footer */}

@@ -6,7 +6,7 @@ import { apiGet } from '../../../utils/apiFetch';
 
 export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTonerId = null }) {
   const { user, auditLog } = useAuth();
-  const { showNotification, triggerTableRefresh } = useApp();
+  const { showNotification, triggerTableRefresh, isSnipeItEnabled } = useApp();
 
   const [toners, setToners] = useState(() => {
     try {
@@ -28,6 +28,7 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
 
   const [formData, setFormData] = useState({
     assigned_user_id: '',
+    assigned_user_name: '',
     toner_id: initialTonerId ? String(initialTonerId) : '',
     change_date: new Date().toISOString().slice(0, 10),
     qty: 1,
@@ -107,8 +108,11 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
     if (e) e.preventDefault();
     setErrorMsg('');
 
-    if (!formData.assigned_user_id) {
-      setErrorMsg('Lütfen sarf malzemesi teslim edilecek kullanıcıyı seçin.');
+    const selectedUser = snipeUsers.find(u => String(u.id) === String(formData.assigned_user_id));
+    const recipientName = (formData.assigned_user_name || '').trim() || selectedUser?.name || '';
+
+    if (!recipientName && (!isSnipeItEnabled || !formData.assigned_user_id)) {
+      setErrorMsg('Lütfen sarf malzemesi teslim edilecek personel adını giriniz.');
       return;
     }
     if (!formData.toner_id) {
@@ -122,8 +126,7 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
       return;
     }
 
-    const selectedUser = snipeUsers.find(u => String(u.id) === String(formData.assigned_user_id));
-    if (!selectedUser) {
+    if (isSnipeItEnabled && !selectedUser && !recipientName) {
       setErrorMsg('Seçilen kullanıcı bulunamadı.');
       return;
     }
@@ -135,8 +138,8 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
 
     setSaving(true);
     try {
-      // 1. Snipe-IT Checkout
-      if (selectedToner.snipeit_consumable_id && window.electronAPI?.snipeitCheckoutConsumable) {
+      // 1. Snipe-IT Checkout (Sadece Snipe-IT aktifse)
+      if (isSnipeItEnabled && selectedToner.snipeit_consumable_id && selectedUser && window.electronAPI?.snipeitCheckoutConsumable) {
         const checkoutRes = await window.electronAPI.snipeitCheckoutConsumable({
           consumableId: selectedToner.snipeit_consumable_id,
           assignedTo: selectedUser.id,
@@ -164,7 +167,7 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
       // 3. Local Database Insert toner_changes
       const res1 = await window.electronAPI.run(
         'INSERT INTO toner_changes (asset_id, asset_name, toner_id, change_date, user_id, assigned_user_id, assigned_user_name, page_count, qty, notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
-        [null, null, formData.toner_id, formData.change_date, user?.id || null, selectedUser.id, selectedUser.name, null, qty, formData.notes || null]
+        [null, null, formData.toner_id, formData.change_date, user?.id || null, selectedUser?.id || null, recipientName, null, qty, formData.notes || null]
       );
 
       if (!res1.success) {
@@ -196,10 +199,10 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
       });
       try { localStorage.setItem('cached_toner_items', JSON.stringify(updatedToners)); } catch {}
 
-      showNotification(`${selectedUser.name} personeline ${qty} adet ${selectedToner.toner_model} çıkışı yapıldı.`, 'success');
+      showNotification(`${recipientName} personeline ${qty} adet ${selectedToner.toner_model} çıkışı yapıldı.`, 'success');
       triggerTableRefresh?.(['toner_items', 'toner_changes']);
 
-      if (onSaved) onSaved({ user: selectedUser, toner: selectedToner, qty });
+      if (onSaved) onSaved({ user: selectedUser || { name: recipientName }, toner: selectedToner, qty });
       onClose();
     } catch (err) {
       console.error('[Toner Checkout Save Error]:', err);
@@ -238,49 +241,73 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
         )}
 
         {/* Kullanıcı Seçimi */}
-        <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-          <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text)' }}>
-            Teslim Alan Personel (Snipe-IT) <span style={{ color: 'var(--color-danger)' }}>*</span>
-          </label>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-            <input
-              type="text"
-              placeholder="Personel ara (isim, birim, sicil)..."
-              value={userSearch}
-              onChange={e => setUserSearch(e.target.value)}
+        {isSnipeItEnabled ? (
+          <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text)' }}>
+              Teslim Alan Personel (Snipe-IT) <span style={{ color: 'var(--color-danger)' }}>*</span>
+            </label>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+              <input
+                type="text"
+                placeholder="Personel ara (isim, birim, sicil)..."
+                value={userSearch}
+                onChange={e => setUserSearch(e.target.value)}
+                style={{
+                  fontSize: 12,
+                  padding: '6px 10px',
+                  borderRadius: 7,
+                  border: '1px solid var(--color-border)',
+                  background: 'var(--color-surface)',
+                  color: 'var(--color-text)',
+                  width: '100%',
+                }}
+              />
+            </div>
+            <select
+              value={formData.assigned_user_id}
+              onChange={e => setFormData(prev => ({ ...prev, assigned_user_id: e.target.value }))}
               style={{
                 fontSize: 12,
-                padding: '6px 10px',
+                padding: '8px 10px',
+                borderRadius: 7,
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-surface)',
+                color: 'var(--color-text)',
+                maxHeight: 200,
+              }}
+              required
+            >
+              <option value="">— Personel Seçiniz ({filteredUsers.length} kişi) —</option>
+              {filteredUsers.map(u => (
+                <option key={u.id} value={u.id}>
+                  {u.name} {u.department_name ? `• ${u.department_name}` : ''} {u.location_name ? `(${u.location_name})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text)' }}>
+              Kime Verildi (Personel Adı) <span style={{ color: 'var(--color-danger)' }}>*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Teslim alan personelin adını ve soyadını yazınız..."
+              value={formData.assigned_user_name}
+              onChange={e => setFormData(prev => ({ ...prev, assigned_user_name: e.target.value }))}
+              style={{
+                fontSize: 12,
+                padding: '8px 10px',
                 borderRadius: 7,
                 border: '1px solid var(--color-border)',
                 background: 'var(--color-surface)',
                 color: 'var(--color-text)',
                 width: '100%',
               }}
+              required
             />
           </div>
-          <select
-            value={formData.assigned_user_id}
-            onChange={e => setFormData(prev => ({ ...prev, assigned_user_id: e.target.value }))}
-            style={{
-              fontSize: 12,
-              padding: '8px 10px',
-              borderRadius: 7,
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-surface)',
-              color: 'var(--color-text)',
-              maxHeight: 200,
-            }}
-            required
-          >
-            <option value="">— Personel Seçiniz ({filteredUsers.length} kişi) —</option>
-            {filteredUsers.map(u => (
-              <option key={u.id} value={u.id}>
-                {u.name} {u.department_name ? `• ${u.department_name}` : ''} {u.location_name ? `(${u.location_name})` : ''}
-              </option>
-            ))}
-          </select>
-        </div>
+        )}
 
         {/* Sarf Malzemesi Seçimi */}
         <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>

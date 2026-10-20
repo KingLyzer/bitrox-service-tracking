@@ -53,7 +53,7 @@ const isTicketMatchingAsset = (ticket, assetObj) => {
 };
 
 export default function Users() {
-  const { showNotification, theme, refreshToggle, tableRefreshVersions = {} } = useApp();
+  const { showNotification, theme, refreshToggle, tableRefreshVersions = {}, isSnipeItEnabled } = useApp();
   const [users, setUsers] = useState(() => {
     try {
       const saved = localStorage.getItem('cached_snipeit_users');
@@ -321,12 +321,14 @@ export default function Users() {
     { field: 'username', headerName: 'Kullanıcı Adı', width: 110, filter: 'agTextColumnFilter', cellClass: 'cell-muted' },
     { field: 'department_name', headerName: 'Departman', width: 120, filter: 'agTextColumnFilter' },
     { field: 'location_name', headerName: 'Lokasyon', width: 115, filter: 'agTextColumnFilter' },
-    { field: 'asset_count', headerName: 'Cihaz', width: 75, filter: 'agNumberColumnFilter', cellRenderer: p => (
-      <span className={`badge ${Number(p.value) > 0 ? 'badge-primary' : 'badge-secondary'}`} style={{ fontSize: 10.5, fontWeight: 700 }}>
-        {p.value || 0}
-      </span>
-    )},
-  ], []);
+    ...(isSnipeItEnabled ? [{
+      field: 'asset_count', headerName: 'Cihaz', width: 75, filter: 'agNumberColumnFilter', cellRenderer: p => (
+        <span className={`badge ${Number(p.value) > 0 ? 'badge-primary' : 'badge-secondary'}`} style={{ fontSize: 10.5, fontWeight: 700 }}>
+          {p.value || 0}
+        </span>
+      )
+    }] : []),
+  ], [isSnipeItEnabled]);
 
   const assetCols = useMemo(() => [
     { field: 'asset_tag', headerName: 'Asset Tag', width: 140, cellRenderer: p => (
@@ -417,31 +419,33 @@ export default function Users() {
           </div>
         </div>
 
-        {/* Zimmetli Cihazlar */}
-        <div style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 8,
-          padding: '6px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-        }}>
+        {/* Zimmetli Cihazlar (Sadece Snipe-IT Aktifse) */}
+        {isSnipeItEnabled && (
           <div style={{
-            width: 32, height: 32, borderRadius: 6,
-            background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 8,
+            padding: '6px 12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
           }}>
-            💻
-          </div>
-          <div>
-            <div style={{ fontSize: 10, color: 'var(--color-text-muted)', fontWeight: 600 }}>ZİMMETLİ CİHAZ</div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: '#8b5cf6' }}>
-              {totalAssignedAssets} <span style={{ fontSize: 10.5, fontWeight: 500, color: 'var(--color-text-muted)' }}>Cihaz</span>
+            <div style={{
+              width: 32, height: 32, borderRadius: 6,
+              background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15
+            }}>
+              💻
+            </div>
+            <div>
+              <div style={{ fontSize: 10, color: 'var(--color-text-muted)', fontWeight: 600 }}>ZİMMETLİ CİHAZ</div>
+              <div style={{ fontSize: 14, fontWeight: 800, color: '#8b5cf6' }}>
+                {totalAssignedAssets} <span style={{ fontSize: 10.5, fontWeight: 500, color: 'var(--color-text-muted)' }}>Cihaz</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Kayıtlı Lokasyon */}
         <div style={{
@@ -656,61 +660,63 @@ export default function Users() {
         {/* SAĞ PANEL: CİHAZLAR, İSTATİSTİK VE SERVİS GEÇMİŞİ */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
           
-          {/* SAĞ ÜST: SEÇİLİ PERSONELİN CİHAZLARI */}
-          <div style={{
-            flex: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 8,
-            overflow: 'hidden',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
-          }}>
+          {/* SAĞ ÜST: SEÇİLİ PERSONELİN CİHAZLARI (Sadece Snipe-IT Açıkken) */}
+          {isSnipeItEnabled && (
             <div style={{
-              padding: '6px 10px',
-              background: 'var(--color-surface-alt)',
-              borderBottom: '1px solid var(--color-border)',
+              flex: 5,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 8
+              flexDirection: 'column',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 8,
+              overflow: 'hidden',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
             }}>
-              <div style={{ fontWeight: 700, fontSize: 11.5, color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span>💻</span>
-                <span>{selectedUser ? `${selectedUser.name} Üzerindeki Cihazlar` : 'Zimmetli Cihazlar'}</span>
-                <span className="badge badge-primary" style={{ fontSize: 10 }}>{assets.length}</span>
+              <div style={{
+                padding: '6px 10px',
+                background: 'var(--color-surface-alt)',
+                borderBottom: '1px solid var(--color-border)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 8
+              }}>
+                <div style={{ fontWeight: 700, fontSize: 11.5, color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span>💻</span>
+                  <span>{selectedUser ? `${selectedUser.name} Üzerindeki Cihazlar` : 'Zimmetli Cihazlar'}</span>
+                  <span className="badge badge-primary" style={{ fontSize: 10 }}>{assets.length}</span>
+                </div>
+                <span style={{ fontSize: 10.5, color: 'var(--color-text-muted)' }}>
+                  {selectedUser ? `${selectedUser.location_name || ''} ${selectedUser.department_name ? '• ' + selectedUser.department_name : ''}` : 'Listeden bir personel seçin'}
+                </span>
               </div>
-              <span style={{ fontSize: 10.5, color: 'var(--color-text-muted)' }}>
-                {selectedUser ? `${selectedUser.location_name || ''} ${selectedUser.department_name ? '• ' + selectedUser.department_name : ''}` : 'Listeden bir personel seçin'}
-              </span>
-            </div>
 
-            <div className={theme === 'light' || theme === 'sakura' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'} style={{ flex: 1, width: '100%' }}>
-              <AgGridReact
-                ref={gridRefAssets}
-                rowData={assets}
-                columnDefs={assetCols}
-                {...compactGridOptions}
-                rowSelection={{ mode: 'singleRow' }}
-                onSelectionChanged={(e) => {
-                  const selected = e.api.getSelectedRows()[0];
-                  handleAssetSelect(selected);
-                }}
-                onRowClicked={(e) => {
-                  handleAssetSelect(e.data);
-                }}
-                onRowDoubleClicked={(e) => {
-                  handleAssetSelect(e.data);
-                }}
-                noRowsOverlayComponent={() => (
-                  <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                    {selectedUser ? 'Bu kullanıcıya atanmış cihaz bulunmuyor.' : 'Cihazları listelemek için soldan personel seçin.'}
-                  </span>
-                )}
-              />
+              <div className={theme === 'light' || theme === 'sakura' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'} style={{ flex: 1, width: '100%' }}>
+                <AgGridReact
+                  ref={gridRefAssets}
+                  rowData={assets}
+                  columnDefs={assetCols}
+                  {...compactGridOptions}
+                  rowSelection={{ mode: 'singleRow' }}
+                  onSelectionChanged={(e) => {
+                    const selected = e.api.getSelectedRows()[0];
+                    handleAssetSelect(selected);
+                  }}
+                  onRowClicked={(e) => {
+                    handleAssetSelect(e.data);
+                  }}
+                  onRowDoubleClicked={(e) => {
+                    handleAssetSelect(e.data);
+                  }}
+                  noRowsOverlayComponent={() => (
+                    <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                      {selectedUser ? 'Bu kullanıcıya atanmış cihaz bulunmuyor.' : 'Cihazları listelemek için soldan personel seçin.'}
+                    </span>
+                  )}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* SAĞ ORTA: SEÇİLİ PERSONEL İSTATİSTİK ŞERİDİ */}
           <div style={{
@@ -730,7 +736,9 @@ export default function Users() {
               <span>{selectedUser ? selectedUser.name : 'Seçim Yapılmadı'}</span>
             </div>
             <div style={{ width: 1, height: 14, background: 'var(--color-border)' }} />
-            <div><span style={{ color: 'var(--color-text-muted)' }}>Cihaz Sayısı:</span> <b>{stats.totalDevices}</b></div>
+            {isSnipeItEnabled && (
+              <div><span style={{ color: 'var(--color-text-muted)' }}>Cihaz Sayısı:</span> <b>{stats.totalDevices}</b></div>
+            )}
             <div><span style={{ color: 'var(--color-text-muted)' }}>Toplam Servis:</span> <b>{stats.totalTickets}</b></div>
             <div><span style={{ color: 'var(--color-text-muted)' }}>Açık Talep:</span> <b style={{ color: stats.openTickets > 0 ? '#ef4444' : '#10b981' }}>{stats.openTickets}</b></div>
             <div><span style={{ color: 'var(--color-text-muted)' }}>Son Servis:</span> <b>{stats.lastDate}</b></div>

@@ -16,7 +16,7 @@ const QUICK_PROMPTS = [
 
 export default function ServiceChatPopUp() {
   const { user } = useAuth();
-  const { showNotification, setTheme, setEffectsEnabled, openTab, settings } = useApp();
+  const { showNotification, setTheme, setEffectsEnabled, openTab, settings, isAiEnabled } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [rooms, setRooms] = useState([BITRO_ROOM]);
   const [activeRoom, setActiveRoom] = useState(BITRO_ROOM);
@@ -87,17 +87,32 @@ export default function ServiceChatPopUp() {
           data = [{ id: 1, room_name: '#genel-it', is_private: 0 }, ...data];
         }
 
-        // Bitro AI her zaman en başta sabit bulunsun
-        const fullRoomList = [BITRO_ROOM, ...data.filter(r => r.id !== 'bitro_ai')];
+        // Bitro AI sadece AI aktifse listeye eklenir
+        const nonAiRooms = data.filter(r => r.id !== 'bitro_ai');
+        const fullRoomList = isAiEnabled ? [BITRO_ROOM, ...nonAiRooms] : nonAiRooms;
         setRooms(fullRoomList);
         
-        // Eğer aktif oda yoksa, Bitro veya genel-it seç
-        setActiveRoom(prev => prev || fullRoomList[0]);
+        // Eğer aktif oda yoksa veya AI kapalıyken Bitro seçiliyse, normal odayı seç
+        setActiveRoom(prev => {
+          if (!isAiEnabled && prev?.id === 'bitro_ai') {
+            return nonAiRooms[0] || null;
+          }
+          return prev || fullRoomList[0] || null;
+        });
       }
     } catch (err) {
       console.error('Odalar çekilemedi:', err);
     }
   };
+
+  useEffect(() => {
+    if (!isAiEnabled) {
+      setRooms(prev => prev.filter(r => r.id !== 'bitro_ai'));
+      setActiveRoom(prev => (prev?.id === 'bitro_ai' ? rooms.find(r => r.id !== 'bitro_ai') || null : prev));
+    } else {
+      setRooms(prev => (prev.some(r => r.id === 'bitro_ai') ? prev : [BITRO_ROOM, ...prev]));
+    }
+  }, [isAiEnabled]);
 
   useEffect(() => {
     if (!user) return;
@@ -1043,7 +1058,7 @@ ${clientLiveContext}`;
               overflowX: 'auto',
               scrollbarWidth: 'none'
             }}>
-              {rooms.filter(r => !closedRoomIds.includes(r.id)).map(room => {
+              {rooms.filter(r => !closedRoomIds.includes(r.id) && (isAiEnabled || r.id !== 'bitro_ai')).map(room => {
                 const isThisRoomActive = activeRoom?.id === room.id;
                 const isAiTab = room.id === 'bitro_ai';
                 const displayName = isAiTab 
@@ -1365,14 +1380,18 @@ ${clientLiveContext}`;
           transition: 'all 0.2s ease',
           boxSizing: 'border-box'
         }}
-        title="Dahili İletişim ve Bito AI Sohbeti"
+        title={isAiEnabled ? "Dahili İletişim ve Bito AI Sohbeti" : "Dahili İletişim Sohbeti"}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 700 }}>
           <span style={{ fontSize: 13 }}>💬</span>
           <span>Dahili İletişim</span>
-          <span style={{ opacity: 0.35 }}>|</span>
-          <span style={{ fontSize: 12 }}>🤖</span>
-          <span>Bito AI</span>
+          {isAiEnabled && (
+            <>
+              <span style={{ opacity: 0.35 }}>|</span>
+              <span style={{ fontSize: 12 }}>🤖</span>
+              <span>Bito AI</span>
+            </>
+          )}
           <span
             style={{
               width: 7,

@@ -117,6 +117,22 @@ export function AppProvider({ children }) {
     loadSettings();
   }, [loadSettings]);
 
+  const updateSettings = useCallback((newSettings) => {
+    setSettings(prev => {
+      const updated = { ...prev, ...newSettings };
+      try {
+        localStorage.setItem('app_settings', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  }, []);
+
+  // Backward compatibility & Safety guarantee:
+  // If the key is missing/null/undefined, default to true (1).
+  // This ensures systems like 128.1.1.10:9999 remain 100% enabled and untouched!
+  const isSnipeItEnabled = !(settings.snipeit_enabled === '0' || settings.snipeit_enabled === 0 || settings.snipeit_enabled === false || settings.snipeit_enabled === 'false');
+  const isAiEnabled = !(settings.ai_enabled === '0' || settings.ai_enabled === 0 || settings.ai_enabled === false || settings.ai_enabled === 'false');
+
   useEffect(() => {
     const socketUrl = getApiBase();
     const isHttps = socketUrl.startsWith('https');
@@ -129,11 +145,17 @@ export function AppProvider({ children }) {
       reconnectionDelay: 5000,
     });
 
-    socket.on('veritabanini-yenile', (data) => {
+    const handleDbRefresh = (data) => {
       if (data && Array.isArray(data.changedTables)) {
         triggerTableRefresh(data.changedTables);
+        if (data.changedTables.includes('settings')) {
+          loadSettings();
+        }
       }
-    });
+    };
+
+    socket.on('veritabanini-yenile', handleDbRefresh);
+    socket.on('veritabani-yenile', handleDbRefresh);
 
     socket.on('veriler-guncellendi', () => {
       triggerRefresh();
@@ -142,7 +164,7 @@ export function AppProvider({ children }) {
     return () => {
       socket.disconnect();
     };
-  }, [triggerTableRefresh, triggerRefresh]);
+  }, [triggerTableRefresh, triggerRefresh, loadSettings]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -240,7 +262,8 @@ export function AppProvider({ children }) {
       themeModalOpen, setThemeModalOpen,
       openThemeModal: () => setThemeModalOpen(true),
       closeThemeModal: () => setThemeModalOpen(false),
-      settings, reloadSettings: loadSettings,
+      settings, reloadSettings: loadSettings, updateSettings,
+      isSnipeItEnabled, isAiEnabled,
       refreshToggle, triggerRefresh,
       tableRefreshVersions, triggerTableRefresh, syncStatus,
       refreshData: tableRefreshVersions,

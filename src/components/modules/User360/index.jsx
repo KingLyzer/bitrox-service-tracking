@@ -23,7 +23,7 @@ const formatDate = (value) => {
 };
 
 export default function User360({ tabData, tabId }) {
-  const { openTab, showNotification } = useApp();
+  const { openTab, showNotification, isSnipeItEnabled } = useApp();
 
   // Selected user: from tabData or default to active search
   const [targetUser, setTargetUser] = useState(tabData?.user || null);
@@ -43,6 +43,12 @@ export default function User360({ tabData, tabId }) {
   // Tabs & Views
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'assets', 'tickets', 'toners', 'cargos', 'security'
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'tabs'
+
+  useEffect(() => {
+    if (!isSnipeItEnabled && activeTab === 'assets') {
+      setActiveTab('tickets');
+    }
+  }, [isSnipeItEnabled, activeTab]);
 
   // BitLocker key reveal state
   const [visibleKeys, setVisibleKeys] = useState({});
@@ -526,29 +532,31 @@ export default function User360({ tabData, tabId }) {
             gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
             gap: 10,
           }}>
-            {/* 1. Zimmetli Cihaz */}
-            <div
-              onClick={() => setActiveTab('assets')}
-              style={{
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 10,
-                padding: '10px 12px',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary, #38bdf8)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.transform = 'none'; }}
-            >
-              <div style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--color-text-muted)' }}>Zimmetli Cihaz</div>
-              <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--color-primary, #38bdf8)' }}>
-                {stats.total_assets}
+            {/* 1. Zimmetli Cihaz (Sadece Snipe-IT Aktifse) */}
+            {isSnipeItEnabled && (
+              <div
+                onClick={() => setActiveTab('assets')}
+                style={{
+                  background: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 10,
+                  padding: '10px 12px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-primary, #38bdf8)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.transform = 'none'; }}
+              >
+                <div style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--color-text-muted)' }}>Zimmetli Cihaz</div>
+                <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--color-primary, #38bdf8)' }}>
+                  {stats.total_assets}
+                </div>
+                <div style={{ fontSize: 9.5, color: 'var(--color-text-muted)' }}>Envanter Kayıtları</div>
               </div>
-              <div style={{ fontSize: 9.5, color: 'var(--color-text-muted)' }}>Envanter Kayıtları</div>
-            </div>
+            )}
 
             {/* 2. Açık Servis Kaydı */}
             <div
@@ -664,7 +672,7 @@ export default function User360({ tabData, tabId }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             {[
               { id: 'all', label: 'Tümü (Genel Bakış)', icon: '📋' },
-              { id: 'assets', label: `Zimmetli Cihazlar (${assets.length})`, icon: '🖥️' },
+              ...(isSnipeItEnabled ? [{ id: 'assets', label: `Zimmetli Cihazlar (${assets.length})`, icon: '🖥️' }] : []),
               { id: 'tickets', label: `Servis Geçmişi (${tickets.length})`, icon: '🔧' },
               { id: 'toners', label: `Toner Geçmişi (${toners.length})`, icon: '🖨️' },
               { id: 'cargos', label: `Kargo & Teslimat (${cargos.length})`, icon: '🚚' },
@@ -845,7 +853,7 @@ export default function User360({ tabData, tabId }) {
           {/* ══════════════════════════════════════════════════════════════
               BLOK A: ZİMMETLİ CİHAZLAR (ENVANTER MODÜLÜNDEN)
              ══════════════════════════════════════════════════════════════ */}
-          {(activeTab === 'all' || activeTab === 'assets') && (
+          {isSnipeItEnabled && (activeTab === 'all' || activeTab === 'assets') && (
             <div
               className="user360-card user360-card-assets"
               style={{

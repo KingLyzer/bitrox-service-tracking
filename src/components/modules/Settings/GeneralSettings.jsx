@@ -6,8 +6,60 @@ import { getApiBase } from '../../../utils/apiConfig';
 import { apiGet, apiPost } from '../../../utils/apiFetch';
 import WebPushSettings from './WebPushSettings';
 
+function ToggleSwitch({ checked, onChange, label, disabled = false }) {
+  return (
+    <div
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!disabled) onChange(!checked);
+      }}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        userSelect: 'none',
+      }}
+    >
+      <div
+        style={{
+          width: 44,
+          height: 24,
+          borderRadius: 12,
+          background: checked ? '#10b981' : 'var(--color-border, #4b5563)',
+          position: 'relative',
+          transition: 'background 0.25s ease',
+          boxShadow: checked ? '0 0 10px rgba(16, 185, 129, 0.4)' : 'none',
+          opacity: disabled ? 0.6 : 1,
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            background: '#ffffff',
+            position: 'absolute',
+            top: 3,
+            left: checked ? 23 : 3,
+            transition: 'left 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+          }}
+        />
+      </div>
+      {label && (
+        <span style={{ fontSize: 11.5, fontWeight: 700, color: checked ? '#10b981' : 'var(--color-text-muted)' }}>
+          {label}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function GeneralSettings() {
-  const { showNotification, reloadSettings, settings: appSettings } = useApp();
+  const { showNotification, reloadSettings, updateSettings, settings: appSettings } = useApp();
   const { user, auditLog } = useAuth();
   const isSuperAdmin = Boolean(user?.is_superadmin || user?.username === 'admin' || Number(user?.id) === 1);
 
@@ -18,6 +70,10 @@ export default function GeneralSettings() {
     ticket_prefix: 'SRV',
     stock_prefix: 'STK',
     toner_prefix: 'TNR',
+
+    // Feature Toggles (Default '1' for backwards-compatibility)
+    snipeit_enabled: '1',
+    ai_enabled: '1',
     
     // Snipe-IT
     snipeit_url: 'https://snipe.example.com',
@@ -123,6 +179,36 @@ export default function GeneralSettings() {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
+  // Anlık Entegrasyon / Özellik Aç-Kapa (Reactive Feature Toggle)
+  const handleToggleFeature = async (featureKey, currentValue) => {
+    const isCurrentlyOn = !(currentValue === '0' || currentValue === 0 || currentValue === false || currentValue === 'false');
+    const nextVal = isCurrentlyOn ? '0' : '1';
+
+    // Form durumunu güncelle
+    setForm(prev => ({ ...prev, [featureKey]: nextVal }));
+
+    // Uygulama global context'ini anında güncelle (Reaktif SPA tepkisi)
+    if (updateSettings) {
+      updateSettings({ [featureKey]: nextVal });
+    }
+
+    // Sunucuya kaydet
+    try {
+      const res = await apiPost('/api/settings/save', {
+        settings: { [featureKey]: nextVal }
+      });
+      if (res?.success) {
+        const featureName = featureKey === 'snipeit_enabled' ? 'Snipe-IT Entegrasyonu' : 'Yapay Zeka (Bito AI) Asistanı';
+        showNotification(`${featureName} ${nextVal === '1' ? 'açıldı (aktif)' : 'kapatıldı (pasif)'}.`, 'success');
+      } else {
+        showNotification('Ayar kaydedilirken sunucu hatası oluştu.', 'warning');
+      }
+    } catch (e) {
+      console.error('Feature toggle save error:', e);
+      showNotification('Ayar kaydedilemedi: ' + e.message, 'danger');
+    }
+  };
+
   // Form submit edildiğinde şifre doğrulama modalını aç
   const handleRequestSave = (e) => {
     if (e) e.preventDefault();
@@ -190,6 +276,8 @@ export default function GeneralSettings() {
           snipeit_api_key: (form.snipeit_api_key || '').trim().replace(/^Bearer\s+/i, '').trim(),
           gemini_api_key: (form.gemini_api_key || '').trim(),
           db_pass: form.db_pass || '',
+          snipeit_enabled: form.snipeit_enabled ?? '1',
+          ai_enabled: form.ai_enabled ?? '1',
         };
       } else {
         // Normal yöneticiler sadece Kurumsal Kimlik & Başlık ayarlarını değiştirebilir
@@ -200,6 +288,8 @@ export default function GeneralSettings() {
           ticket_prefix: (form.ticket_prefix || 'SRV').trim(),
           stock_prefix: (form.stock_prefix || 'STK').trim(),
           toner_prefix: (form.toner_prefix || 'TNR').trim(),
+          snipeit_enabled: form.snipeit_enabled ?? '1',
+          ai_enabled: form.ai_enabled ?? '1',
         };
       }
 
@@ -222,6 +312,9 @@ export default function GeneralSettings() {
 
       setInitialForm(cleanForm);
       setForm(prev => ({ ...prev, ...cleanForm }));
+      if (updateSettings) {
+        updateSettings(cleanForm);
+      }
       setShowAuthModal(false);
       setAdminPassword('');
 
@@ -257,6 +350,132 @@ export default function GeneralSettings() {
     <>
       <form onSubmit={handleRequestSave} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         
+        {/* 0. SİSTEM & ÖZELLİK YÖNETİMİ (FEATURE TOGGLES) */}
+        <div className="card" style={{ padding: 20, border: '1px solid var(--color-border)', borderRadius: 10, background: 'var(--color-surface)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, borderBottom: '1px solid var(--color-border)', paddingBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 20 }}>⚡</span>
+              <div>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-text)', margin: 0 }}>
+                  Sistem & Özellik Yönetimi (Feature Toggles)
+                </h3>
+                <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  Sistem genelindeki entegrasyonları ve özellikleri anlık olarak açıp kapatın
+                </span>
+              </div>
+            </div>
+            <span className="badge badge-primary" style={{ fontSize: 11 }}>
+              ⚡ Canlı Kontrol
+            </span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+            {/* Snipe-IT Entegrasyonu Toggle */}
+            {(() => {
+              const isSnipeOn = !(form.snipeit_enabled === '0' || form.snipeit_enabled === 0 || form.snipeit_enabled === false || form.snipeit_enabled === 'false');
+              return (
+                <div style={{
+                  padding: 16,
+                  borderRadius: 10,
+                  border: isSnipeOn ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid var(--color-border)',
+                  background: isSnipeOn ? 'rgba(16, 185, 129, 0.05)' : 'var(--color-surface-alt)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 8,
+                      background: isSnipeOn ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20
+                    }}>
+                      ☁️
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)' }}>
+                          Snipe-IT Entegrasyonu
+                        </span>
+                        <span style={{
+                          padding: '1px 6px',
+                          borderRadius: 8,
+                          fontSize: 10,
+                          fontWeight: 700,
+                          background: isSnipeOn ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                          color: isSnipeOn ? '#10b981' : '#9ca3af'
+                        }}>
+                          {isSnipeOn ? 'Açık' : 'Kapalı'}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>
+                        Envanter sekmesi, zimmet sorguları ve cihaz eşleştirme
+                      </div>
+                    </div>
+                  </div>
+                  <ToggleSwitch
+                    checked={isSnipeOn}
+                    onChange={() => handleToggleFeature('snipeit_enabled', form.snipeit_enabled)}
+                  />
+                </div>
+              );
+            })()}
+
+            {/* Yapay Zeka (Bito AI) Toggle */}
+            {(() => {
+              const isAiOn = !(form.ai_enabled === '0' || form.ai_enabled === 0 || form.ai_enabled === false || form.ai_enabled === 'false');
+              return (
+                <div style={{
+                  padding: 16,
+                  borderRadius: 10,
+                  border: isAiOn ? '1px solid rgba(99, 102, 241, 0.35)' : '1px solid var(--color-border)',
+                  background: isAiOn ? 'rgba(99, 102, 241, 0.05)' : 'var(--color-surface-alt)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 8,
+                      background: isAiOn ? 'rgba(99, 102, 241, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20
+                    }}>
+                      🤖
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)' }}>
+                          Yapay Zeka (Bito AI) Asistanı
+                        </span>
+                        <span style={{
+                          padding: '1px 6px',
+                          borderRadius: 8,
+                          fontSize: 10,
+                          fontWeight: 700,
+                          background: isAiOn ? 'rgba(99, 102, 241, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                          color: isAiOn ? '#818cf8' : '#9ca3af'
+                        }}>
+                          {isAiOn ? 'Açık' : 'Kapalı'}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>
+                        Bito AI sohbeti, Snipe-IT AI Komutanı ve akıllı öneriler
+                      </div>
+                    </div>
+                  </div>
+                  <ToggleSwitch
+                    checked={isAiOn}
+                    onChange={() => handleToggleFeature('ai_enabled', form.ai_enabled)}
+                  />
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+
         {/* 1. KURUMSAL KİMLİK & BAŞLIK AYARLARI */}
         <div className="card" style={{ padding: 20, border: '1px solid var(--color-border)', borderRadius: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, borderBottom: '1px solid var(--color-border)', paddingBottom: 10 }}>
@@ -385,15 +604,22 @@ export default function GeneralSettings() {
                 </span>
               </div>
             </div>
-            {!isSuperAdmin ? (
-              <span className="badge badge-secondary" style={{ fontSize: 11 }}>
-                🔒 Sadece Süper Yönetici
-              </span>
-            ) : (
-              <span className="badge badge-primary" style={{ fontSize: 11 }}>
-                REST API v1
-              </span>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <ToggleSwitch
+                checked={!(form.snipeit_enabled === '0' || form.snipeit_enabled === 0 || form.snipeit_enabled === false || form.snipeit_enabled === 'false')}
+                onChange={() => handleToggleFeature('snipeit_enabled', form.snipeit_enabled)}
+                label={!(form.snipeit_enabled === '0' || form.snipeit_enabled === 0 || form.snipeit_enabled === false || form.snipeit_enabled === 'false') ? 'Entegrasyon Açık' : 'Entegrasyon Kapalı'}
+              />
+              {!isSuperAdmin ? (
+                <span className="badge badge-secondary" style={{ fontSize: 11 }}>
+                  🔒 Sadece Süper Yönetici
+                </span>
+              ) : (
+                <span className="badge badge-primary" style={{ fontSize: 11 }}>
+                  REST API v1
+                </span>
+              )}
+            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -526,15 +752,22 @@ export default function GeneralSettings() {
                 </span>
               </div>
             </div>
-            {!isSuperAdmin ? (
-              <span className="badge badge-secondary" style={{ fontSize: 11 }}>
-                🔒 Sadece Süper Yönetici
-              </span>
-            ) : (
-              <span className="badge badge-accent" style={{ fontSize: 11 }}>
-                Google Gemini
-              </span>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <ToggleSwitch
+                checked={!(form.ai_enabled === '0' || form.ai_enabled === 0 || form.ai_enabled === false || form.ai_enabled === 'false')}
+                onChange={() => handleToggleFeature('ai_enabled', form.ai_enabled)}
+                label={!(form.ai_enabled === '0' || form.ai_enabled === 0 || form.ai_enabled === false || form.ai_enabled === 'false') ? 'AI Açık' : 'AI Kapalı'}
+              />
+              {!isSuperAdmin ? (
+                <span className="badge badge-secondary" style={{ fontSize: 11 }}>
+                  🔒 Sadece Süper Yönetici
+                </span>
+              ) : (
+                <span className="badge badge-accent" style={{ fontSize: 11 }}>
+                  Google Gemini
+                </span>
+              )}
+            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

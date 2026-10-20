@@ -339,6 +339,8 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`key`, `value`, `category`, `label`) VALUES
 ('brand_title', 'Örnek Teknoloji A.Ş.', 'general', 'Kurum / Firma Başlığı'),
 ('company_name', 'Örnek Teknoloji A.Ş.', 'general', 'Şirket Adı'),
+('snipeit_enabled', '1', 'integrations', 'Snipe-IT Entegrasyonu Aktif'),
+('ai_enabled', '1', 'integrations', 'Yapay Zeka (AI) Asistanı Aktif'),
 ('db_type', 'mysql', 'server', 'Veritabanı Türü'),
 ('db_host', 'localhost', 'server', 'MySQL Host'),
 ('db_port', '3306', 'server', 'MySQL Port'),

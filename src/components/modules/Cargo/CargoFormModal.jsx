@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Modal from '../../common/Modal';
+import { useApp } from '../../../context/AppContext';
 import { apiGet, apiPost, apiPut } from '../../../utils/apiFetch';
 
 const CARRIERS = [
@@ -48,6 +49,7 @@ const STATUS_OPTIONS_OUTGOING = [
 ];
 
 export default function CargoFormModal({ isOpen, onClose, onSaved, editCargo, cachedUsers = [], currentUser, initialDirection = 'incoming' }) {
+  const { isSnipeItEnabled } = useApp();
   const [direction, setDirection] = useState(initialDirection);
   const [formData, setFormData] = useState({
     direction: initialDirection,
@@ -599,59 +601,97 @@ export default function CargoFormModal({ isOpen, onClose, onSaved, editCargo, ca
           </div>
         )}
 
-        {/* ── 🖥️ Snipe-IT Cihaz / Envanter Eşleştirme Bölümü (Opsiyonel) ── */}
+        {/* ── 🖥️ Cihaz / Envanter Eşleştirme Bölümü (Opsiyonel) ── */}
         <div className="cargo-asset-card" style={{ marginTop: 16, padding: 14, background: 'rgba(99, 102, 241, 0.06)', border: '1px dashed rgba(99, 102, 241, 0.3)', borderRadius: 8 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontWeight: 700, fontSize: 13, color: '#818cf8', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span>🖥️</span> Snipe-IT Cihaz / Envanter Eşleştirme <span style={{ fontSize: 11, fontWeight: 'normal', opacity: 0.8 }}>(Opsiyonel)</span>
+              <span>🖥️</span> {isSnipeItEnabled ? 'Snipe-IT Cihaz / Envanter Eşleştirme' : 'İlişkili Cihaz Bilgisi'} <span style={{ fontSize: 11, fontWeight: 'normal', opacity: 0.8 }}>(Opsiyonel)</span>
             </span>
-            {formData.asset_tag && (
+            {(formData.asset_tag || formData.model_name || formData.serial_no) && (
               <button
                 type="button"
                 className="btn btn-xs btn-secondary"
                 onClick={handleClearAsset}
                 title="Cihaz Seçimini Kaldır"
               >
-                ✕ Seçimi Kaldır
+                ✕ Temizle
               </button>
             )}
           </div>
 
-          <div style={{ position: 'relative' }}>
-            <input
-              type="text"
-              placeholder="Snipe-IT Asset Tag (Demirbaş No), Seri No veya Model adı arayın..."
-              value={assetSearch}
-              onChange={e => {
-                setAssetSearch(e.target.value);
-                setShowAssetSuggestions(true);
-              }}
-              onFocus={() => setShowAssetSuggestions(true)}
-              className="form-control"
-              style={{ paddingLeft: 34 }}
-            />
-            <span style={{ position: 'absolute', left: 10, top: 9, opacity: 0.6 }}>🔍</span>
+          {isSnipeItEnabled ? (
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                placeholder="Snipe-IT Asset Tag (Demirbaş No), Seri No veya Model adı arayın..."
+                value={assetSearch}
+                onChange={e => {
+                  setAssetSearch(e.target.value);
+                  setShowAssetSuggestions(true);
+                }}
+                onFocus={() => setShowAssetSuggestions(true)}
+                className="form-control"
+                style={{ paddingLeft: 34 }}
+              />
+              <span style={{ position: 'absolute', left: 10, top: 9, opacity: 0.6 }}>🔍</span>
 
-            {/* Cihaz Öneri Listesi */}
-            {showAssetSuggestions && filteredAssets.length > 0 && (
-              <div className="cargo-user-suggestions" style={{ maxHeight: 200 }}>
-                {filteredAssets.map(a => (
-                  <div
-                    key={a.id}
-                    className="cargo-user-item"
-                    onMouseDown={() => handleSelectAsset(a)}
-                  >
-                    <div style={{ fontWeight: 700, fontSize: 13 }}>
-                      <code>{a.asset_tag}</code> - {a.model_name || a.name || 'Cihaz'}
+              {/* Cihaz Öneri Listesi */}
+              {showAssetSuggestions && filteredAssets.length > 0 && (
+                <div className="cargo-user-suggestions" style={{ maxHeight: 200 }}>
+                  {filteredAssets.map(a => (
+                    <div
+                      key={a.id}
+                      className="cargo-user-item"
+                      onMouseDown={() => handleSelectAsset(a)}
+                    >
+                      <div style={{ fontWeight: 700, fontSize: 13 }}>
+                        <code>{a.asset_tag}</code> - {a.model_name || a.name || 'Cihaz'}
+                      </div>
+                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                        Seri: {a.serial || '—'} {a.assigned_to_user_name ? `• Atanan: ${a.assigned_to_user_name}` : ''}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                      Seri: {a.serial || '—'} {a.assigned_to_user_name ? `• Atanan: ${a.assigned_to_user_name}` : ''}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 3, display: 'block' }}>Cihaz / Model Adı</label>
+                <input
+                  type="text"
+                  placeholder="Örn: Lenovo ThinkPad T14"
+                  value={formData.model_name || formData.asset_name || ''}
+                  onChange={e => setFormData(prev => ({ ...prev, model_name: e.target.value, asset_name: e.target.value }))}
+                  className="form-control"
+                  style={{ fontSize: 12 }}
+                />
               </div>
-            )}
-          </div>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 3, display: 'block' }}>Seri Numarası</label>
+                <input
+                  type="text"
+                  placeholder="Varsa seri no..."
+                  value={formData.serial_no || ''}
+                  onChange={e => setFormData(prev => ({ ...prev, serial_no: e.target.value }))}
+                  className="form-control"
+                  style={{ fontSize: 12 }}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 3, display: 'block' }}>Takip / Demirbaş No</label>
+                <input
+                  type="text"
+                  placeholder="Takip no veya barkod..."
+                  value={formData.asset_tag || ''}
+                  onChange={e => setFormData(prev => ({ ...prev, asset_tag: e.target.value }))}
+                  className="form-control"
+                  style={{ fontSize: 12 }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Seçili Cihaz Bilgisi ve Servis Fişi Aktarma Onayı */}
           {formData.asset_tag && (

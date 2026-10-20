@@ -3,7 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import { useAuth } from '../../../context/AuthContext';
 
 export default function HandoverProtocol() {
-  const { showNotification } = useApp();
+  const { showNotification, isSnipeItEnabled } = useApp();
   const { user } = useAuth();
 
   const getTodayDateString = () => {
@@ -671,58 +671,63 @@ export default function HandoverProtocol() {
           </div>
 
           {/* User Assigned Assets Selection */}
-          <div className="form-group" style={{ marginBottom: 12 }}>
-            <label style={styles.label}>Kullanıcıya Tanımlı Cihazlar</label>
-            {userAssignedAssets.length === 0 ? (
-              <div style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface-alt)', padding: '8px 10px', borderRadius: 4, border: '1px dashed var(--color-border)' }}>
-                Kullanıcı seçtiğinizde zimmetli cihazlar burada görünür.
+          {/* Device Search & User Assigned Devices (Only when Snipe-IT is enabled) */}
+          {isSnipeItEnabled && (
+            <>
+              <div className="form-group" style={{ marginBottom: 12 }}>
+                <label style={styles.label}>Kullanıcıya Tanımlı Cihazlar (Snipe-IT)</label>
+                {userAssignedAssets.length === 0 ? (
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface-alt)', padding: '8px 10px', borderRadius: 4, border: '1px dashed var(--color-border)' }}>
+                    Kullanıcı seçtiğinizde zimmetli cihazlar burada görünür.
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    {userAssignedAssets.map(a => (
+                      <button
+                        key={a.id}
+                        type="button"
+                        className="btn btn-secondary"
+                        style={{ textAlign: 'left', display: 'block', padding: '6px 10px', fontSize: 11, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
+                        onClick={() => handleSelectAsset(a)}
+                      >
+                        🖥️ {a.asset_tag} | {a.serial} | {a.model_name || a.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                {userAssignedAssets.map(a => (
-                  <button
-                    key={a.id}
-                    type="button"
-                    className="btn btn-secondary"
-                    style={{ textAlign: 'left', display: 'block', padding: '6px 10px', fontSize: 11, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
-                    onClick={() => handleSelectAsset(a)}
-                  >
-                    🖥️ {a.asset_tag} | {a.serial} | {a.model_name || a.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
 
-          {/* Device Search Autocomplete */}
-          <div className="form-group" style={{ marginBottom: 12, position: 'relative' }}>
-            <label style={styles.label}>Cihaz Ara (Demirbaş No, Seri No)</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              value={assetSearchText}
-              placeholder="Zimmet dışı cihaz aramak için yazın..."
-              onChange={e => {
-                setAssetSearchText(e.target.value);
-                setShowAssetDropdown(true);
-              }}
-              onFocus={() => setShowAssetDropdown(true)}
-            />
-            {showAssetDropdown && filteredAssets.length > 0 && (
-              <ul className="handover-autocomplete-list">
-                {filteredAssets.slice(0, 50).map(a => (
-                  <li 
-                    key={a.id} 
-                    className="handover-autocomplete-item"
-                    onClick={() => handleSelectAsset(a)}
-                  >
-                    <div style={{ fontWeight: 600, fontSize: 12 }}>{a.asset_tag} | {a.serial}</div>
-                    <div style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{a.model_name || a.name} ({a.manufacturer_name})</div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+              {/* Device Search Autocomplete */}
+              <div className="form-group" style={{ marginBottom: 12, position: 'relative' }}>
+                <label style={styles.label}>Cihaz Ara (Demirbaş No, Seri No)</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  value={assetSearchText}
+                  placeholder="Zimmet dışı cihaz aramak için yazın..."
+                  onChange={e => {
+                    setAssetSearchText(e.target.value);
+                    setShowAssetDropdown(true);
+                  }}
+                  onFocus={() => setShowAssetDropdown(true)}
+                />
+                {showAssetDropdown && filteredAssets.length > 0 && (
+                  <ul className="handover-autocomplete-list">
+                    {filteredAssets.slice(0, 50).map(a => (
+                      <li 
+                        key={a.id} 
+                        className="handover-autocomplete-item"
+                        onClick={() => handleSelectAsset(a)}
+                      >
+                        <div style={{ fontWeight: 600, fontSize: 12 }}>{a.asset_tag} | {a.serial}</div>
+                        <div style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{a.model_name || a.name} ({a.manufacturer_name})</div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </>
+          )}
 
           <hr style={{ border: 'none', borderTop: '1px solid var(--color-border)', margin: '15px 0' }} />
 

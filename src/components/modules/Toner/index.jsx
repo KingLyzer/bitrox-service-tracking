@@ -11,7 +11,7 @@ import ColumnFilterPopover from '../ServiceTickets/ColumnFilterPopover';
 
 export default function Toner({ tabData }) {
   const { user, hasPermission, auditLog } = useAuth();
-  const { showNotification, theme, refreshToggle, tableRefreshVersions = {}, triggerRefresh, closeTab, activeTab: currentAppTab } = useApp();
+  const { showNotification, theme, refreshToggle, tableRefreshVersions = {}, triggerRefresh, closeTab, activeTab: currentAppTab, isSnipeItEnabled } = useApp();
   const [activeTab, setActiveTab] = useState('stock');
   const [toners, setToners] = useState(() => {
     try {
@@ -175,7 +175,7 @@ export default function Toner({ tabData }) {
     manufacturer_id: '', location_id: '', model_number: '', item_no: '',
     order_number: '', purchase_date: '', unit_price: 0, notes: '',
   });
-  const [changeForm, setChangeForm] = useState({ assigned_user_id: '', toner_id: '', change_date: new Date().toISOString().slice(0,10), qty: 1, notes: '' });
+  const [changeForm, setChangeForm] = useState({ assigned_user_id: '', assigned_user_name: '', toner_id: '', change_date: new Date().toISOString().slice(0,10), qty: 1, notes: '' });
 
   const load = useCallback(async () => {
     if (!loadedRef.current) setLoading(true);
@@ -626,7 +626,7 @@ export default function Toner({ tabData }) {
       showNotification('Lütfen sarf malzemesi adı giriniz.', 'danger');
       return;
     }
-    if (!tonerForm.category_id) {
+    if (isSnipeItEnabled && !tonerForm.category_id) {
       showNotification('Snipe-IT için kategori seçimi zorunludur.', 'warning');
       return;
     }
@@ -635,6 +635,33 @@ export default function Toner({ tabData }) {
       return;
     }
     setSaving(true);
+    if (!isSnipeItEnabled) {
+      let res;
+      if (editToner?.id || tonerForm.id) {
+        const tId = editToner?.id || tonerForm.id;
+        res = await window.electronAPI.run(
+          'UPDATE toner_items SET toner_model=?, qty=?, critical_qty=?, model_number=?, item_no=?, order_number=?, purchase_date=?, unit_price=?, notes=? WHERE id=?',
+          [tonerForm.toner_model, Number(tonerForm.total_qty || tonerForm.qty) || 0, Number(tonerForm.critical_qty) || 0, tonerForm.model_number || null, tonerForm.item_no || null, tonerForm.order_number || null, tonerForm.purchase_date || null, Number(tonerForm.unit_price) || 0, tonerForm.notes || null, tId]
+        );
+      } else {
+        const qtyVal = Number(tonerForm.total_qty || tonerForm.qty) || 0;
+        res = await window.electronAPI.run(
+          'INSERT INTO toner_items (toner_model, qty, available_qty, critical_qty, model_number, item_no, order_number, purchase_date, unit_price, notes, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)',
+          [tonerForm.toner_model, qtyVal, qtyVal, Number(tonerForm.critical_qty) || 0, tonerForm.model_number || null, tonerForm.item_no || null, tonerForm.order_number || null, tonerForm.purchase_date || null, Number(tonerForm.unit_price) || 0, tonerForm.notes || null]
+        );
+      }
+      setSaving(false);
+      if (res?.success) {
+        setShowTonerForm(false);
+        showNotification('Sarf malzemesi başarıyla kaydedildi.', 'success');
+        triggerRefresh();
+        load();
+      } else {
+        showNotification('Kayıt hatası: ' + (res?.message || 'Bilinmeyen hata'), 'danger');
+      }
+      return;
+    }
+
     const res = await window.electronAPI.snipeitSaveConsumable({
       id: tonerForm.snipeit_consumable_id || null,
       name: tonerForm.toner_model,
@@ -712,8 +739,15 @@ export default function Toner({ tabData }) {
   };
 
   const saveChange = async () => {
-    if (!changeForm.assigned_user_id || !changeForm.toner_id) {
-      showNotification('Lütfen kullanıcı ve sarf malzemesi seçiniz.', 'warning');
+    const selectedUser = snipeUsers.find(u => u.id == changeForm.assigned_user_id);
+    const recipientName = (changeForm.assigned_user_name || '').trim() || selectedUser?.name || '';
+
+    if (!changeForm.toner_id) {
+      showNotification('Lütfen sarf malzemesi seçiniz.', 'warning');
+      return;
+    }
+    if (!recipientName && (!isSnipeItEnabled || !changeForm.assigned_user_id)) {
+      showNotification('Lütfen sarf malzemesi teslim edilecek personel adını giriniz.', 'warning');
       return;
     }
     const qty = Number(changeForm.qty || 0);
@@ -722,19 +756,13 @@ export default function Toner({ tabData }) {
       return;
     }
     setSaving(true);
-    const selectedUser = snipeUsers.find(u => u.id == changeForm.assigned_user_id);
     const toner = toners.find(t => t.id == changeForm.toner_id);
-    if (!selectedUser) {
-      showNotification('Seçilen kullanıcı bulunamadı.', 'danger');
-      setSaving(false);
-      return;
-    }
     if (!toner || Number(toner.qty) < qty) {
       showNotification('Seçilen sarf malzemesinde yeterli stok yok.', 'warning');
       setSaving(false);
       return;
     }
-    if (toner.snipeit_consumable_id) {
+    if (isSnipeItEnabled && toner.snipeit_consumable_id && selectedUser) {
       const checkoutRes = await window.electronAPI.snipeitCheckoutConsumable({
         consumableId: toner.snipeit_consumable_id,
         assignedTo: selectedUser.id,
@@ -758,7 +786,7 @@ export default function Toner({ tabData }) {
     }
     const res1 = await window.electronAPI.run(
       'INSERT INTO toner_changes (asset_id, asset_name, toner_id, change_date, user_id, assigned_user_id, assigned_user_name, page_count, qty, notes) VALUES (?,?,?,?,?,?,?,?,?,?)',
-      [null, null, changeForm.toner_id, changeForm.change_date, user.id, selectedUser.id, selectedUser.name, null, qty, changeForm.notes || null]
+      [null, null, changeForm.toner_id, changeForm.change_date, user?.id || null, selectedUser?.id || null, recipientName, null, qty, changeForm.notes || null]
     );
     if (!res1.success) {
       await window.electronAPI.run('UPDATE toner_items SET qty = qty + ?, available_qty = COALESCE(available_qty, 0) + ? WHERE id=?', [qty, qty, changeForm.toner_id]);
@@ -767,16 +795,18 @@ export default function Toner({ tabData }) {
       return;
     }
     setShowChangeForm(false);
-    setChangeForm({ assigned_user_id: '', toner_id: '', change_date: new Date().toISOString().slice(0,10), qty: 1, notes: '' });
+    setChangeForm({ assigned_user_id: '', assigned_user_name: '', toner_id: '', change_date: new Date().toISOString().slice(0,10), qty: 1, notes: '' });
+    showNotification(`${recipientName} personeline ${qty} adet ${toner.toner_model} çıkışı yapıldı.`, 'success');
     setSaving(false);
-    await auditLog({
-      action: 'CREATE',
-      module: 'toner',
-      refId: res1.lastInsertRowid,
-      description: `${selectedUser.name} kullanıcısına ${qty} adet ${toner.toner_model || 'sarf malzemesi'} çıkışı yapıldı.`
-    });
-    showNotification('Sarf malzemesi çıkışı kaydedildi.', 'success');
-    load();
+    triggerRefresh();
+    if (auditLog && res1.lastInsertRowid) {
+      await auditLog({
+        action: 'CREATE',
+        module: 'toner',
+        refId: res1.lastInsertRowid,
+        description: `${recipientName} kullanıcısına ${qty} adet ${toner.toner_model || 'sarf malzemesi'} çıkışı yapıldı.`
+      });
+    }
   };
 
   const selected = activeTab === 'stock'
@@ -1392,14 +1422,16 @@ export default function Toner({ tabData }) {
       {showTonerForm && (
         <Modal isOpen title={editToner ? 'Sarf Malzemesi Düzenle' : 'Yeni Sarf Malzemesi'} size="lg" onClose={() => setShowTonerForm(false)}>
           <div className="form-grid-2" style={{ padding: 10 }}>
-            <div className="form-group form-col-span-2"><label>Şirket</label>
-              <select value={tonerForm.company_id || ''} onChange={e => setTonerForm(f => ({ ...f, company_id: e.target.value }))}>
-                <option value="">— Seçin —</option>
-                {refs.companies.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
-              </select>
-            </div>
-            <div className="form-group form-col-span-2"><label className="required">Adı</label><input value={tonerForm.toner_model || ''} onChange={e => setTonerForm(f => ({ ...f, toner_model: e.target.value }))} /></div>
-            <div className="form-group form-col-span-2"><label className="required">Kategori</label>
+            {isSnipeItEnabled && (
+              <div className="form-group form-col-span-2"><label>Şirket</label>
+                <select value={tonerForm.company_id || ''} onChange={e => setTonerForm(f => ({ ...f, company_id: e.target.value }))}>
+                  <option value="">— Seçin —</option>
+                  {refs.companies.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
+                </select>
+              </div>
+            )}
+            <div className="form-group form-col-span-2"><label className="required">Adı / Modeli</label><input value={tonerForm.toner_model || ''} onChange={e => setTonerForm(f => ({ ...f, toner_model: e.target.value }))} placeholder="Örn: HP 85A Siyah Toner" /></div>
+            <div className="form-group form-col-span-2"><label className={isSnipeItEnabled ? "required" : ""}>Kategori</label>
               <select value={tonerForm.category_id || ''} onChange={e => setTonerForm(f => ({ ...f, category_id: e.target.value }))}>
                 <option value="">— Seçin —</option>
                 {refs.categories.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
@@ -1430,7 +1462,9 @@ export default function Toner({ tabData }) {
             <div className="form-group"><label>Sipariş Numarası</label><input value={tonerForm.order_number || ''} onChange={e => setTonerForm(f => ({ ...f, order_number: e.target.value }))} /></div>
             <div className="form-group"><label>Satın Alma Tarihi</label><input type="date" value={tonerForm.purchase_date || ''} onChange={e => setTonerForm(f => ({ ...f, purchase_date: e.target.value }))} /></div>
             <div className="form-group"><label>Birim Maliyeti (₺)</label><input type="number" min="0" step="0.01" value={tonerForm.unit_price || 0} onChange={e => setTonerForm(f => ({ ...f, unit_price: e.target.value }))} /></div>
-            <div className="form-group"><label>Snipe ID</label><input value={tonerForm.snipeit_consumable_id || ''} readOnly /></div>
+            {isSnipeItEnabled && (
+              <div className="form-group"><label>Snipe ID</label><input value={tonerForm.snipeit_consumable_id || ''} readOnly /></div>
+            )}
             <div className="form-group form-col-span-2"><label>Notlar</label><textarea value={tonerForm.notes || ''} onChange={e => setTonerForm(f => ({ ...f, notes: e.target.value }))} rows={3} /></div>
           </div>
           <div className="flex-gap" style={{ justifyContent: 'flex-end', padding: 15 }}>
@@ -1444,17 +1478,30 @@ export default function Toner({ tabData }) {
       {showChangeForm && (
         <Modal isOpen title="Sarf Malzemesi Çıkışı Kaydet" size="md" onClose={() => setShowChangeForm(false)}>
           <div className="form-grid-2" style={{ padding: 10 }}>
-            <div className="form-group form-col-span-2">
-              <label>Kullanıcı Seçiniz (Snipe-IT)</label>
-              <select value={changeForm.assigned_user_id} onChange={e => setChangeForm(f => ({ ...f, assigned_user_id: e.target.value }))}>
-                <option value="">— Kullanıcı Seçin —</option>
-                {snipeUsers.map(u => (
-                  <option key={u.id} value={u.id}>
-                    {u.name}{u.department_name ? ` — ${u.department_name}` : ''}{u.location_name ? ` / ${u.location_name}` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {isSnipeItEnabled ? (
+              <div className="form-group form-col-span-2">
+                <label>Kullanıcı Seçiniz (Snipe-IT)</label>
+                <select value={changeForm.assigned_user_id} onChange={e => setChangeForm(f => ({ ...f, assigned_user_id: e.target.value }))}>
+                  <option value="">— Kullanıcı Seçin —</option>
+                  {snipeUsers.map(u => (
+                    <option key={u.id} value={u.id}>
+                      {u.name}{u.department_name ? ` — ${u.department_name}` : ''}{u.location_name ? ` / ${u.location_name}` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="form-group form-col-span-2">
+                <label>Kime Verildi (Personel Adı) *</label>
+                <input
+                  type="text"
+                  placeholder="Personel adı ve soyadını giriniz..."
+                  value={changeForm.assigned_user_name}
+                  onChange={e => setChangeForm(f => ({ ...f, assigned_user_name: e.target.value }))}
+                  required
+                />
+              </div>
+            )}
             <div className="form-group form-col-span-2">
               <label>Sarf Malzemesi Seçiniz</label>
               <select value={changeForm.toner_id} onChange={e => setChangeForm(f => ({ ...f, toner_id: e.target.value }))}>

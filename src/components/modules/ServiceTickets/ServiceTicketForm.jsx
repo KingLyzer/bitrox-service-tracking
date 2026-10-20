@@ -25,8 +25,8 @@ async function fetchTicketById(id) {
 
 export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
   const { user, hasPermission, auditLog } = useAuth();
-  const { triggerRefresh, showNotification } = useApp();
-  const [assetMode, setAssetMode] = useState(ticket?.asset_id ? 'snipe' : 'manual');
+  const { triggerRefresh, showNotification, isSnipeItEnabled } = useApp();
+  const [assetMode, setAssetMode] = useState(ticket?.asset_id && isSnipeItEnabled ? 'snipe' : 'manual');
   const [form, setForm] = useState({
     ticket_no: '', 
     asset_id: '', asset_name: '', asset_tag: '', serial_no: '', model_name: '', category_name: '',
@@ -61,7 +61,9 @@ export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
   }, [searchRef]);
 
   useEffect(() => {
-    loadAssets();
+    if (isSnipeItEnabled) {
+      loadAssets();
+    }
     loadTemplates();
     if (ticket) {
       setForm({
@@ -69,14 +71,20 @@ export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
         user_name: ticket.user_name || ticket.delivered_to || ticket.teslim_eden || '',
         delivery_date: ticket.delivery_date || ticket.delivered_at || '',
       });
-      setAssetMode(ticket.asset_id ? 'snipe' : 'manual');
+      setAssetMode(isSnipeItEnabled && ticket.asset_id ? 'snipe' : 'manual');
       setAssetSearch(ticket.asset_id ? `[${ticket.asset_tag || ''}] ${ticket.model_name || ticket.asset_name || ''}`.trim() : '');
     } else {
       generateNo();
-      setAssetMode('snipe');
+      setAssetMode(isSnipeItEnabled ? 'snipe' : 'manual');
       setAssetSearch('');
     }
-  }, [ticket]);
+  }, [ticket, isSnipeItEnabled]);
+
+  useEffect(() => {
+    if (!isSnipeItEnabled && assetMode === 'snipe') {
+      setAssetMode('manual');
+    }
+  }, [isSnipeItEnabled, assetMode]);
 
   const generateNo = async () => {
     try {
@@ -443,7 +451,7 @@ export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
             gap: 4
           }}>
             {[
-              { key: 'snipe', label: 'Snipe-IT Cihazı', icon: '🖥️' },
+              ...(isSnipeItEnabled ? [{ key: 'snipe', label: 'Snipe-IT Cihazı', icon: '🖥️' }] : []),
               { key: 'manual', label: 'Manuel Cihaz', icon: '📝' },
               { key: 'installation', label: 'Yeni Cihaz (Kurulum)', icon: '📦' }
             ].map(item => {
