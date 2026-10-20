@@ -252,6 +252,34 @@ server.listen(PORT, '0.0.0.0', async () => {
       }
     }
 
+    // 2.1. toner_changes columns
+    const tonerChangesCols = [
+      { name: 'user_id', def: 'INT NULL' },
+      { name: 'old_page_count', def: 'INT NULL' },
+      { name: 'snipeit_checkout_id', def: 'VARCHAR(100) NULL' }
+    ];
+    for (const c of tonerChangesCols) {
+      const [exists] = await pool.query(`SHOW COLUMNS FROM toner_changes LIKE '${c.name}'`);
+      if (exists.length === 0) {
+        await pool.query(`ALTER TABLE toner_changes ADD COLUMN ${c.name} ${c.def}`).catch(() => {});
+      }
+    }
+
+    // 2.2. announcements columns
+    const announcementCols = [
+      { name: 'start_date', def: 'DATE DEFAULT NULL' },
+      { name: 'end_date', def: 'DATE DEFAULT NULL' },
+      { name: 'daily_time', def: 'VARCHAR(10) DEFAULT NULL' },
+      { name: 'frequency', def: "VARCHAR(50) DEFAULT 'once'" },
+      { name: 'target_users', def: 'TEXT DEFAULT NULL' }
+    ];
+    for (const c of announcementCols) {
+      const [exists] = await pool.query(`SHOW COLUMNS FROM announcements LIKE '${c.name}'`);
+      if (exists.length === 0) {
+        await pool.query(`ALTER TABLE announcements ADD COLUMN ${c.name} ${c.def}`).catch(() => {});
+      }
+    }
+
     // 3. stock tables
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS stock_categories (

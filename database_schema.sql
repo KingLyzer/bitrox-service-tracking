@@ -251,12 +251,16 @@ CREATE TABLE `toner_changes` (
   `toner_id` INT NOT NULL,
   `change_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `qty` INT NOT NULL DEFAULT 1,
+  `user_id` INT NULL,
   `assigned_user_id` INT NULL,
   `assigned_user_name` VARCHAR(150) NULL,
   `page_count` INT NULL,
+  `old_page_count` INT NULL,
+  `snipeit_checkout_id` VARCHAR(100) NULL,
   `notes` TEXT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   INDEX `idx_toner_change_date` (`change_date`),
+  INDEX `idx_toner_user` (`user_id`),
   FOREIGN KEY (`toner_id`) REFERENCES `toner_items`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

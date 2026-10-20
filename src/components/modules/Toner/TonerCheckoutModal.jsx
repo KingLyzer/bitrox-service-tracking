@@ -185,8 +185,8 @@ export default function TonerCheckoutModal({ isOpen, onClose, onSaved, initialTo
       await auditLog({
         action: 'CREATE',
         module: 'toner',
-        refId: res1.lastInsertRowid,
-        description: `${selectedUser.name} kullanıcısına ${qty} adet ${selectedToner.toner_model || 'sarf malzemesi'} çıkışı yapıldı.`
+        refId: res1.lastInsertRowid || res1.insertId,
+        description: `${recipientName} kullanıcısına ${qty} adet ${selectedToner?.toner_model || 'sarf malzemesi'} çıkışı yapıldı.`
       });
 
       // 5. Update cached toners locally
