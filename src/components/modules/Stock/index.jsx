@@ -775,8 +775,8 @@ export default function Stock({ tabData }) {
       headerName: 'İşlemler', width: 210, pinned: 'right',
       cellRenderer: params => (
         <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
-          <button className="btn btn-info btn-xs" title="Barkod & QR Gör" onClick={() => setSelectedRow(params.data)}>🏷️</button>
-          <button className="btn btn-success btn-xs" title="Stok Hareketi" onClick={() => { setSelectedRow(params.data); setShowTxModal(true); }}>📦</button>
+          <button className="btn btn-info btn-xs" title="Barkod & QR Gör" onClick={() => { setLabelTarget(params.data); setLabelMode('barcode'); }}>🏷️</button>
+          <button className="btn btn-success btn-xs" title="Stok Hareketi" onClick={() => { setAdjustTarget(params.data); setAdjustType('add'); setAdjustQty('1'); setAdjustNote(''); }}>📦</button>
           {hasPermission('stock', 'can_edit') && (
             <button className="btn btn-secondary btn-xs" title="Düzenle" onClick={() => { setEditItem(params.data); setForm({ ...params.data, barcode: params.data.barcode || params.data.stock_code, stock_type: params.data.stock_type || 'office' }); setShowForm(true); }}>✏️</button>
           )}
