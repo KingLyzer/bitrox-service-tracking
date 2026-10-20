@@ -10,7 +10,7 @@
 
 **Bitrox ServiceTracker**, kurumsal IT departmanları, teknik servis birimleri ve bilgi işlem ekipleri için özel olarak tasarlanmış açık kaynaklı, beyaz etiketli (white-label) bir **IT Operasyon ve Servis Masası (Service Desk)** yönetim portalıdır.
 
-> 💡 **Önemli Not:** Bu projenin **yaklaşık %80'lik omurgası popüler açık kaynak envanter yönetim yazılımı [Snipe-IT](https://snipeitapp.com/) ile derinlemesine entegre çalışacak şekilde tasarlanmıştır.** Snipe-IT demirbaş ve kullanıcı yönetimini üstlenirken; **ServiceTracker** arıza servis fişleri, toner sarf malzeme takip süreçleri, periyodik bakım takvimi, kargo lojistiği ve yapay zeka operasyon desteğini tek ekranda buluşturur.
+> 💡 **Önemli Not:** Bu proje hem tek başına **bağımsız (standalone)** bir teknik servis, stok ve operasyon portalı olarak çalışabilir; hem de popüler açık kaynak envanter yönetim yazılımı **[Snipe-IT](https://snipeitapp.com/)** ile derinlemesine entegre çalışabilir. Snipe-IT demirbaş ve kullanıcı yönetimini üstlenirken; **ServiceTracker** arıza servis fişleri, toner sarf malzeme takip süreçleri, stok yönetimi, periyodik bakım takvimi, kargo lojistiği ve yapay zeka operasyon desteğini tek ekranda buluşturur.
 
 ---
 
@@ -27,8 +27,8 @@ Snipe-IT, dünyada en çok tercih edilen IT demirbaş ve envanter yönetim (ITAM
 **Bitrox ServiceTracker**, tam da bu boşluğu doldurur! Snipe-IT API'si ile iki yönlü entegrasyon kurarak tüm bu operasyonları otomatikleştirir:
 
 ### 🔗 Snipe-IT ile Entegre Çalışan Başlıca Modüller:
-1. **🔧 Servis Fişleri:** Müşteri/personel seçildiğinde, o kişinin üzerine Snipe-IT'de zimmetli olan tüm bilgisayar, telefon veya monitörler otomatik olarak listelenir. Tek tıkla ilgili cihaz seçilerek seri no ve demirbaş bilgileriyle servis kabulü yapılır.
-2. **🖨️ Toner ve Sarf Takibi:** Snipe-IT'de kayıtlı olan yazıcılar, departmanlar ve kullanıcılar üzerinden sayaç loglu toner çıkışları yapılır.
+1. **🔧 Servis Fişleri:** Müşteri/personel seçildiğinde, o kişinin üzerine Snipe-IT'de zimmetli olan tüm bilgisayar, telefon veya monitörler otomatik olarak listelenir. Tek tıkla ilgili cihaz seçilerek seri no ve demirbaş bilgileriyle servis kabulü yapılır. (Snipe-IT kapalıyken serbest cihaz girişi yapılır).
+2. **🖨️ Toner ve Sarf Takibi:** Snipe-IT'de kayıtlı olan yazıcılar, departmanlar ve kullanıcılar üzerinden sayaç loglu toner çıkışları yapılır. (Snipe-IT kapalıyken manuel personel adıyla çıkış yapılır).
 3. **👤 360° Kullanıcı Görünümü (User360):** Bir personelin profiline girildiğinde; Snipe-IT'deki aktif zimmetleri (laptop, lisans, aksesuar vb.), yerel veritabanındaki servis geçmişi, toner alımları ve kargo hareketleri tek ekranda birleşir.
 4. **📦 Envanter ve Cihaz Senkronizasyonu:** Snipe-IT'deki tüm cihazlar ve kullanıcılar periyodik olarak önbelleklenir (caching), böylece anlık aramalar ve filtrelemeler milisaniyeler içinde gerçekleşir.
 5. **🛡️ Periyodik Bakım:** Snipe-IT'de kayıtlı kurumsal bilgisayarlar seçilerek 9 adımlı bakım protokolü uygulanır ve işletme müdürü imzalı resmi tutanaklar oluşturulur.
@@ -58,7 +58,7 @@ Snipe-IT, dünyada en çok tercih edilen IT demirbaş ve envanter yönetim (ITAM
 - **Node.js**: v18.0.0 veya üzeri
 - **MySQL / MariaDB**: v8.0 veya üzeri
 - **npm** veya **yarn**
-- *(Önerilen)* Aktif bir **Snipe-IT** sunucusu (API erişimi açık)
+- *(İsteğe Bağlı)* Aktif bir **Snipe-IT** sunucusu (API erişimi açık) — *Snipe-IT olmadan da tüm modüller yerel MySQL veritabanı üzerinden %100 bağımsız olarak çalışır.*
 
 ---
 
