@@ -33,24 +33,7 @@ function formatLocationAddress(location) {
     .join('\n');
 }
 
-const LOCATION_COMPANY_MAP = {
-  'G10': 'Örnek Teknoloji Grubu',
-  'G00': 'Örnek Teknoloji Grubu',
-  'sirket.local': 'Örnek Teknoloji Grubu',
-  'B11': 'Demo Teknoloji A.Ş.',
-  'B12': 'Demo Üretim İşletmesi',
-  'B20': 'Örnek Sanayi GM',
-  'B21': 'Örnek Sanayi Fabrika 1',
-  'B22': 'Örnek Sanayi Fabrika 2',
-  'B41': 'Örnek Teknoloji Tesisleri',
-  'K10': 'Demo Yapı İşletmesi',
-  'K11': 'Demo Yapı İşletmesi',
-  'K00': 'Demo Elektronik A.Ş.',
-  'D00': 'Demo Elektrik A.Ş.',
-  'E00': 'Esmek Demirali Ekmek',
-  'E10': 'Esmek Demirali Ekmek',
-  'JANUS': 'JANUS BARKOD TEKN.TURZ.SAN.TİC.LTD. ŞTİ',
-};
+const LOCATION_COMPANY_MAP = {};
 
 function getCompanyForLocation(locationName, companies = []) {
   if (!locationName) return '';
@@ -104,7 +87,7 @@ function FragileHeroSvg() {
 }
 
 export default function AddressLabelTab() {
-  const { showNotification, refreshToggle } = useApp();
+  const { showNotification, refreshToggle, settings } = useApp();
   const [users, setUsers] = useState([]);
   const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -308,9 +291,9 @@ export default function AddressLabelTab() {
                 </div>
                 <div class="box">
                   <div class="box-role">🏢 GÖNDERİCİ (ÇIKIŞ BİRİMİ)</div>
-                  <div class="box-name">${senderInfo.name || 'ÖRNEK TEKNOLOJİ BİLGİ İŞLEM'}</div>
-                  <div class="box-site">${senderInfo.site || ''}</div>
-                  <div class="box-addr">${senderInfo.address || ''}</div>
+                  <div class="box-name">${senderInfo.name || settings?.brand_title || 'BİLGİ TEKNOLOJİLERİ'}</div>
+                  <div class="box-site">${senderInfo.site || settings?.company_name || ''}</div>
+                  <div class="box-addr">${senderInfo.address || settings?.company_address || ''}</div>
                 </div>
               </div>
               <div class="footer-row">
@@ -373,9 +356,9 @@ export default function AddressLabelTab() {
               <div class="card">
                 <div class="card-title">GÖNDEREN</div>
                 <div class="card-divider"></div>
-                <div class="card-name">${senderInfo.name || 'Bilgi Teknolojileri'}</div>
-                <div class="card-company">${senderInfo.site || 'Örnek Teknoloji Grubu'}</div>
-                <div class="card-address">${senderInfo.address || 'Organize Sanayi Bölgesi, Eskişehir'}</div>
+                <div class="card-name">${senderInfo.name || settings?.brand_title || 'Bilgi Teknolojileri'}</div>
+                <div class="card-company">${senderInfo.site || settings?.company_name || ''}</div>
+                <div class="card-address">${senderInfo.address || settings?.company_address || ''}</div>
               </div>
               <div class="card">
                 <div class="card-title">ALICI</div>
@@ -740,8 +723,8 @@ export default function AddressLabelTab() {
                   <div className="address-grid-card-title">GÖNDEREN</div>
                   <div className="address-grid-card-divider"></div>
                   <div className="address-grid-card-name">{senderInfo.name || 'Gönderen seçin'}</div>
-                  <div className="address-grid-card-company">{senderInfo.site || 'G10'}</div>
-                  <div className="address-grid-card-address">{senderInfo.address || '75. YIL MAHALLESİ ORGANİZE SANAYİ BÖLGESİ 11. CADDE NO:14\n26110 ODUNPAZARI/ESKİŞEHİR\nTR'}</div>
+                  <div className="address-grid-card-company">{senderInfo.site || settings?.company_name || ''}</div>
+                  <div className="address-grid-card-address">{senderInfo.address || settings?.company_address || 'Adres seçilmedi'}</div>
                 </div>
 
                 {/* ALICI CARD */}
@@ -780,8 +763,8 @@ export default function AddressLabelTab() {
                 </div>
                 <div style={{ border: '1.5px solid #000', padding: 8, borderRadius: 4 }}>
                   <div style={{ fontSize: 9, fontWeight: 900, textTransform: 'uppercase' }}>🏢 GÖNDEREN</div>
-                  <div style={{ fontSize: 13, fontWeight: 800 }}>{senderInfo.name || 'Bilgi Teknolojileri'}</div>
-                  <div style={{ fontSize: 10, color: '#333', whiteSpace: 'pre-line', marginTop: 2 }}>{senderInfo.address || ''}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800 }}>{senderInfo.name || settings?.brand_title || 'Bilgi Teknolojileri'}</div>
+                  <div style={{ fontSize: 10, color: '#333', whiteSpace: 'pre-line', marginTop: 2 }}>{senderInfo.address || settings?.company_address || ''}</div>
                 </div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '2px solid #000', paddingTop: 8 }}>

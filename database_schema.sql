@@ -111,30 +111,51 @@ DROP TABLE IF EXISTS `service_tickets`;
 CREATE TABLE `service_tickets` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `ticket_no` VARCHAR(50) NOT NULL UNIQUE,
+  `asset_id` INT NULL,
+  `asset_tag` VARCHAR(100) NULL,
+  `serial_no` VARCHAR(100) NULL,
+  `model_name` VARCHAR(150) NULL,
+  `asset_name` VARCHAR(150) NULL,
+  `location_name` VARCHAR(150) NULL,
+  `fault_desc` TEXT NULL,
+  `solution_description` TEXT NULL,
+  `priority` VARCHAR(30) DEFAULT 'Normal',
+  `status` VARCHAR(50) DEFAULT 'Yeni Kayıt',
+  `notes` TEXT NULL,
+  `delivery_date` DATETIME NULL,
+  `user_name` VARCHAR(150) NULL,
+  `teknisyen` VARCHAR(150) NULL,
+  `record_type` VARCHAR(50) DEFAULT 'service',
+  `mac_address` VARCHAR(100) NULL,
+  `os_name` VARCHAR(100) NULL,
+  `os_license` VARCHAR(100) NULL,
+  `assigned_to` INT NULL,
   `customer_name` VARCHAR(150) NULL,
   `company_name` VARCHAR(150) NULL,
   `device_name` VARCHAR(150) NULL,
   `device_serial` VARCHAR(100) NULL,
   `fault_description` TEXT NULL,
-  `solution_description` TEXT NULL,
-  `priority` VARCHAR(30) DEFAULT 'Normal',
-  `status` VARCHAR(50) DEFAULT 'Açık',
-  `assigned_to` INT NULL,
   `technician_name` VARCHAR(150) NULL,
   `total_cost` DECIMAL(12,2) DEFAULT 0.00,
   `target_date` DATE NULL,
+  `closed_at` DATETIME NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `idx_ticket_status` (`status`),
-  INDEX `idx_ticket_date` (`created_at`)
+  INDEX `idx_ticket_date` (`created_at`),
+  INDEX `idx_ticket_asset` (`asset_tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `service_operations`;
 CREATE TABLE `service_operations` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `ticket_id` INT NOT NULL,
-  `operation_type` VARCHAR(100) NOT NULL,
+  `user_id` INT NULL,
+  `op_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `op_type` VARCHAR(100) NOT NULL DEFAULT 'Genel Bakım',
+  `operation_type` VARCHAR(100) NULL,
   `description` TEXT NULL,
+  `status_change` VARCHAR(50) NULL,
   `cost` DECIMAL(10,2) DEFAULT 0.00,
   `technician` VARCHAR(150) NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -145,9 +166,15 @@ DROP TABLE IF EXISTS `used_parts`;
 CREATE TABLE `used_parts` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `ticket_id` INT NOT NULL,
+  `stock_id` INT NULL,
   `part_name` VARCHAR(150) NOT NULL,
+  `stock_code` VARCHAR(100) NULL,
+  `qty` DECIMAL(10,2) NOT NULL DEFAULT 1,
   `quantity` INT NOT NULL DEFAULT 1,
+  `unit` VARCHAR(50) DEFAULT 'Adet',
   `unit_price` DECIMAL(10,2) DEFAULT 0.00,
+  `total_price` DECIMAL(10,2) DEFAULT 0.00,
+  `notes` TEXT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`ticket_id`) REFERENCES `service_tickets`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -193,11 +220,27 @@ CREATE TABLE `toner_items` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `toner_model` VARCHAR(100) NOT NULL,
   `color` VARCHAR(50) DEFAULT 'Black - Siyah',
+  `qty` INT NOT NULL DEFAULT 0,
+  `available_qty` INT NOT NULL DEFAULT 0,
+  `critical_qty` INT NOT NULL DEFAULT 2,
   `stock_qty` INT DEFAULT 0,
   `critical_threshold` INT DEFAULT 2,
+  `model_number` VARCHAR(100) NULL,
+  `item_no` VARCHAR(100) NULL,
+  `order_number` VARCHAR(100) NULL,
+  `purchase_date` DATE NULL,
+  `unit_price` DECIMAL(10,2) DEFAULT 0.00,
   `snipe_id` INT NULL,
+  `snipeit_consumable_id` INT NULL,
+  `category_id` INT NULL,
+  `category_name` VARCHAR(150) NULL,
+  `company_id` INT NULL,
+  `company_name` VARCHAR(150) NULL,
+  `min_amt` INT DEFAULT 0,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
   `notes` TEXT NULL,
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `toner_changes`;
@@ -215,6 +258,189 @@ CREATE TABLE `toner_changes` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   INDEX `idx_toner_change_date` (`change_date`),
   FOREIGN KEY (`toner_id`) REFERENCES `toner_items`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------------------
+-- 6.1. STOK / PARÇA YÖNETİMİ (stock_categories, stock_items, stock_movements)
+-- --------------------------------------------------------------------
+DROP TABLE IF EXISTS `stock_categories`;
+CREATE TABLE `stock_categories` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(150) NOT NULL UNIQUE,
+  `description` TEXT NULL,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `stock_items`;
+CREATE TABLE `stock_items` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `stock_code` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(200) NOT NULL,
+  `barcode` VARCHAR(128) DEFAULT NULL,
+  `category_id` INT NULL,
+  `category_name` VARCHAR(150) NULL,
+  `brand_compat` VARCHAR(255) NULL,
+  `model_compat` VARCHAR(255) NULL,
+  `unit` VARCHAR(50) NOT NULL DEFAULT 'Adet',
+  `qty` DECIMAL(10,2) NOT NULL DEFAULT 0,
+  `available_qty` DECIMAL(10,2) NOT NULL DEFAULT 0,
+  `critical_qty` DECIMAL(10,2) DEFAULT 0,
+  `unit_price` DECIMAL(12,2) DEFAULT 0,
+  `supplier_id` INT NULL,
+  `location` VARCHAR(150) NULL,
+  `description` TEXT NULL,
+  `stock_type` VARCHAR(32) NOT NULL DEFAULT 'office',
+  `snipeit_component_id` INT NULL,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_stock_code` (`stock_code`),
+  INDEX `idx_stock_barcode` (`barcode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `stock_movements`;
+CREATE TABLE `stock_movements` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `stock_id` INT NOT NULL,
+  `move_type` VARCHAR(50) NOT NULL,
+  `qty` DECIMAL(10,2) NOT NULL,
+  `ref_type` VARCHAR(50) NULL,
+  `ref_id` INT NULL,
+  `user_id` INT NULL,
+  `receiver` VARCHAR(255) NULL,
+  `move_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `notes` TEXT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_stock_movement_stock` (`stock_id`),
+  INDEX `idx_stock_movement_date` (`move_date`),
+  FOREIGN KEY (`stock_id`) REFERENCES `stock_items`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------------------
+-- 6.2. SNIPE-IT ÖNBELLEK TABLOLARI (cached_*)
+-- --------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cached_users` (
+  `id` INT PRIMARY KEY,
+  `username` VARCHAR(100) NULL,
+  `name` VARCHAR(150) NULL,
+  `email` VARCHAR(150) NULL,
+  `department_id` INT NULL,
+  `department_name` VARCHAR(150) NULL,
+  `location_id` INT NULL,
+  `location_name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_locations` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `address` TEXT NULL,
+  `address2` TEXT NULL,
+  `city` VARCHAR(100) NULL,
+  `state` VARCHAR(100) NULL,
+  `country` VARCHAR(100) NULL,
+  `zip` VARCHAR(50) NULL,
+  `parent_id` INT NULL,
+  `parent_name` VARCHAR(150) NULL,
+  `manager_id` INT NULL,
+  `manager_name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_companies` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_suppliers` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_categories` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `category_type` VARCHAR(100) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_manufacturers` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_models` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `manufacturer_id` INT NULL,
+  `manufacturer_name` VARCHAR(150) NULL,
+  `category_id` INT NULL,
+  `category_name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `cached_assets` (
+  `id` INT PRIMARY KEY,
+  `name` VARCHAR(150) NULL,
+  `asset_tag` VARCHAR(100) NULL,
+  `serial` VARCHAR(100) NULL,
+  `model_id` INT NULL,
+  `model_name` VARCHAR(150) NULL,
+  `category_name` VARCHAR(150) NULL,
+  `status_id` INT NULL,
+  `status_name` VARCHAR(100) NULL,
+  `assigned_to_user_id` INT NULL,
+  `assigned_to_user_name` VARCHAR(150) NULL,
+  `location_id` INT NULL,
+  `location_name` VARCHAR(150) NULL,
+  `manufacturer_id` INT NULL,
+  `manufacturer_name` VARCHAR(150) NULL,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_asset_tag` (`asset_tag`),
+  INDEX `idx_asset_serial` (`serial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------------------
+-- 6.3. KURULUM ŞABLONLARI VE SIRALAMALAR (installation_*, sequences)
+-- --------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `installation_templates` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(150) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `installation_template_tasks` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `template_id` INT NOT NULL,
+  `task_name` VARCHAR(255) NOT NULL,
+  `sort_order` INT DEFAULT 0,
+  `input_type` VARCHAR(50) DEFAULT 'checkbox',
+  `is_required` TINYINT(1) DEFAULT 0,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`template_id`) REFERENCES `installation_templates`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `installation_tasks` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `ticket_id` INT NOT NULL,
+  `task_name` VARCHAR(255) NOT NULL,
+  `input_type` VARCHAR(50) DEFAULT 'checkbox',
+  `is_required` TINYINT(1) DEFAULT 0,
+  `is_completed` TINYINT(1) DEFAULT 0,
+  `completed_by` VARCHAR(150) NULL,
+  `completed_at` DATETIME NULL,
+  `task_value` TEXT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`ticket_id`) REFERENCES `service_tickets`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `sequences` (
+  `name` VARCHAR(50) PRIMARY KEY,
+  `val` INT NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------------------

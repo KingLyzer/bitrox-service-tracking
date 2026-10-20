@@ -592,7 +592,7 @@ export default function CargoFormModal({ isOpen, onClose, onSaved, editCargo, ca
             <label>Alıcı Teslimat Adresi <span style={{ color: 'var(--color-text-muted)', fontSize: 11 }}>(Kargo çıkış etiketi ve kurye için)</span></label>
             <textarea
               rows="2"
-              placeholder="Örn: Organize Sanayi Bölgesi 12. Cadde No:45 Odunpazarı / Eskişehir"
+              placeholder="Örn: Açık adres, Mahalle, Cadde/Sokak No, İlçe / İl"
               value={formData.receiver_address}
               onChange={e => handleInputChange('receiver_address', e.target.value)}
               className="form-control"
