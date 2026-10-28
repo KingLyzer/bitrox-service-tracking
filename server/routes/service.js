@@ -127,7 +127,7 @@ module.exports = function registerService(app, { pool, helpers, emit, webpush })
 
   app.post('/api/util/generate-code', async (req, res) => {
     try {
-      const { type } = req.body;
+      const { type, stock_type } = req.body;
       const keyMap = { device: 'device_prefix', stock: 'stock_prefix', toner: 'toner_prefix' };
       const tableMap = { device: 'devices', stock: 'stock_items', toner: 'toner_items' };
       const colMap = { device: 'device_code', stock: 'stock_code', toner: 'toner_code' };
@@ -136,13 +136,28 @@ module.exports = function registerService(app, { pool, helpers, emit, webpush })
         return res.json({ success: false, message: 'Geçersiz kod türü.' });
       }
 
-      const [setRows] = await pool.execute('SELECT value FROM settings WHERE `key` = ? LIMIT 1', [keyMap[type]]);
-      const prefix = setRows.length > 0 ? setRows[0].value : type.toUpperCase().slice(0, 3);
+      let prefix = type.toUpperCase().slice(0, 3);
+      if (type === 'stock') {
+        const isScrap = (stock_type === 'scrap' || stock_type === 'hurda');
+        if (isScrap) {
+          prefix = 'HRD';
+        } else {
+          const [setRows] = await pool.execute('SELECT value FROM settings WHERE `key` = ? LIMIT 1', ['stock_prefix']);
+          prefix = (setRows.length > 0 && setRows[0].value) ? setRows[0].value : 'STK';
+        }
+      } else {
+        const [setRows] = await pool.execute('SELECT value FROM settings WHERE `key` = ? LIMIT 1', [keyMap[type]]);
+        if (setRows.length > 0 && setRows[0].value) prefix = setRows[0].value;
+      }
 
       const col = colMap[type];
       const table = tableMap[type];
 
-      const [lastRows] = await pool.execute(`SELECT ${col} FROM ${table} ORDER BY id DESC LIMIT 1`);
+      // Match last record with the exact prefix
+      const [lastRows] = await pool.execute(
+        `SELECT ${col} FROM ${table} WHERE ${col} LIKE ? ORDER BY id DESC LIMIT 1`,
+        [`${prefix}-%`]
+      );
 
       let seq = 1;
       if (lastRows.length > 0 && lastRows[0][col]) {

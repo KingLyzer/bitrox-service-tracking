@@ -988,6 +988,76 @@
 }
 
 /* ──────────────────────────────────────────────────────────────────────
+   15. 🎖️ MILITARY & TACTICAL (ASKERİ & TAKTİK OPERASYON)
+   ────────────────────────────────────────────────────────────────────── */
+[data-theme='military'] {
+  --color-primary: #84cc16;
+  --color-primary-hover: #a3e635;
+  --color-primary-light: #bef264;
+  --color-primary-bg: rgba(132, 204, 22, 0.15);
+
+  --color-accent: #eab308;
+  --color-accent-hover: #facc15;
+  --color-accent-bg: rgba(234, 179, 8, 0.15);
+
+  --color-bg: #090e09;
+  --color-bg-dark: #050805;
+  --color-surface: rgba(17, 26, 17, 0.92);
+  --color-surface-alt: rgba(25, 38, 25, 0.94);
+  --color-border: #2e442e;
+  --color-border-dark: #405e40;
+
+  --color-text: #f0fdf4;
+  --color-text-secondary: #bbf7d0;
+  --color-text-muted: #86efac;
+
+  --color-success: #22c55e;
+  --color-success-bg: rgba(34, 197, 94, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-warning: #eab308;
+  --color-warning-bg: rgba(234, 179, 8, 0.15);
+  --color-info: #84cc16;
+  --color-info-bg: rgba(132, 204, 22, 0.15);
+  --color-orange: #f97316;
+  --color-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --input-bg: #142014;
+  --input-border: #2e442e;
+  --input-focus: #84cc16;
+
+  --toolbar-bg: rgba(5, 8, 5, 0.92);
+  --toolbar-border: #2e442e;
+  --statusbar-bg: rgba(5, 8, 5, 0.92);
+
+  --tabbar-bg: rgba(5, 8, 5, 0.92);
+  --tab-inactive-bg: rgba(25, 38, 25, 0.75);
+  --tab-hover-bg: rgba(17, 26, 17, 0.95);
+  --tab-active-bg: rgba(17, 26, 17, 0.98);
+
+  --grid-header-bg: #182818;
+  --grid-header-text: #bbf7d0;
+  --grid-border: #2e442e;
+  --grid-row-alt: #131e13;
+  --grid-row-hover: rgba(132, 204, 22, 0.16);
+
+  --sidebar-bg: #050805;
+  --sidebar-border: #2e442e;
+  --sidebar-text: #f0fdf4;
+  --sidebar-hover: rgba(132, 204, 22, 0.1);
+  --sidebar-active: linear-gradient(90deg, rgba(132, 204, 22, 0.35), rgba(77, 124, 15, 0.2));
+  --sidebar-active-text: #bef264;
+
+  --modal-overlay: rgba(5, 8, 5, 0.88);
+  --modal-bg: #111a11;
+  --modal-border: #84cc16;
+  --modal-shadow: 0 24px 64px rgba(132, 204, 22, 0.22);
+  --modal-header: #050805;
+  --modal-header-text: #bef264;
+  --modal-footer: #182818;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
    7. CUSTOM WALLPAPER OVERLAY SUPPORT
    ────────────────────────────────────────────────────────────────────── */
 .custom-wallpaper-backdrop {
@@ -1401,6 +1471,65 @@
   background: #dc2626;
   box-shadow: 0 0 8px rgba(220, 38, 38, 0.7);
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   16. 🎖️ MILITARY & TACTICAL (ASKERİ TEMA) — DEDICATED STYLING
+   ══════════════════════════════════════════════════════════════════════ */
+[data-theme='military'] .btn-primary {
+  background: linear-gradient(135deg, #4d7c0f 0%, #365314 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #84cc16 !important;
+  box-shadow: 0 3px 12px rgba(77, 124, 15, 0.4), 0 0 10px rgba(132, 204, 22, 0.3) !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+[data-theme='military'] .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #65a30d 0%, #3f6212 100%) !important;
+  box-shadow: 0 5px 20px rgba(132, 204, 22, 0.5), 0 0 16px rgba(132, 204, 22, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme='military'] .btn-secondary {
+  background: #142014 !important;
+  color: #bbf7d0 !important;
+  border-color: #2e442e !important;
+}
+
+[data-theme='military'] .btn-secondary:hover:not(:disabled) {
+  background: #1b2e1b !important;
+  border-color: #84cc16 !important;
+  box-shadow: 0 0 10px rgba(132, 204, 22, 0.25) !important;
+}
+
+[data-theme='military'] .card {
+  border: 1px solid #2e442e !important;
+  background: rgba(17, 26, 17, 0.95) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme='military'] .card-header {
+  background: #0d160d !important;
+  border-bottom: 1px solid #2e442e !important;
+  color: #bef264 !important;
+}
+
+[data-theme='military'] .tab.active {
+  background: #142014 !important;
+  color: #bef264 !important;
+  border-top: 2px solid #84cc16 !important;
+  box-shadow: inset 0 2px 6px rgba(132, 204, 22, 0.3) !important;
+}
+
+[data-theme='military'] ::-webkit-scrollbar-thumb {
+  background: #2e442e;
+  border-radius: 4px;
+}
+[data-theme='military'] ::-webkit-scrollbar-thumb:hover {
+  background: #84cc16;
+  box-shadow: 0 0 8px rgba(132, 204, 22, 0.7);
+}
+
 
 
 

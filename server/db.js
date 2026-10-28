@@ -38,6 +38,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || '',
   database: process.env.DB_NAME || 'servicetracker_db',
+  charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 35,
   queueLimit: 0,

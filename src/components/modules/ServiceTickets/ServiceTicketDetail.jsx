@@ -61,10 +61,10 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
     try {
       setOperations(ticket.operations || []);
       setParts(ticket.used_parts || []);
-      // Stok listesini yerel DB'den yükle
+      // Stok listesini (sadece malzeme/parça stoklarını, hurda hariç) yükle
       try {
         const stockRes = await window.electronAPI.query(
-          'SELECT id, name, qty, unit_price FROM stock_items WHERE is_active=1 ORDER BY name',
+          "SELECT id, name, qty, unit_price, stock_type FROM stock_items WHERE is_active=1 AND (stock_type = 'office' OR stock_type IS NULL OR stock_type = '') ORDER BY name",
           []
         );
         if (stockRes.success && Array.isArray(stockRes.data)) {
@@ -144,6 +144,27 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
       showNotification('Beklenmedik hata: ' + err.message, 'danger');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const quickChangeStatus = async (newStatus) => {
+    if (!newStatus || newStatus === ticket.status) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/fis-guncelle/${ticket.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) {
+        showNotification(`Servis durumu "${newStatus}" olarak güncellendi.`, 'success');
+        ticket.status = newStatus;
+        triggerTableRefresh('service_tickets');
+        onUpdate?.();
+      } else {
+        showNotification('Durum güncellenemedi.', 'danger');
+      }
+    } catch (e) {
+      showNotification('Hata: ' + e.message, 'danger');
     }
   };
 
@@ -651,6 +672,25 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
     }
   };
 
+  const totalPartsCost = parts.reduce((sum, p) => sum + (Number(p.total_price) || (Number(p.qty || 1) * Number(p.unit_price || 0))), 0);
+
+  const calculateDuration = () => {
+    if (!ticket?.created_at) return null;
+    const start = new Date(ticket.created_at);
+    const end = ticket.status === 'Teslim Edildi' && ticket.delivery_date ? new Date(ticket.delivery_date) : new Date();
+    const diffMs = Math.max(0, end - start);
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    if (diffDays === 0) return `${diffHours} Saat`;
+    return `${diffDays} Gün ${diffHours} Sa`;
+  };
+
+  const resolvedModelDisplay = (ticket.model_name && ticket.model_name !== ticket.asset_tag)
+    ? ticket.model_name
+    : (ticket.asset_name && ticket.asset_name !== ticket.asset_tag)
+      ? ticket.asset_name
+      : ticket.model_name || ticket.asset_name || '—';
+
   return (
     <div style={{ padding: '0 12px 24px', position: 'relative' }}>
       {/* Üst Aksiyon & Özet Başlık Çubuğu */}
@@ -734,10 +774,11 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
 
       {/* İki Kolonlu Bilgi Kartları: Cihaz/Özet & Arıza/Kurulum Detayı */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16, marginBottom: 18 }}>
+        {/* Sol Üst: Cihaz ve Kullanıcı Özeti */}
         <div style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          borderRadius: 8,
+          borderRadius: 10,
           padding: 16,
           boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
         }}>
@@ -747,91 +788,164 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
           </h4>
           <InfoRow label="Fiş No" value={ticket.ticket_no} />
           <InfoRow label="Asset Tag" value={ticket.asset_tag} />
-          <InfoRow label="Cihaz / Model" value={ticket.asset_name || ticket.model_name} />
+          <InfoRow label="Cihaz / Model" value={resolvedModelDisplay} />
+          {ticket.category_name && <InfoRow label="Kategori" value={ticket.category_name} />}
           <InfoRow label="Seri Numarası" value={ticket.serial_no} />
           <InfoRow label="Kullanıcı" value={ticket.user_name} />
           <InfoRow label="Lokasyon" value={ticket.location_name} />
           <InfoRow label="Kayıt Tarihi" value={formatDateTime(ticket.created_at)} />
         </div>
 
+        {/* Sağ Üst: Arıza, Süreç ve Hızlı Durum Kartı */}
         <div style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          borderRadius: 8,
+          borderRadius: 10,
           padding: 16,
-          boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
+          boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          gap: 12
         }}>
-          {ticket.record_type === 'installation' ? (
-            <>
-              <h4 style={{ fontSize: 13, fontWeight: 700, margin: '0 0 12px', color: 'var(--color-primary-light, #60a5fa)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span>📦</span>
-                <span>Kurulum ve Donanım Bilgileri</span>
-              </h4>
-              <InfoRow label="İşletim Sistemi" value={ticket.os_name} />
-              <InfoRow label="Lisans Bilgisi" value={ticket.os_license} />
-              <InfoRow label="Marka / Model" value={ticket.model_name || ticket.asset_name} />
-              <InfoRow label="Ait Kişi" value={ticket.user_name} />
-              <InfoRow label="MAC Adresi" value={ticket.mac_address} />
-              <InfoRow label="Envanter" value={ticket.asset_tag} />
-              {ticket.fault_desc && (
-                <div style={{ marginTop: 12, padding: 10, borderRadius: 6, background: 'rgba(59, 130, 246, 0.08)', borderLeft: '3px solid #3b82f6', fontSize: 12 }}>
-                  <strong style={{ color: '#38bdf8' }}>Kurulum Notları:</strong> {ticket.fault_desc}
-                </div>
-              )}
-            </>
-          ) : (
-            <>
-              <h4 style={{ fontSize: 13, fontWeight: 700, margin: '0 0 12px', color: 'var(--color-primary-light, #60a5fa)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span>🔧</span>
-                <span>Arıza ve Teknik Değerlendirme</span>
-              </h4>
-              <div style={{
-                background: 'rgba(239, 68, 68, 0.07)',
-                borderLeft: '4px solid #ef4444',
-                padding: '10px 12px',
-                borderRadius: 6,
-                fontSize: 12,
-                lineHeight: 1.5,
-                color: 'var(--color-text)',
-                marginBottom: ticket.notes ? 12 : 0
-              }}>
-                <div style={{ fontWeight: 700, color: '#ef4444', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <span>⚠️</span>
-                  <span>Bildirilen Arıza / Şikayet:</span>
-                </div>
-                <div>{ticket.fault_desc || 'Arıza detayı belirtilmemiş.'}</div>
-              </div>
-              {ticket.notes && (
+          <div>
+            <h4 style={{ fontSize: 13, fontWeight: 700, margin: '0 0 12px', color: 'var(--color-primary-light, #60a5fa)', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span>🔧</span>
+              <span>Arıza ve Servis Değerlendirmesi</span>
+            </h4>
+
+            {ticket.record_type === 'installation' ? (
+              <>
+                <InfoRow label="İşletim Sistemi" value={ticket.os_name} />
+                <InfoRow label="Lisans Bilgisi" value={ticket.os_license} />
+                <InfoRow label="MAC Adresi" value={ticket.mac_address} />
+                {ticket.fault_desc && (
+                  <div style={{ marginTop: 10, padding: 10, borderRadius: 6, background: 'rgba(59, 130, 246, 0.08)', borderLeft: '3px solid #3b82f6', fontSize: 12 }}>
+                    <strong style={{ color: '#38bdf8' }}>Kurulum Notları:</strong> {ticket.fault_desc}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
                 <div style={{
-                  background: 'rgba(59, 130, 246, 0.07)',
-                  borderLeft: '4px solid #3b82f6',
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  borderLeft: '4px solid #ef4444',
                   padding: '10px 12px',
                   borderRadius: 6,
                   fontSize: 12,
                   lineHeight: 1.5,
-                  color: 'var(--color-text)'
+                  color: 'var(--color-text)',
+                  marginBottom: 10
                 }}>
-                  <div style={{ fontWeight: 700, color: '#38bdf8', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span>📝</span>
-                    <span>Teknik Notlar / Tespitler:</span>
+                  <div style={{ fontWeight: 700, color: '#ef4444', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span>⚠️</span>
+                    <span>Bildirilen Arıza / Şikayet:</span>
                   </div>
-                  <div>{ticket.notes}</div>
+                  <div style={{ fontWeight: 500 }}>{ticket.fault_desc || 'Arıza detayı belirtilmemiş.'}</div>
                 </div>
-              )}
-            </>
+
+                {ticket.notes && (
+                  <div style={{
+                    background: 'rgba(59, 130, 246, 0.08)',
+                    borderLeft: '4px solid #3b82f6',
+                    padding: '10px 12px',
+                    borderRadius: 6,
+                    fontSize: 12,
+                    lineHeight: 1.5,
+                    color: 'var(--color-text)',
+                    marginBottom: 10
+                  }}>
+                    <div style={{ fontWeight: 700, color: '#38bdf8', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <span>📝</span>
+                      <span>Teknik Notlar / Ön Tespitler:</span>
+                    </div>
+                    <div>{ticket.notes}</div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Kompakt Süre & İstatistik Şeridi */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 8,
+              background: 'var(--color-surface-alt)',
+              padding: '10px 12px',
+              borderRadius: 8,
+              border: '1px solid var(--color-border)',
+              fontSize: 11.5,
+              marginTop: 6
+            }}>
+              <div>
+                <span style={{ color: 'var(--color-text-secondary)', display: 'block', fontSize: 10.5, fontWeight: 600 }}>HEDEF TESLİM</span>
+                <strong style={{ color: 'var(--color-text)' }}>
+                  📅 {ticket.delivery_date ? formatDateTime(ticket.delivery_date).slice(0, 10) : 'Belirlenmedi'}
+                </strong>
+              </div>
+              <div>
+                <span style={{ color: 'var(--color-text-secondary)', display: 'block', fontSize: 10.5, fontWeight: 600 }}>SERVİSTE GEÇEN SÜRE</span>
+                <strong style={{ color: ticket.status === 'Teslim Edildi' ? '#10b981' : '#f59e0b' }}>
+                  ⏱️ {calculateDuration() || '—'}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Hızlı Durum Değiştirme Butonları */}
+          {hasPermission('service', 'can_edit') && (
+            <div style={{
+              paddingTop: 8,
+              borderTop: '1px dashed var(--color-border)'
+            }}>
+              <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--color-text-secondary)', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                ⚡ Hızlı Durum Güncelle
+              </span>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {['İncelemede', 'Onarımda', 'Testte', 'Dış Serviste', 'Teslim Edildi'].map(st => {
+                  const isCurrent = ticket.status === st;
+                  const cfg = statusConfig[st] || {};
+                  return (
+                    <button
+                      key={st}
+                      type="button"
+                      disabled={isCurrent}
+                      onClick={() => quickChangeStatus(st)}
+                      style={{
+                        padding: '4px 9px',
+                        borderRadius: 6,
+                        fontSize: 11,
+                        fontWeight: 600,
+                        cursor: isCurrent ? 'default' : 'pointer',
+                        background: isCurrent ? cfg.bg : 'var(--color-surface-alt)',
+                        border: `1px solid ${isCurrent ? cfg.border : 'var(--color-border)'}`,
+                        color: isCurrent ? cfg.color : 'var(--color-text-secondary)',
+                        opacity: isCurrent ? 1 : 0.8,
+                        transition: 'all 0.15s ease'
+                      }}
+                      title={isCurrent ? 'Şu anki durum' : `Durumu "${st}" yap`}
+                    >
+                      {cfg.icon} {st}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       </div>
 
-      {/* İki Kolonlu Liste: İşlem Geçmişi & Kullanılan Parçalar */}
+      {/* İki Kolonlu Liste: İşlem Geçmişi (Timeline) & Kullanılan Parçalar */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
-        {/* İşlem Geçmişi */}
+        {/* Sol Alt: İşlem Geçmişi (Modern Timeline) */}
         <div style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          borderRadius: 8,
+          borderRadius: 10,
           overflow: 'hidden',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
+          boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
           <div style={{
             display: 'flex',
@@ -857,80 +971,118 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
               </button>
             )}
           </div>
-          <div style={{ maxHeight: 320, overflowY: 'auto' }}>
+
+          <div style={{ flex: 1, maxHeight: 360, overflowY: 'auto', padding: '14px 16px' }}>
             {operations.length === 0 ? (
-              <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 12 }}>
-                Henüz kayıtlı bir işlem bulunmamaktadır.
+              <div style={{ padding: 36, textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 12 }}>
+                <span style={{ fontSize: 28, display: 'block', marginBottom: 8, opacity: 0.6 }}>📝</span>
+                <div style={{ fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 4 }}>İşlem Kaydı Bulunmuyor</div>
+                <div>Bu servis için henüz bir teknik işlem girilmedi.</div>
+                {hasPermission('service', 'can_edit') && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-xs"
+                    onClick={() => setShowOpForm(true)}
+                    style={{ marginTop: 12, padding: '4px 12px', borderRadius: 6 }}
+                  >
+                    ➕ İlk İşlemi Ekle
+                  </button>
+                )}
               </div>
             ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11.5 }}>
-                <thead>
-                  <tr style={{ background: 'var(--color-surface-alt)', color: 'var(--color-text-secondary)', borderBottom: '1px solid var(--color-border)' }}>
-                    <th style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600 }}>Tarih</th>
-                    <th style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600 }}>İşlem & Açıklama</th>
-                    <th style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600 }}>Teknisyen</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {operations.map((op) => {
-                    const opStyle = getOpBadgeStyle(op.op_type);
-                    return (
-                      <tr key={op.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                        <td style={{ padding: '8px 10px', verticalAlign: 'top', whiteSpace: 'nowrap', color: 'var(--color-text-secondary)', fontSize: 11 }}>
-                          🕒 {formatDateTime(op.op_date || op.created_at)}
-                        </td>
-                        <td style={{ padding: '8px 10px', verticalAlign: 'top' }}>
+              <div style={{ position: 'relative', paddingLeft: 18 }}>
+                {/* Dikey Zaman Çizgisi */}
+                <div style={{
+                  position: 'absolute',
+                  left: 6,
+                  top: 6,
+                  bottom: 6,
+                  width: 2,
+                  background: 'var(--color-border)',
+                  borderRadius: 2
+                }} />
+
+                {operations.map((op, idx) => {
+                  const opStyle = getOpBadgeStyle(op.op_type);
+                  return (
+                    <div key={op.id || idx} style={{ position: 'relative', marginBottom: 14 }}>
+                      {/* Sol Timeline Noktası */}
+                      <div style={{
+                        position: 'absolute',
+                        left: -18,
+                        top: 4,
+                        width: 14,
+                        height: 14,
+                        borderRadius: '50%',
+                        background: opStyle.color,
+                        border: '3px solid var(--color-surface)',
+                        boxShadow: `0 0 0 1px ${opStyle.border}`
+                      }} />
+
+                      {/* Başlık: Tür, Teknisyen & Tarih */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', marginBottom: 5 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <span style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: 4,
-                            padding: '2px 7px',
+                            padding: '1px 7px',
                             borderRadius: 6,
-                            fontSize: 11,
-                            fontWeight: 600,
+                            fontSize: 10.5,
+                            fontWeight: 700,
                             background: opStyle.bg,
                             border: `1px solid ${opStyle.border}`,
-                            color: opStyle.color,
-                            marginBottom: 4
+                            color: opStyle.color
                           }}>
                             <span>{opStyle.icon}</span>
                             <span>{op.op_type}</span>
                           </span>
-                          <div style={{ color: 'var(--color-text)', lineHeight: 1.4 }}>{op.description}</div>
-                        </td>
-                        <td style={{ padding: '8px 10px', verticalAlign: 'top', whiteSpace: 'nowrap' }}>
                           <span style={{
+                            fontSize: 11,
+                            color: 'var(--color-text)',
+                            fontWeight: 600,
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: 5,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            fontSize: 11,
-                            fontWeight: 600,
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            border: '1px solid var(--color-border)',
-                            color: 'var(--color-text)'
+                            gap: 4
                           }}>
                             <span>👨‍🔧</span>
-                            <span>{op.tech_name || op.teknisyen || '-'}</span>
+                            <span>{op.tech_name || op.teknisyen || 'Teknisyen'}</span>
                           </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                        </div>
+                        <span style={{ fontSize: 10.5, color: 'var(--color-text-muted)', fontFamily: 'monospace' }}>
+                          🕒 {formatDateTime(op.op_date || op.created_at)}
+                        </span>
+                      </div>
+
+                      {/* Açıklama Balonu */}
+                      <div style={{
+                        background: 'var(--color-surface-alt)',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: 8,
+                        padding: '8px 12px',
+                        fontSize: 12,
+                        lineHeight: 1.45,
+                        color: 'var(--color-text)'
+                      }}>
+                        {op.description}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>
 
-        {/* Kullanılan Parçalar */}
+        {/* Sağ Alt: Kullanılan Parçalar */}
         <div style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          borderRadius: 8,
+          borderRadius: 10,
           overflow: 'hidden',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
+          boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
           <div style={{
             display: 'flex',
@@ -956,10 +1108,23 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
               </button>
             )}
           </div>
-          <div style={{ maxHeight: 320, overflowY: 'auto' }}>
+
+          <div style={{ flex: 1, maxHeight: 360, overflowY: 'auto' }}>
             {parts.length === 0 ? (
-              <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 12 }}>
-                Kullanılan yedek parça kaydı bulunmamaktadır.
+              <div style={{ padding: 40, textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 12 }}>
+                <span style={{ fontSize: 28, display: 'block', marginBottom: 8, opacity: 0.6 }}>🔩</span>
+                <div style={{ fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Kullanılan Parça Yok</div>
+                <div>Bu servis kaydında henüz yedek parça veya malzeme sarfiyatı yapılmadı.</div>
+                {hasPermission('service', 'can_edit') && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-xs"
+                    onClick={() => setShowPartForm(true)}
+                    style={{ marginTop: 12, padding: '4px 12px', borderRadius: 6 }}
+                  >
+                    ➕ İlk Parçayı Ekle
+                  </button>
+                )}
               </div>
             ) : (
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11.5 }}>
@@ -993,7 +1158,7 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
                         </span>
                       </td>
                       <td style={{ padding: '8px 10px', textAlign: 'right', fontWeight: 700, color: 'var(--color-text)' }}>
-                        {Number(p.total_price || 0).toFixed(2)} ₺
+                        {Number(p.total_price || (p.qty * p.unit_price) || 0).toFixed(2)} ₺
                       </td>
                       <td style={{ padding: '4px 8px', textAlign: 'center' }}>
                         {hasPermission('service', 'can_delete') && (
@@ -1022,6 +1187,21 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
               </table>
             )}
           </div>
+
+          {parts.length > 0 && (
+            <div style={{
+              padding: '8px 14px',
+              background: 'var(--color-surface-alt)',
+              borderTop: '1px solid var(--color-border)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontSize: 12
+            }}>
+              <span style={{ color: 'var(--color-text-secondary)', fontWeight: 600 }}>Toplam Parça Maliyeti:</span>
+              <strong style={{ color: '#10b981', fontSize: 13 }}>₺{totalPartsCost.toFixed(2)}</strong>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1066,7 +1246,12 @@ export default function ServiceTicketDetail({ ticket, onClose, onUpdate, onEdit 
                 setPartForm({...partForm, stock_id: e.target.value, part_name: s?.name || '', unit_price: s?.unit_price || 0});
               }}>
                 <option value="">— Elle Parça Gir —</option>
-                {stocks.map(s => <option key={s.id} value={s.id}>{s.name} (Stok: {s.qty})</option>)}
+                {stocks
+                  .filter(s => {
+                    const st = String(s.stock_type || '').toLowerCase();
+                    return st !== 'scrap' && st !== 'hurda';
+                  })
+                  .map(s => <option key={s.id} value={s.id}>{s.name} (Stok: {s.qty})</option>)}
               </select>
             </div>
             <div className="form-group" style={{ marginBottom: 12 }}>

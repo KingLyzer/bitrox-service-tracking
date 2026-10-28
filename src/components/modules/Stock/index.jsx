@@ -166,15 +166,45 @@ export default function Stock({ tabData }) {
   useEffect(() => { load(); }, [load, refreshToggle, stockVersion]);
 
   const openNew = async () => {
-    const codeRes = await apiPost('/api/util/generate-code', { type: 'stock' });
+    const defaultType = stockTypeFilter === 'scrap' ? 'scrap' : 'office';
+    const codeRes = await apiPost('/api/util/generate-code', { type: 'stock', stock_type: defaultType });
     setEditItem(null);
     setForm({
       ...EMPTY_FORM,
       stock_code: codeRes.value || '',
       barcode: codeRes.value || '',
-      stock_type: stockTypeFilter === 'scrap' ? 'scrap' : 'office',
+      stock_type: defaultType,
     });
     setShowForm(true);
+  };
+
+  const handleStockTypeChange = async (newType) => {
+    if (editItem) {
+      setForm(f => ({ ...f, stock_type: newType }));
+      return;
+    }
+    const currentCode = String(form.stock_code || '').trim();
+    const currentBarcode = String(form.barcode || '').trim();
+    const isAutoCode = !currentCode || currentCode.startsWith('STK-') || currentCode.startsWith('HRD-');
+    const isBarcodeMatched = !currentBarcode || currentBarcode === currentCode;
+
+    if (isAutoCode) {
+      try {
+        const codeRes = await apiPost('/api/util/generate-code', { type: 'stock', stock_type: newType });
+        if (codeRes && codeRes.value) {
+          setForm(f => ({
+            ...f,
+            stock_type: newType,
+            stock_code: codeRes.value,
+            barcode: isBarcodeMatched ? codeRes.value : f.barcode,
+          }));
+          return;
+        }
+      } catch (err) {
+        console.error('Error generating code on stock type change:', err);
+      }
+    }
+    setForm(f => ({ ...f, stock_type: newType }));
   };
 
   const openEdit = (row) => {
@@ -410,7 +440,7 @@ export default function Stock({ tabData }) {
         action: 'DELETE',
         module: 'stock',
         refId: null,
-        description: `${ids.length} stok kalemi silindi: ${selectedRows.map(r => r.sku || r.name).join(', ')}.`,
+        description: `${ids.length} stok kalemi silindi: ${selectedRows.map(r => r.stock_code || r.name).join(', ')}.`,
       });
       showNotification(`${ids.length} stok kalemi silindi.`, 'success');
       setSelectedRows([]);
@@ -460,7 +490,28 @@ export default function Stock({ tabData }) {
 </style></head><body>
   ${labelMode === 'barcode' ? `<div class="label"><div class="name">${labelTarget.name}</div><div class="cat">${labelTarget.category_name || ''}${labelTarget.location ? ' • ' + labelTarget.location : ''}</div><div class="code">${code}</div>${barcodeSvg}</div>` : `<div class="label"><div class="name">${labelTarget.name}</div><div class="cat">${labelTarget.category_name || ''}${labelTarget.location ? ' • ' + labelTarget.location : ''}</div><div class="code">${code}</div><img src="${qrData}" style="width:150px;height:150px;" /></div>`}
 </body></html>`;
-      await window.electronAPI.printHtml(labelHtml);
+      if (window.electronAPI?.printHtml) {
+        await window.electronAPI.printHtml(labelHtml);
+      } else {
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100mm';
+        iframe.style.height = '100mm';
+        iframe.style.border = 'none';
+        iframe.style.opacity = '0';
+        iframe.style.pointerEvents = 'none';
+        iframe.style.zIndex = '-9999';
+        document.body.appendChild(iframe);
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(labelHtml);
+        doc.close();
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => iframe.remove(), 1000);
+      }
       showNotification('Etiket yazdırma başlatıldı.', 'success');
     } catch (err) {
       console.error(err);
@@ -778,11 +829,12 @@ export default function Stock({ tabData }) {
       valueFormatter: params => params.value ? `₺${Number(params.value).toFixed(2)}` : '—' },
     { field: 'location', headerName: 'Raf / Depo', width: 120, filter: 'agTextColumnFilter', cellClass: 'cell-muted' },
     {
-      headerName: 'İşlemler', width: 210, pinned: 'right',
+      headerName: 'İşlemler', width: 230, pinned: 'right',
       cellRenderer: params => (
-        <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
           <button className="btn btn-info btn-xs" title="Barkod & QR Gör" onClick={() => { setLabelTarget(params.data); setLabelMode('barcode'); }}>🏷️</button>
-          <button className="btn btn-success btn-xs" title="Stok Hareketi" onClick={() => { setAdjustTarget(params.data); setAdjustType('add'); setAdjustQty('1'); setAdjustNote(''); }}>📦</button>
+          <button className="btn btn-success btn-xs" title="Stok Hareketi (Giriş / Çıkış)" onClick={() => { setAdjustTarget(params.data); setAdjustType('add'); setAdjustQty('1'); setAdjustNote(''); }}>📦</button>
+          <button className="btn btn-secondary btn-xs" title="Hareket Geçmişi" onClick={() => loadMovements(params.data)}>📜</button>
           {hasPermission('stock', 'can_edit') && (
             <button className="btn btn-secondary btn-xs" title="Düzenle" onClick={() => { setEditItem(params.data); setForm({ ...params.data, barcode: params.data.barcode || params.data.stock_code, stock_type: isScrapItem(params.data) ? 'scrap' : 'office' }); setShowForm(true); }}>✏️</button>
           )}
@@ -1142,6 +1194,14 @@ export default function Stock({ tabData }) {
                       </button>
                       <button
                         className="btn btn-secondary btn-sm"
+                        onClick={() => loadMovements(item)}
+                        title="Hareket Geçmişi"
+                        style={{ padding: '5px 8px', fontSize: 12, borderRadius: 6 }}
+                      >
+                        📜
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm"
                         onClick={() => { setLabelTarget(item); setLabelMode('barcode'); }}
                         title="Barkod / QR Bas"
                         style={{ padding: '5px 8px', fontSize: 12, borderRadius: 6 }}
@@ -1229,7 +1289,7 @@ export default function Stock({ tabData }) {
               <label style={{ fontWeight: 700, marginBottom: 8, display: 'block' }}>Stok Bölümü / Türü</label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 10 }}>
                 <div
-                  onClick={() => setForm(f => ({ ...f, stock_type: 'office' }))}
+                  onClick={() => handleStockTypeChange('office')}
                   style={{
                     border: `2px solid ${form.stock_type !== 'scrap' ? '#0284c7' : 'var(--color-border)'}`,
                     background: form.stock_type !== 'scrap' ? 'rgba(14, 165, 233, 0.1)' : 'var(--color-surface-alt)',
@@ -1246,7 +1306,7 @@ export default function Stock({ tabData }) {
                     type="radio"
                     name="modal_stock_type"
                     checked={form.stock_type !== 'scrap'}
-                    onChange={() => setForm(f => ({ ...f, stock_type: 'office' }))}
+                    onChange={() => handleStockTypeChange('office')}
                     style={{ cursor: 'pointer' }}
                   />
                   <div>
@@ -1260,7 +1320,7 @@ export default function Stock({ tabData }) {
                 </div>
 
                 <div
-                  onClick={() => setForm(f => ({ ...f, stock_type: 'scrap' }))}
+                  onClick={() => handleStockTypeChange('scrap')}
                   style={{
                     border: `2px solid ${form.stock_type === 'scrap' ? '#10b981' : 'var(--color-border)'}`,
                     background: form.stock_type === 'scrap' ? 'rgba(16, 185, 129, 0.1)' : 'var(--color-surface-alt)',
@@ -1277,7 +1337,7 @@ export default function Stock({ tabData }) {
                     type="radio"
                     name="modal_stock_type"
                     checked={form.stock_type === 'scrap'}
-                    onChange={() => setForm(f => ({ ...f, stock_type: 'scrap' }))}
+                    onChange={() => handleStockTypeChange('scrap')}
                     style={{ cursor: 'pointer' }}
                   />
                   <div>
@@ -1506,32 +1566,38 @@ export default function Stock({ tabData }) {
             ) : movements.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 40, color: 'var(--color-text-muted)' }}>Hareket kaydı bulunamadı.</div>
             ) : (
-              <table className="data-grid-table">
-                <thead>
-                  <tr>
-                    <th>Tarih</th>
-                    <th>Tür</th>
-                    <th>Miktar</th>
-                    <th>Teslim Edilen</th>
-                    <th>Not</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {movements.map(m => (
-                    <tr key={m.id}>
-                      <td>{m.move_date}</td>
-                      <td>
-                        <span className={`badge ${m.move_type === 'Giriş' ? 'badge-success' : m.move_type === 'Çıkış' ? 'badge-danger' : 'badge-warning'}`}>
-                          {m.move_type}
-                        </span>
-                      </td>
-                      <td>{m.qty}</td>
-                      <td>{m.receiver || '—'}</td>
-                      <td>{m.notes || '—'}</td>
+              <div style={{ maxHeight: 420, overflowY: 'auto' }}>
+                <table className="data-grid-table">
+                  <thead>
+                    <tr>
+                      <th>Tarih</th>
+                      <th>Tür</th>
+                      <th>Miktar</th>
+                      <th>İşlem Yapan</th>
+                      <th>Teslim Edilen</th>
+                      <th>Not</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {movements.map(m => (
+                      <tr key={m.id}>
+                        <td style={{ fontSize: 11.5, whiteSpace: 'nowrap' }}>
+                          {m.move_date ? new Date(m.move_date).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : '—'}
+                        </td>
+                        <td>
+                          <span className={`badge ${m.move_type === 'Giriş' ? 'badge-success' : m.move_type === 'Çıkış' ? 'badge-danger' : 'badge-warning'}`}>
+                            {m.move_type}
+                          </span>
+                        </td>
+                        <td style={{ fontWeight: 700 }}>{m.qty}</td>
+                        <td style={{ color: 'var(--color-text-muted)', fontSize: 11.5 }}>{m.user_name || '—'}</td>
+                        <td>{m.receiver || '—'}</td>
+                        <td style={{ color: 'var(--color-text-secondary)', fontSize: 11.5 }}>{m.notes || '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </Modal>

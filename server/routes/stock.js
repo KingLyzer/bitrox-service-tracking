@@ -32,6 +32,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
       // Ensure AUTO_INCREMENT on id columns so inserts with qty > 0 never fail with "Field 'id' doesn't have a default value"
       try {
         await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+        await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN move_date DATETIME DEFAULT CURRENT_TIMESTAMP');
         results.stock_movements_ai = 'ok';
       } catch (e) {
         results.stock_movements_ai = e.message;
@@ -120,7 +121,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
 
       if (numericQty > 0) {
         await conn.execute(
-          `INSERT INTO stock_movements (stock_id, move_type, qty, user_id, notes) VALUES (?, 'Giriş', ?, ?, 'Başlangıç stoğu')`,
+          `INSERT INTO stock_movements (stock_id, move_type, qty, user_id, notes, move_date) VALUES (?, 'Giriş', ?, ?, 'Başlangıç stoğu', NOW())`,
           [result.insertId, numericQty, user_id || null]
         );
       }
@@ -252,7 +253,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
       }
 
       await conn.execute(
-        `INSERT INTO stock_movements (stock_id, move_type, qty, ref_type, user_id, notes) VALUES (?, ?, ?, 'manual', ?, ?)`,
+        `INSERT INTO stock_movements (stock_id, move_type, qty, ref_type, user_id, notes, move_date) VALUES (?, ?, ?, 'manual', ?, ?, NOW())`,
         [id, typeLabel, numericQty, user_id || null, cleanText(note)]
       );
 
@@ -292,7 +293,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
         [numericQty, numericQty, id]
       );
       await conn.execute(
-        `INSERT INTO stock_movements (stock_id, move_type, qty, ref_type, receiver, user_id, notes) VALUES (?, 'Çıkış', ?, 'checkout', ?, ?, ?)`,
+        `INSERT INTO stock_movements (stock_id, move_type, qty, ref_type, receiver, user_id, notes, move_date) VALUES (?, 'Çıkış', ?, 'checkout', ?, ?, ?, NOW())`,
         [id, numericQty, cleanText(receiver), user_id || null, cleanText(note)]
       );
 

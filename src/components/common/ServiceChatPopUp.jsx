@@ -606,7 +606,12 @@ ${clientLiveContext}`;
             'açık': 'light',
             'acik': 'light',
             'beyaz': 'light',
-            'light': 'light'
+            'light': 'light',
+            'askeri': 'military',
+            'asker': 'military',
+            'taktik': 'military',
+            'komando': 'military',
+            'military': 'military'
           };
 
           const targetThemeId = THEME_ALIASES[rawThemeId] || rawThemeId;

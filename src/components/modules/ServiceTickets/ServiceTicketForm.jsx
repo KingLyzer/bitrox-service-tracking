@@ -784,15 +784,65 @@ export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
           <span>🔧</span>
           <span>{assetMode === 'installation' ? 'Kurulum Talebi ve Notları' : 'Arıza Detayı ve Notlar'}</span>
         </div>
+
+        {assetMode !== 'installation' && (
+          <div style={{ marginBottom: 10 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', display: 'block', marginBottom: 6 }}>
+              ⚡ Sık Karşılaşılan Şikayetler (Hızlı Ekle):
+            </span>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {[
+                'Cihaz Açılmıyor',
+                'Format / Kurulum',
+                'Aşırı Yavaş / Donuyor',
+                'Mavi Ekran Hatası',
+                'Ekran Kırık / Görüntü Yok',
+                'Ağ / İnternet Bağlantısı Yok',
+                'Yazıcı Çıktı Vermiyor',
+                'Klavye / Mouse Arızalı',
+                'Genel Bakım & Temizlik'
+              ].map(chip => {
+                const isSelected = form.fault_desc?.includes(chip);
+                return (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => {
+                      if (!form.fault_desc) {
+                        set('fault_desc', chip);
+                      } else if (!form.fault_desc.includes(chip)) {
+                        set('fault_desc', `${form.fault_desc}, ${chip}`);
+                      }
+                    }}
+                    style={{
+                      padding: '3px 9px',
+                      borderRadius: 14,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      background: isSelected ? 'rgba(59, 130, 246, 0.2)' : 'var(--color-surface-alt)',
+                      border: `1px solid ${isSelected ? '#3b82f6' : 'var(--color-border)'}`,
+                      color: isSelected ? '#38bdf8' : 'var(--color-text)',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    + {chip}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="form-grid-4">
           <F label={assetMode === 'installation' ? "Kurulum Notları / Özel İstekler" : "Bildirilen Arıza / Şikayet"} span={4} required error={errors.fault_desc}>
             <textarea 
               className="form-control"
               value={form.fault_desc || ''} 
               onChange={e => set('fault_desc', e.target.value)} 
-              rows={3} 
+              rows={2} 
               placeholder={assetMode === 'installation' ? "Özel yazılım talepleri, kullanıcı notları, departman gereksinimleri..." : "Müşteri veya personel şikayeti, arıza belirtileri..."} 
-              style={{ borderRadius: 6, resize: 'vertical' }}
+              style={{ borderRadius: 6, resize: 'vertical', minHeight: 48 }}
             />
           </F>
           {assetMode !== 'installation' && (
@@ -803,7 +853,7 @@ export default function ServiceTicketForm({ ticket, onSave, onCancel }) {
                 onChange={e => set('notes', e.target.value)} 
                 rows={2} 
                 placeholder="Teknisyen veya kabul sorumlusu ön notları..." 
-                style={{ borderRadius: 6, resize: 'vertical' }}
+                style={{ borderRadius: 6, resize: 'vertical', minHeight: 48 }}
               />
             </F>
           )}

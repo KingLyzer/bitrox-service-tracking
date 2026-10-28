@@ -164,6 +164,16 @@ export const THEMES_LIST = [
     desc: 'Sıcak amber, fuşya ve gün batımı moru harmanı.',
     previewColors: ['#180d1e', '#26162f', '#f43f5e', '#f59e0b'],
   },
+  {
+    id: 'military',
+    name: 'Askeri & Taktik Operasyon (Military 🎖️)',
+    category: 'Özel & Taktik',
+    icon: '🎖️',
+    badge: 'Taktik Radar & HUD 🎯',
+    badgeColor: 'badge-success',
+    desc: 'Haki kamuflaj, taktiksel zeytin yeşili ve mat karbon palet, askeri radar telemetrisi ve operasyonel HUD göstergeleri.',
+    previewColors: ['#090e09', '#111a11', '#84cc16', '#eab308'],
+  },
 ];
 
 export default function ThemeModal({ isOpen, onClose }) {

@@ -952,7 +952,7 @@ ipcMain.handle('util:generate-ticket-no', () => {
   } catch (err) { return { success: false, message: err.message }; }
 });
 
-ipcMain.handle('util:generate-code', (_, { type }) => {
+ipcMain.handle('util:generate-code', (_, { type, stock_type }) => {
   try {
     const keyMap = { device: 'device_prefix', stock: 'stock_prefix', toner: 'toner_prefix' };
     const tableMap = { device: 'devices', stock: 'stock_items', toner: 'toner_items' };
@@ -960,10 +960,20 @@ ipcMain.handle('util:generate-code', (_, { type }) => {
     if (!keyMap[type] || !tableMap[type] || !colMap[type]) {
       return { success: false, message: 'Geçersiz kod türü.' };
     }
-    const prefix = (dbGet(`SELECT value FROM settings WHERE key='${keyMap[type]}'`) || {}).value || type.toUpperCase().slice(0, 3);
+    let prefix = type.toUpperCase().slice(0, 3);
+    if (type === 'stock') {
+      const isScrap = (stock_type === 'scrap' || stock_type === 'hurda');
+      if (isScrap) {
+        prefix = 'HRD';
+      } else {
+        prefix = (dbGet(`SELECT value FROM settings WHERE key='stock_prefix'`) || {}).value || 'STK';
+      }
+    } else {
+      prefix = (dbGet(`SELECT value FROM settings WHERE key='${keyMap[type]}'`) || {}).value || prefix;
+    }
     const col = colMap[type];
     const table = tableMap[type];
-    const last = dbGet(`SELECT ${col} FROM ${table} ORDER BY id DESC LIMIT 1`);
+    const last = dbGet(`SELECT ${col} FROM ${table} WHERE ${col} LIKE '${prefix}-%' ORDER BY id DESC LIMIT 1`);
     let seq = 1;
     if (last && last[col]) {
       const parts = last[col].split('-');

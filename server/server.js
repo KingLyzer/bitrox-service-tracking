@@ -340,6 +340,7 @@ server.listen(PORT, '0.0.0.0', async () => {
     // Ensure AUTO_INCREMENT on id columns so inserts with qty > 0 never fail
     try {
       await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+      await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN move_date DATETIME DEFAULT CURRENT_TIMESTAMP');
     } catch (_) {}
     try {
       await pool.execute('ALTER TABLE used_parts MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');

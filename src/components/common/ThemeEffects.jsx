@@ -8,6 +8,7 @@ import egyptPyramidsImg from '../../assets/egypt_pyramids.jpg';
 import cozyCoffeeImg from '../../assets/cozy_coffee.jpg';
 import retroArcadeImg from '../../assets/retro_arcade.jpg';
 import summerBeachImg from '../../assets/summer_beach.jpg';
+import militaryTacticalImg from '../../assets/military_tactical.jpg';
 
 export default function ThemeEffects() {
   const { theme, effectsEnabled = true } = useApp();
@@ -2592,8 +2593,149 @@ export default function ThemeEffects() {
         </>
       )}
 
+      {/* ── 🎖️ 16. ASKERİ & TAKTİK OPERASYON (MILITARY) ── */}
+      {theme === 'military' && effectsEnabled && (
+        <>
+          <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9989, overflow: 'hidden' }}>
+            <div 
+              className="theme-backdrop-img military-backdrop" 
+              style={{ backgroundImage: `url(${militaryTacticalImg})` }} 
+            />
+          </div>
+          <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9990, overflow: 'hidden' }}>
+            {/* Tactical Radar HUD overlay in top-right corner */}
+            <div className="military-radar-hud">
+              <div className="military-radar-circle">
+                <div className="military-radar-sweep" />
+                <div className="military-blip blip-1" />
+                <div className="military-blip blip-2" />
+                <div className="military-blip blip-3" />
+                <div className="military-crosshair-h" />
+                <div className="military-crosshair-v" />
+              </div>
+              <div className="military-hud-telemetry">
+                <div className="telemetry-line"><span className="telemetry-tag">DEF-CON:</span> <span className="telemetry-val">1 [ACTIVE]</span></div>
+                <div className="telemetry-line"><span className="telemetry-tag">SAT-COM:</span> <span className="telemetry-val">LINKED 99.8%</span></div>
+                <div className="telemetry-line"><span className="telemetry-tag">GRID:</span> <span className="telemetry-val">39°46'N 30°31'E</span></div>
+              </div>
+            </div>
+
+            {/* Tactical Badges & Dog Tags */}
+            <div className="theme-hanging-bar">
+              <div className="hanging-decor sway-decor-1" style={{ left: '25px' }}>
+                <div className="decor-chain" style={{ height: '90px', background: 'linear-gradient(to bottom, #d9f99d, #65a30d)' }} />
+                <span style={{ fontSize: '26px', filter: 'drop-shadow(0 0 10px #84cc16)' }}>🎖️</span>
+              </div>
+              <div className="hanging-decor sway-decor-2" style={{ left: '85px' }}>
+                <div className="decor-chain" style={{ height: '120px', background: 'linear-gradient(to bottom, #fde047, #ca8a04)' }} />
+                <span style={{ fontSize: '22px', filter: 'drop-shadow(0 0 8px #eab308)' }}>🛡️</span>
+              </div>
+              <div className="hanging-decor sway-decor-1" style={{ right: '25px' }}>
+                <div className="decor-chain" style={{ height: '95px', background: 'linear-gradient(to bottom, #d9f99d, #4d7c0f)' }} />
+                <span style={{ fontSize: '24px', filter: 'drop-shadow(0 0 10px #84cc16)' }}>🎯</span>
+              </div>
+              <div className="hanging-decor sway-decor-2" style={{ right: '85px' }}>
+                <div className="decor-chain" style={{ height: '125px', background: 'linear-gradient(to bottom, #d9f99d, #65a30d)' }} />
+                <span style={{ fontSize: '22px', filter: 'drop-shadow(0 0 8px #65a30d)' }}>📻</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Global CSS for Shared Backdrop & Hanging Elements */}
       <style>{`
+        /* Military Radar HUD Styles */
+        .military-radar-hud {
+          position: fixed;
+          top: 60px;
+          right: 24px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 14px;
+          background: rgba(9, 14, 9, 0.85);
+          border: 1px solid rgba(132, 204, 22, 0.45);
+          border-radius: 8px;
+          box-shadow: 0 0 20px rgba(132, 204, 22, 0.18);
+          backdrop-filter: blur(8px);
+          pointer-events: none;
+          z-index: 9991;
+        }
+        .military-radar-circle {
+          position: relative;
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          border: 1px solid rgba(132, 204, 22, 0.6);
+          background: radial-gradient(circle, rgba(132, 204, 22, 0.15) 0%, rgba(9, 14, 9, 0.9) 70%);
+          overflow: hidden;
+          box-shadow: inset 0 0 10px rgba(132, 204, 22, 0.3);
+        }
+        .military-radar-sweep {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, rgba(132, 204, 22, 0.6) 0deg, transparent 65deg, transparent 360deg);
+          animation: radarSweep 3.5s linear infinite;
+        }
+        .military-crosshair-h {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: rgba(132, 204, 22, 0.4);
+        }
+        .military-crosshair-v {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: rgba(132, 204, 22, 0.4);
+        }
+        .military-blip {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #bef264;
+          box-shadow: 0 0 6px #84cc16;
+          animation: blipBlink 2.2s ease-in-out infinite;
+        }
+        .blip-1 { top: 14px; left: 32px; animation-delay: 0.2s; }
+        .blip-2 { top: 34px; left: 16px; animation-delay: 1.1s; }
+        .blip-3 { top: 22px; left: 24px; animation-delay: 1.8s; }
+        @keyframes radarSweep {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes blipBlink {
+          0%, 100% { opacity: 0.25; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.3); }
+        }
+        .military-hud-telemetry {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          font-family: monospace;
+          font-size: 10px;
+          letter-spacing: 0.5px;
+        }
+        .telemetry-tag {
+          color: #84cc16;
+          font-weight: 700;
+        }
+        .telemetry-val {
+          color: #bbf7d0;
+        }
+        @media (max-width: 900px) {
+          .military-radar-hud {
+            display: none;
+          }
+        }
+
         .theme-backdrop-img {
           position: fixed;
           bottom: 0;
