@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Sayfa Bulunamadı | Bitrox ServiceTracker</title>
+  <meta name="robots" content="noindex, nofollow" />
+  
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css?v=5.1.0" />
+  <link rel="stylesheet" href="style.css?v=5.1.0" />
+  <style>
+    .error-layout {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .error-box {
+      max-width: 520px;
+      padding: 48px 32px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .error-code {
+      font-size: 5rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="error-layout">
+    <div class="error-box">
+      <div class="error-code">404</div>
+      <h1 style="font-size: 1.75rem; margin-bottom: 12px;">Sayfa Bulunamadı</h1>
+      <p style="color: var(--text-secondary); margin-bottom: 28px; line-height: 1.6;">
+        Aradığınız dokümantasyon sayfası veya bağlantı taşınmış, adı değiştirilmiş ya da silinmiş olabilir.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="/" class="btn btn-primary">← Ana Sayfaya Dön</a>
+        <a href="docs/" class="btn btn-secondary">Dokümantasyon</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasarım Sistemi & Bileşen Kılavuzu — Bitrox ServiceTracker</title>
+  <meta name="robots" content="noindex, nofollow" />
+  
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css?v=5.2.0" />
+  <link rel="stylesheet" href="style.css?v=5.2.0" />
+
+  <style>
+    .sg-container { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+    .sg-section { margin-bottom: 56px; padding-bottom: 40px; border-bottom: 1px solid var(--border-subtle); }
+    .sg-title { font-size: 1.75rem; margin-bottom: 12px; }
+    .sg-desc { color: var(--text-muted); margin-bottom: 24px; }
+    .sg-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .sg-color-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .sg-color-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; }
+    .sg-color-preview { height: 60px; width: 100%; }
+    .sg-color-info { padding: 12px; font-size: 0.8125rem; font-family: var(--font-mono); }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky mini navbar for Styleguide -->
+  <header style="border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); padding: 16px 24px; position: sticky; top: 0; z-index: var(--z-navbar);">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="assets/logo.webp?v=5.2.0" alt="Bitrox Logo" width="28" height="28" />
+        <strong>Bitrox Design System Kılavuzu</strong>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="/" class="btn btn-ghost btn-sm">← Ana Sayfa</a>
+        <button type="button" class="icon-btn" id="themeToggleBtn" aria-label="Tema Değiştir">
+          <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sg-container">
+
+    <!-- 1. Typography & Tokens -->
+    <section class="sg-section">
+      <h2 class="sg-title">1. Tipografi & Hiyerarşi</h2>
+      <p class="sg-desc">Plus Jakarta Sans (Gövde ve Başlıklar) + JetBrains Mono (Kod & Monospace). Türkçe karakter tam uyumu: ğ ü ş ı ö ç İ.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h1 style="font-size: var(--text-4xl);">Display H1 — Kurumsal IT Servis Masası (52px)</h1>
+        <h2 style="font-size: var(--text-2xl);">Heading H2 — 21 Eksiksiz Modül ve Saha Akışı (32px)</h2>
+        <h3 style="font-size: var(--text-xl);">Heading H3 — Snipe-IT Salt-Okunur API Mimarisi (24px)</h3>
+        <p style="font-size: var(--text-base);">Gövde Metni (15px) — Arıza fişleri, yazıcı sayaç takibi, BitLocker anahtar kasası ve bakım tutanaklarını tek merkezde toplayan açık kaynaklı IT operasyon portalı.</p>
+        <code style="font-family: var(--font-mono); background: var(--bg-elevated); padding: 4px 8px; border-radius: var(--radius-sm); align-self: flex-start;">git clone https://github.com/KingLyzer/bitrox-service-tracking.git</code>
+      </div>
+    </section>
+
+    <!-- 2. Renk Paleti -->
+    <section class="sg-section">
+      <h2 class="sg-title">2. Renk Paleti (Tokens)</h2>
+      <p class="sg-desc">Açık ve koyu temalara uyumlu semantik renk token'ları. Neon ve parıltıdan uzak, sakin kurumsal tonlar.</p>
+
+      <div class="sg-color-swatches">
+        <div class="sg-color-card">
+          <div class="sg-color-preview" style="background: var(--accent);"></div>
+          <div class="sg-color-info"><strong>--accent</strong><br>Vurgu Rengi</div>
+        </div>
+        <div class="sg-color-card">
+          <div class="sg-color-preview" style="background: var(--bg-base); border-bottom: 1px solid var(--border-default);"></div>
+          <div class="sg-color-info"><strong>--bg-base</strong><br>Arka Plan</div>
+        </div>
+        <div class="sg-color-card">
+          <div class="sg-color-preview" style="background: var(--bg-surface); border-bottom: 1px solid var(--border-default);"></div>
+          <div class="sg-color-info"><strong>--bg-surface</strong><br>Yüzey / Kart</div>
+        </div>
+        <div class="sg-color-card">
+          <div class="sg-color-preview" style="background: var(--success);"></div>
+          <div class="sg-color-info"><strong>--success</strong><br>Tam / Başarılı</div>
+        </div>
+        <div class="sg-color-card">
+          <div class="sg-color-preview" style="background: var(--warning);"></div>
+          <div class="sg-color-info"><strong>--warning</strong><br>Temel / Uyarı</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Buton Varyantları -->
+    <section class="sg-section">
+      <h2 class="sg-title">3. Butonlar (3 Varyant)</h2>
+      <p class="sg-desc">Birincil (Primary), İkincil (Secondary) ve Hayalet (Ghost) buton varyantları + ikon butonları.</p>
+
+      <div class="sg-grid">
+        <button type="button" class="btn btn-primary">Primary Buton</button>
+        <button type="button" class="btn btn-secondary">Secondary Buton</button>
+        <button type="button" class="btn btn-ghost">Ghost Buton</button>
+        <button type="button" class="btn btn-primary btn-sm">Primary Küçük</button>
+        <button type="button" class="btn btn-secondary btn-sm">Secondary Küçük</button>
+        <button type="button" class="icon-btn" aria-label="Örnek İkon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. Rozetler (Badges) -->
+    <section class="sg-section">
+      <h2 class="sg-title">4. Rozetler (Badges)</h2>
+      <p class="sg-desc">Sürüm, lisans ve durum etiketleri.</p>
+
+      <div class="sg-grid">
+        <span class="badge badge-accent">v2.3.2 Production</span>
+        <span class="badge badge-neutral">Açık Kaynak (MIT)</span>
+        <span class="badge badge-neutral">Self-Hosted</span>
+        <span class="table-tag tag-full">Tam (Yerleşik)</span>
+        <span class="table-tag tag-basic">Temel Destek</span>
+        <span class="table-tag tag-out">Kapsam Dışı</span>
+      </div>
+    </section>
+
+    <!-- 5. Uyarı / Callout Kutuları -->
+    <section class="sg-section">
+      <h2 class="sg-title">5. Uyarı Kutuları (Callouts)</h2>
+      <p class="sg-desc">Yönetici şifresi değişikliği ve sistem güvenlik uyarıları.</p>
+
+      <div class="alert-box" style="margin-bottom: 16px;">
+        <svg class="icon-svg alert-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <div>
+          <strong>Güvenlik Uyarısı (Zorunlu Şifre Değişimi):</strong> Varsayılan giriş bilgileri <code>admin / admin123</code> olarak tanımlıdır. İlk girişte şifrenizi Ayarlar sayfasından değiştiriniz.
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Kod Bloğu (Kopyala Butonlu) -->
+    <section class="sg-section">
+      <h2 class="sg-title">6. Kod Bloğu Penceresi</h2>
+      <p class="sg-desc">Terminal komutları için kopyalama butonlu pencere.</p>
+
+      <div class="code-block-window">
+        <div class="code-block-header">
+          <span class="code-block-title">bash — servis kurulumu</span>
+          <button type="button" class="btn-code-copy" data-target="sgCodePre">Kopyala</button>
+        </div>
+        <pre class="code-pre" id="sgCodePre"><code>git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+cd bitrox-service-tracking
+npm install
+npm run build && npm start</code></pre>
+      </div>
+    </section>
+
+    <!-- 7. Karşılaştırma Tablosu -->
+    <section class="sg-section">
+      <h2 class="sg-title">7. Adil Karşılaştırma Tablosu</h2>
+      <p class="sg-desc">Dürüst ve ölçekli karşılaştırma stili.</p>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Fonksiyonel Yetkinlik</th>
+              <th style="text-align: center;">Tek Başına Snipe-IT</th>
+              <th style="text-align: center;">ServiceTracker + Snipe-IT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>IT Demirbaş & Varlık Yönetimi</strong></td>
+              <td style="text-align: center;"><span class="table-tag tag-full">Tam (Yerleşik)</span></td>
+              <td style="text-align: center;"><span class="table-tag tag-full">Tam (API ile Senkron)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Teknik Servis Arıza Fişi Aşamaları</strong></td>
+              <td style="text-align: center;"><span class="table-tag tag-out">Kapsam Dışı</span></td>
+              <td style="text-align: center;"><span class="table-tag tag-full">Tam (Entegre Modül)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Yazıcı Sayaç Logu & Toner Sarfiyatı</strong></td>
+              <td style="text-align: center;"><span class="table-tag tag-basic">Temel (Sadece adet)</span></td>
+              <td style="text-align: center;"><span class="table-tag tag-full">Tam (Sayaç + Eşik)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. Akordiyon (SSS) -->
+    <section class="sg-section">
+      <h2 class="sg-title">8. Akordiyon (SSS Bileşeni)</h2>
+      <p class="sg-desc">Erişilebilir, klavye odaklı akordiyon.</p>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false">
+            <span>Bitrox ServiceTracker'ı Snipe-IT olmadan kullanabilir miyim?</span>
+            <svg class="icon-svg faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Evet. Snipe-IT entegrasyonu tamamen isteğe bağlıdır. Tüm servis, toner, stok ve bakım modülleri bağımsız olarak yerel veritabanınızda çalışır.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px; text-align: center; font-size: 0.8125rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle);">
+    Bitrox ServiceTracker Design System v5.1.0 • MIT Lisansı
+  </footer>
+
+  <script src="script.js?v=5.1.0"></script>
+</body>
+</html>

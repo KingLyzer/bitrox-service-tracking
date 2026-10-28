@@ -70,3 +70,6 @@ solo-leveling/
 scripts/
 scratch/
 nohup.out
+/*.py
+/lighthouse-report.json
+/og_template.html

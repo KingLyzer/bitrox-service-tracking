@@ -1,219 +1,248 @@
 /* ==========================================================================
-   Bitrox Service Tracking - Modern Landing Page Scripts
+   Bitrox ServiceTracker - Client Interaction Script
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── 1. Navbar Scroll Effect ──────────────────────────────────────────────
-  const navbar = document.getElementById('navbar');
-  const btnBackToTop = document.getElementById('btnBackToTop');
+  // ── 1. Theme Toggle (Light / Dark) ────────────────────────────────────────
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
 
-  window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
+  function getPreferredTheme() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
 
-    // Navbar backdrop blur & compact mode
-    if (scrollPos > 40) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    if (themeIcon) {
+      // If theme is light, show moon icon to switch to dark; if dark, show sun icon
+      themeIcon.innerHTML = theme === 'light'
+        ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+        : '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
     }
+  }
 
-    // Back to top button visibility
-    if (scrollPos > 400) {
-      btnBackToTop.classList.add('visible');
-    } else {
-      btnBackToTop.classList.remove('visible');
+  // Initial theme setup
+  applyTheme(getPreferredTheme());
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  }
+
+  // Listen to system changes if user hasn't explicitly set preference
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'light' : 'dark');
     }
   });
 
-  // Back to top click handler
-  if (btnBackToTop) {
-    btnBackToTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+  // ── 2. GitHub Star Counter (Silent Fallback) ──────────────────────────────
+  const starCountEl = document.getElementById('githubStarsCount');
+  if (starCountEl) {
+    fetch('https://api.github.com/repos/KingLyzer/bitrox-service-tracking')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && typeof data.stargazers_count === 'number') {
+          starCountEl.textContent = `★ ${data.stargazers_count}`;
+        }
+      })
+      .catch(() => {
+        // Silent fallback on rate limit or offline
       });
-    });
   }
 
-  // ── 2. Mobile Menu Toggle ────────────────────────────────────────────────
+  // ── 3. Mobile Navigation Drawer ──────────────────────────────────────────
   const menuToggle = document.getElementById('menuToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  const mobileDrawer = document.getElementById('mobileDrawer');
 
-  if (menuToggle && mobileMenu) {
+  if (menuToggle && mobileDrawer) {
     menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('active');
-      const icon = menuToggle.querySelector('i');
-      if (icon) {
-        if (mobileMenu.classList.contains('active')) {
-          icon.classList.remove('fa-bars');
-          icon.classList.add('fa-xmark');
-        } else {
-          icon.classList.remove('fa-xmark');
-          icon.classList.add('fa-bars');
-        }
+      const isOpen = mobileDrawer.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Close when clicking a link inside drawer
+    mobileDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileDrawer.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileDrawer.classList.contains('open')) {
+        mobileDrawer.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
-
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        const icon = menuToggle.querySelector('i');
-        if (icon) {
-          icon.classList.remove('fa-xmark');
-          icon.classList.add('fa-bars');
-        }
-      });
-    });
   }
 
-  // ── 3. Toast Notification Helper ─────────────────────────────────────────
+  // ── 4. Toast Notification ────────────────────────────────────────────────
   const toastNotice = document.getElementById('toastNotice');
   const toastMessage = document.getElementById('toastMessage');
-  let toastTimeout = null;
+  let toastTimer = null;
 
-  function showToast(message = 'Komut panoya kopyalandı!') {
+  function showToast(msg = 'Kopyalandı') {
     if (!toastNotice) return;
-    if (toastMessage) toastMessage.textContent = message;
-
+    if (toastMessage) toastMessage.textContent = msg;
     toastNotice.classList.add('show');
-    if (toastTimeout) clearTimeout(toastTimeout);
-
-    toastTimeout = setTimeout(() => {
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
       toastNotice.classList.remove('show');
-    }, 2800);
+    }, 2400);
   }
 
-  // ── 4. Terminal Copy All Commands ────────────────────────────────────────
-  const btnCopyAll = document.getElementById('btnCopyAll');
-
-  const fullInstallScript = `# 1. Klonla
-git clone https://github.com/KingLyzer/bitrox-service-tracking.git
-cd bitrox-service-tracking
-
-# 2. Bağımlılıkları yükle
-npm install
-
-# 3. Veritabanını oluştur (şemayı bas)
-mysql -u root -p < database_schema.sql
-
-# 4. Çevre değişkenini oluştur (.env içine DB bilgilerini yaz)
-cp .env.example .env
-
-# 5. Derle ve Başlat!
-npm run build
-npm start`;
-
-  if (btnCopyAll) {
-    btnCopyAll.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(fullInstallScript);
-        const originalHTML = btnCopyAll.innerHTML;
-        btnCopyAll.innerHTML = '<i class="fa-solid fa-check"></i> <span>Kopyalandı!</span>';
-        btnCopyAll.style.background = '#10b981';
-        btnCopyAll.style.borderColor = '#10b981';
-
-        showToast('Tüm kurulum komutları panoya kopyalandı! 🚀');
-
-        setTimeout(() => {
-          btnCopyAll.innerHTML = originalHTML;
-          btnCopyAll.style.background = '';
-          btnCopyAll.style.borderColor = '';
-        }, 2500);
-      } catch (err) {
-        console.error('Kopyalama hatası:', err);
-        fallbackCopyTextToClipboard(fullInstallScript);
-        showToast('Komutlar kopyalandı!');
-      }
-    });
-  }
-
-  // ── 5. Terminal Single Line Copy Buttons ──────────────────────────────────
-  const lineButtons = document.querySelectorAll('.btn-copy-line');
-  lineButtons.forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const cmd = btn.getAttribute('data-cmd');
-      if (!cmd) return;
-
-      try {
-        await navigator.clipboard.writeText(cmd);
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981;"></i>';
-        showToast(`"${cmd.substring(0, 30)}..." kopyalandı! ✓`);
-
-        setTimeout(() => {
-          btn.innerHTML = originalHTML;
-        }, 2000);
-      } catch (err) {
-        fallbackCopyTextToClipboard(cmd);
-        showToast('Komut panoya kopyalandı!');
-      }
-    });
-  });
-
-  // Fallback clipboard method for older browsers
-  function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-9999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
+  // ── 5. Copy to Clipboard ─────────────────────────────────────────────────
+  async function copyText(text, successMsg = 'Panoya kopyalandı') {
     try {
-      document.execCommand('copy');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      showToast(successMsg);
     } catch (err) {
-      console.warn('Fallback copy failed', err);
+      showToast('Kopyalama başarısız');
     }
-    document.body.removeChild(textArea);
   }
 
-  // ── 6. Smooth Scroll for internal navigation links ───────────────────────
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#' || targetId === '') return;
-
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        const navHeight = navbar ? navbar.offsetHeight : 80;
-        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - navHeight - 15;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
+  document.querySelectorAll('.btn-code-copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let targetText = '';
+      const targetId = btn.getAttribute('data-target');
+      if (targetId) {
+        const el = document.getElementById(targetId);
+        if (el) targetText = el.innerText.trim();
+      }
+      if (!targetText) {
+        const parentWin = btn.closest('.code-block-window');
+        if (parentWin) {
+          const blocks = parentWin.querySelectorAll('.install-code-block');
+          for (const b of blocks) {
+            if (b.style.display !== 'none') {
+              const codeEl = b.querySelector('code');
+              if (codeEl) targetText = codeEl.innerText.trim();
+              break;
+            }
+          }
+        }
+      }
+      if (targetText) {
+        copyText(targetText, 'Komutlar panoya kopyalandı');
+        const orig = btn.innerText;
+        btn.innerText = 'Kopyalandı ✓';
+        setTimeout(() => { btn.innerText = orig; }, 1800);
       }
     });
   });
 
-  // ── 7. Scroll Reveal Animation for Cards ─────────────────────────────────
-  const revealElements = document.querySelectorAll('.feature-card, .stat-card, .snipeit-banner, .terminal-window');
+  // ── 6. Installation Tabs ──────────────────────────────────────────────────
+  const installTabs = document.querySelectorAll('.install-tab-btn');
+  const installBlocks = document.querySelectorAll('.install-code-block');
 
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          observer.unobserve(entry.target);
+  installTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      installTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      installBlocks.forEach(b => b.style.display = 'none');
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const activeBlock = document.getElementById(`install-${target}`);
+      if (activeBlock) activeBlock.style.display = 'block';
+    });
+  });
+
+  // ── 7. Module Filter ──────────────────────────────────────────────────────
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const moduleCards = document.querySelectorAll('.module-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-filter');
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      moduleCards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
         }
       });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -40px 0px'
     });
+  });
 
-    revealElements.forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(24px)';
-      el.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-      revealObserver.observe(el);
+  // ── 8. Lightbox Modal for Screenshots ─────────────────────────────────────
+  const lightbox = document.getElementById('lightboxModal');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.gallery-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const fullSrc = card.getAttribute('data-full');
+      const caption = card.querySelector('.gallery-card-title')?.innerText || '';
+      if (lightbox && lightboxImg && fullSrc) {
+        lightboxImg.src = fullSrc;
+        lightboxImg.alt = caption;
+        if (lightboxCaption) lightboxCaption.innerText = caption;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
     });
+  });
+
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   }
 
-  console.log('Bitrox ServiceTracker Landing Page initialized successfully.');
+  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox && lightbox.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+
+  // ── 9. FAQ Accordion ──────────────────────────────────────────────────────
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const question = item.querySelector('.faq-question');
+    if (!question) return;
+
+    question.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // Single open item behavior
+      document.querySelectorAll('.faq-item').forEach(other => {
+        if (other !== item) other.classList.remove('open');
+      });
+      item.classList.toggle('open', !isOpen);
+    });
+  });
+
 });

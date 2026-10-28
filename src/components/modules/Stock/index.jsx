@@ -82,6 +82,7 @@ export default function Stock({ tabData }) {
   const [chkUser, setChkUser] = useState('');
   const [chkQty, setChkQty] = useState('1');
   const [chkNote, setChkNote] = useState('');
+  const [showScannerModal, setShowScannerModal] = useState(false);
   const scanRef = useRef(null);
 
   const [labelTarget, setLabelTarget] = useState(null);
@@ -95,7 +96,7 @@ export default function Stock({ tabData }) {
   const [selectedRows, setSelectedRows] = useState([]);
   const [confirmDeleteSelected, setConfirmDeleteSelected] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [stockTypeFilter, setStockTypeFilter] = useState('all'); // 'all' | 'office' | 'scrap'
+  const [stockTypeFilter, setStockTypeFilter] = useState('office'); // 'office' | 'scrap' | 'all'
   const [filterCriticalOnly, setFilterCriticalOnly] = useState(() => Boolean(tabData?.onlyCritical || tabData?.filter === 'critical'));
 
   useEffect(() => {
@@ -178,6 +179,7 @@ export default function Stock({ tabData }) {
 
   const openEdit = (row) => {
     setEditItem(row);
+    const rowType = (row.stock_type === 'scrap' || row.stock_type === 'hurda' || row.stock_type === 'screen') ? 'scrap' : 'office';
     setForm({
       id: row.id,
       stock_code: row.stock_code || '',
@@ -185,7 +187,7 @@ export default function Stock({ tabData }) {
       name: row.name || '',
       category_id: row.category_id || '',
       category_name: row.category_name || '',
-      stock_type: row.stock_type || 'office',
+      stock_type: rowType,
       qty: row.qty ?? 0,
       unit: row.unit || 'Adet',
       critical_qty: row.critical_qty ?? 0,
@@ -206,7 +208,7 @@ export default function Stock({ tabData }) {
       return;
     }
     const currentStockType = form.stock_type === 'scrap' ? 'scrap' : 'office';
-    const typeLabel = currentStockType === 'scrap' ? 'Hurda Stoğu' : 'Ofis Stoğu';
+    const typeLabel = currentStockType === 'scrap' ? 'Hurda Stoğu' : 'Malzeme Stoğu';
     setSaving(true);
     try {
       if (editItem?.id) {
@@ -334,6 +336,7 @@ export default function Stock({ tabData }) {
     setChkUser('');
     setChkNote('');
     setScanValue('');
+    setShowScannerModal(false);
   };
 
   const doCheckout = async () => {
@@ -465,11 +468,14 @@ export default function Stock({ tabData }) {
     }
   };
 
-  const officeItems = useMemo(() =>
-    items.filter(i => (i.stock_type || 'office') === 'office'), [items]);
+  const isScrapItem = (item) => item?.stock_type === 'scrap' || item?.stock_type === 'hurda' || item?.stock_type === 'screen';
+  const isOfficeItem = (item) => !isScrapItem(item);
+
+  const materialItems = useMemo(() =>
+    items.filter(isOfficeItem), [items]);
 
   const scrapItems = useMemo(() =>
-    items.filter(i => i.stock_type === 'scrap'), [items]);
+    items.filter(isScrapItem), [items]);
 
   const criticalLow = useMemo(() =>
     items.filter(i => Number(i.qty || 0) <= Number(i.critical_qty || 0)), [items]);
@@ -477,9 +483,9 @@ export default function Stock({ tabData }) {
   const visibleItems = useMemo(() => {
     let list = items;
     if (stockTypeFilter === 'office') {
-      list = list.filter(i => (i.stock_type || 'office') === 'office');
+      list = list.filter(isOfficeItem);
     } else if (stockTypeFilter === 'scrap') {
-      list = list.filter(i => i.stock_type === 'scrap');
+      list = list.filter(isScrapItem);
     }
     if (filterCriticalOnly) {
       list = list.filter(i => Number(i.qty || 0) <= Number(i.critical_qty || 0));
@@ -492,14 +498,14 @@ export default function Stock({ tabData }) {
         i.barcode,
         i.category_name,
         i.location,
-        i.stock_type === 'scrap' ? 'hurda hurda deposu' : 'ofis ofis stogu'
+        isScrapItem(i) ? 'hurda hurda deposu depo' : 'ofis malzeme aktif yedek parca sarf'
       ].some(f => String(f || '').toLocaleLowerCase('tr-TR').includes(term)));
     }
     return list;
   }, [items, stockTypeFilter, filterCriticalOnly, searchText]);
 
   const totalQty = items.reduce((s, i) => s + Number(i.qty || 0), 0);
-  const officeQty = officeItems.reduce((s, i) => s + Number(i.qty || 0), 0);
+  const materialQty = materialItems.reduce((s, i) => s + Number(i.qty || 0), 0);
   const scrapQty = scrapItems.reduce((s, i) => s + Number(i.qty || 0), 0);
   const stockValue = items.reduce((s, i) => s + (Number(i.qty || 0) * Number(i.unit_price || 0)), 0);
 
@@ -519,10 +525,10 @@ export default function Stock({ tabData }) {
     const dateStr = new Date().toLocaleDateString('tr-TR');
     const timeStr = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
     const filterTitle = stockTypeFilter === 'office'
-      ? 'Ofis Stoğu (Aktif Malzemeler)'
+      ? 'Malzeme Stokları Listesi (Ofis Malzemeleri)'
       : stockTypeFilter === 'scrap'
-        ? 'Hurda Stoğu (Depo Hurdaları)'
-        : 'Tüm Stoklar (Ofis ve Depo Hurda)';
+        ? 'Hurda Stokları Listesi (Depo Hurdaları)'
+        : 'Tüm Stoklar Listesi (Malzeme ve Hurda)';
 
     const totalQtyFiltered = visibleItems.reduce((s, i) => s + Number(i.qty || 0), 0);
     const totalValFiltered = visibleItems.reduce((s, i) => s + (Number(i.qty || 0) * Number(i.unit_price || 0)), 0);
@@ -672,7 +678,7 @@ export default function Stock({ tabData }) {
    </Row>`;
 
     visibleItems.forEach((item, idx) => {
-      const isScrap = item.stock_type === 'scrap';
+      const isScrap = isScrapItem(item);
       const qtyNum = Number(item.qty || 0);
       const priceNum = Number(item.unit_price || 0);
       const totalItemVal = qtyNum * priceNum;
@@ -683,7 +689,7 @@ export default function Stock({ tabData }) {
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${escapeXml(item.stock_code)}</Data></Cell>
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${escapeXml(item.barcode || item.stock_code)}</Data></Cell>
     <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.name)}</Data></Cell>
-    <Cell ss:StyleID="${isScrap ? 'TblCellTypeScrap' : 'TblCellTypeOffice'}"><Data ss:Type="String">${isScrap ? 'Hurda (Depo)' : 'Ofis Malzemesi'}</Data></Cell>
+    <Cell ss:StyleID="${isScrap ? 'TblCellTypeScrap' : 'TblCellTypeOffice'}"><Data ss:Type="String">${isScrap ? 'Hurda Stoğu' : 'Malzeme Stoğu'}</Data></Cell>
     <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.category_name || '—')}</Data></Cell>
     <Cell ss:StyleID="TblCellNumber"><Data ss:Type="Number">${qtyNum}</Data></Cell>
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${escapeXml(item.unit || 'Adet')}</Data></Cell>
@@ -737,23 +743,23 @@ export default function Stock({ tabData }) {
     {
       field: 'stock_type',
       headerName: 'Stok Türü',
-      width: 135,
+      width: 140,
       cellRenderer: params => {
-        const isScrap = params.value === 'scrap';
+        const isScrap = isScrapItem(params.data || { stock_type: params.value });
         return (
           <span style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 4,
+            gap: 5,
             padding: '2px 8px',
-            borderRadius: 12,
+            borderRadius: 6,
             fontSize: 11,
             fontWeight: 700,
             background: isScrap ? 'rgba(239, 68, 68, 0.12)' : 'rgba(14, 165, 233, 0.12)',
             color: isScrap ? '#ef4444' : '#0284c7',
             border: `1px solid ${isScrap ? 'rgba(239, 68, 68, 0.25)' : 'rgba(14, 165, 233, 0.25)'}`
           }}>
-            {isScrap ? '♻️ Hurda Stoğu' : '🏢 Ofis Stoğu'}
+            {isScrap ? '♻️ Hurda Stoğu' : '📦 Malzeme Stoğu'}
           </span>
         );
       }
@@ -778,7 +784,7 @@ export default function Stock({ tabData }) {
           <button className="btn btn-info btn-xs" title="Barkod & QR Gör" onClick={() => { setLabelTarget(params.data); setLabelMode('barcode'); }}>🏷️</button>
           <button className="btn btn-success btn-xs" title="Stok Hareketi" onClick={() => { setAdjustTarget(params.data); setAdjustType('add'); setAdjustQty('1'); setAdjustNote(''); }}>📦</button>
           {hasPermission('stock', 'can_edit') && (
-            <button className="btn btn-secondary btn-xs" title="Düzenle" onClick={() => { setEditItem(params.data); setForm({ ...params.data, barcode: params.data.barcode || params.data.stock_code, stock_type: params.data.stock_type || 'office' }); setShowForm(true); }}>✏️</button>
+            <button className="btn btn-secondary btn-xs" title="Düzenle" onClick={() => { setEditItem(params.data); setForm({ ...params.data, barcode: params.data.barcode || params.data.stock_code, stock_type: isScrapItem(params.data) ? 'scrap' : 'office' }); setShowForm(true); }}>✏️</button>
           )}
           {hasPermission('stock', 'can_delete') && (
             <button className="btn btn-danger btn-xs" title="Kaldır" onClick={() => setDeleteTarget(params.data)}>🗑️</button>
@@ -790,132 +796,91 @@ export default function Stock({ tabData }) {
 
   return (
     <div className="module-container" style={{ padding: '8px 12px' }}>
-      {/* 4'lü Modern KPI Özet Kartları */}
+      {/* ── Toner Stili Kompakt Sekmeler & Özet ── */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
         gap: 10,
-        marginBottom: 10
+        padding: '8px 14px',
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 8,
+        marginBottom: 6
       }}>
-        {/* Ofis Stoğu */}
-        <div
-          onClick={() => setStockTypeFilter(curr => curr === 'office' ? 'all' : 'office')}
-          style={{
-            background: stockTypeFilter === 'office' ? 'rgba(14, 165, 233, 0.12)' : 'var(--color-surface)',
-            border: `1px solid ${stockTypeFilter === 'office' ? '#0284c7' : 'var(--color-border)'}`,
-            borderRadius: 10,
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
-          title="Ofis stoklarını filtrelemek için tıklayın"
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 8,
-            background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18
-          }}>
-            🏢
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 600 }}>OFİS STOĞU</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: '#0284c7' }}>
-              {officeQty.toFixed(0)} <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--color-text-muted)' }}>Adet ({officeItems.length} Kalem)</span>
-            </div>
-          </div>
+        {/* Sekme Butonları (Toner takibindeki gibi sade btn btn-sm) */}
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <button
+            type="button"
+            className={`btn btn-sm ${stockTypeFilter === 'office' ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setStockTypeFilter('office')}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, borderRadius: 8, padding: '5px 14px' }}
+          >
+            <span>📦</span>
+            <span>Malzeme Stoğu ({materialItems.length})</span>
+          </button>
+          <button
+            type="button"
+            className={`btn btn-sm ${stockTypeFilter === 'scrap' ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setStockTypeFilter('scrap')}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, borderRadius: 8, padding: '5px 14px' }}
+          >
+            <span>♻️</span>
+            <span>Hurda Stoğu ({scrapItems.length})</span>
+          </button>
+          <button
+            type="button"
+            className={`btn btn-sm ${stockTypeFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setStockTypeFilter('all')}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, borderRadius: 8, padding: '5px 14px' }}
+          >
+            <span>📋</span>
+            <span>Tümü ({items.length})</span>
+          </button>
         </div>
 
-        {/* Hurda Stoğu */}
-        <div
-          onClick={() => setStockTypeFilter(curr => curr === 'scrap' ? 'all' : 'scrap')}
-          style={{
-            background: stockTypeFilter === 'scrap' ? 'rgba(239, 68, 68, 0.12)' : 'var(--color-surface)',
-            border: `1px solid ${stockTypeFilter === 'scrap' ? '#ef4444' : 'var(--color-border)'}`,
-            borderRadius: 10,
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
-          title="Depodaki hurda stoklarını filtrelemek için tıklayın"
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 8,
-            background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18
-          }}>
-            ♻️
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 600 }}>HURDA STOĞU (DEPO)</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: '#ef4444' }}>
-              {scrapQty.toFixed(0)} <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--color-text-muted)' }}>Adet ({scrapItems.length} Kalem)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Kritik Kalemler */}
-        <div
-          onClick={() => setFilterCriticalOnly(v => !v)}
-          style={{
-            background: filterCriticalOnly ? 'rgba(245, 158, 11, 0.12)' : 'var(--color-surface)',
-            border: `1px solid ${filterCriticalOnly ? '#f59e0b' : 'var(--color-border)'}`,
-            borderRadius: 10,
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            cursor: 'pointer',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-            transition: 'all 0.2s ease'
-          }}
-          title="Kritik seviyedeki ürünleri filtrelemek için tıklayın"
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 8,
-            background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18
-          }}>
-            ⚠️
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 600 }}>KRİTİK SEVİYE</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: '#f59e0b' }}>
-              {criticalLow.length} <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--color-text-muted)' }}>Ürün {filterCriticalOnly ? '(Filtreli)' : ''}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Stok Değeri */}
-        <div style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 10,
-          padding: '10px 14px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
-        }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: 8,
-            background: 'rgba(16, 185, 129, 0.12)', color: '#10b981',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18
-          }}>
-            💰
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 600 }}>TOPLAM STOK DEĞERİ</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: '#10b981' }}>
-              ₺{stockValue.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
+        {/* Sağ Taraf: Kompakt İstatistik & Görünüm Modu */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12 }}>
+          {criticalLow.length > 0 && (
+            <span
+              onClick={() => setFilterCriticalOnly(v => !v)}
+              style={{
+                cursor: 'pointer',
+                fontWeight: 700,
+                color: '#f59e0b',
+                background: filterCriticalOnly ? 'rgba(245, 158, 11, 0.2)' : 'rgba(245, 158, 11, 0.1)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                padding: '3px 8px',
+                borderRadius: 6
+              }}
+              title="Kritik seviyedeki ürünleri filtrele"
+            >
+              ⚠️ {criticalLow.length} Kritik {filterCriticalOnly ? '(Filtreli)' : ''}
+            </span>
+          )}
+          <span style={{ color: 'var(--color-text-muted)' }}>
+            Toplam Değer: <strong style={{ color: '#10b981' }}>₺{stockValue.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+          </span>
+          <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 8, overflow: 'hidden' }}>
+            <button
+              type="button"
+              onClick={() => setViewMode('cards')}
+              className={`btn btn-xs ${viewMode === 'cards' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ borderRadius: 0, padding: '4px 8px', fontSize: 11, fontWeight: 700 }}
+              title="Kart Görünümü"
+            >
+              📱 Kart
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('table')}
+              className={`btn btn-xs ${viewMode === 'table' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ borderRadius: 0, padding: '4px 8px', fontSize: 11, fontWeight: 700 }}
+              title="Tablo Görünümü"
+            >
+              📊 Tablo
+            </button>
           </div>
         </div>
       </div>
@@ -924,13 +889,13 @@ export default function Stock({ tabData }) {
       <div className="legacy-ribbon" style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: 10,
+        gap: 8,
         alignItems: 'center',
         padding: '8px 14px',
         background: 'var(--color-surface)',
         border: '1px solid var(--color-border)',
-        borderRadius: 10,
-        marginBottom: 10
+        borderRadius: 8,
+        marginBottom: 8
       }}>
         {/* Sol Taraf: İşlem Butonları */}
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -973,6 +938,17 @@ export default function Stock({ tabData }) {
             </button>
           )}
 
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={() => { setScanValue(''); setShowScannerModal(true); }}
+            style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', fontSize: 12, borderRadius: 8 }}
+            title="Barkod / QR okutarak hızlı stok çıkışı veya arama yap"
+          >
+            <span>⚡</span>
+            <span>Barkod Okut</span>
+          </button>
+
           {hasPermission('stock', 'can_delete') && (
             <button
               type="button"
@@ -1012,13 +988,8 @@ export default function Stock({ tabData }) {
             <span>📥</span>
             <span>Excel'e Aktar</span>
           </button>
-        </div>
 
-        {/* Dikey Ayrıcı Çizgi */}
-        <div style={{ width: 1, height: 22, background: 'var(--color-border)', margin: '0 2px' }} />
-
-        {/* Araçlar: Yenile */}
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {/* Araçlar: Yenile */}
           <button
             type="button"
             className="btn btn-sm btn-secondary"
@@ -1029,13 +1000,10 @@ export default function Stock({ tabData }) {
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              padding: '5px 14px',
+              padding: '5px 12px',
               borderRadius: 8,
               fontSize: 12,
-              fontWeight: 700,
-              background: 'rgba(59, 130, 246, 0.12)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#38bdf8'
+              fontWeight: 600
             }}
           >
             <span style={{ fontSize: 14, display: 'inline-block', transform: loading ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s ease' }}>
@@ -1045,42 +1013,14 @@ export default function Stock({ tabData }) {
           </button>
         </div>
 
-        {/* Orta: Stok Türü Filtre Butonları */}
-        <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 8, overflow: 'hidden', margin: '0 4px' }}>
-          <button
-            type="button"
-            onClick={() => setStockTypeFilter('all')}
-            className={`btn btn-xs ${stockTypeFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ borderRadius: 0, padding: '5px 10px', fontSize: 11.5, fontWeight: 700 }}
-          >
-            📋 Tümü ({items.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setStockTypeFilter('office')}
-            className={`btn btn-xs ${stockTypeFilter === 'office' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ borderRadius: 0, padding: '5px 10px', fontSize: 11.5, fontWeight: 700 }}
-          >
-            🏢 Ofis ({officeItems.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setStockTypeFilter('scrap')}
-            className={`btn btn-xs ${stockTypeFilter === 'scrap' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ borderRadius: 0, padding: '5px 10px', fontSize: 11.5, fontWeight: 700 }}
-          >
-            ♻️ Hurda ({scrapItems.length})
-          </button>
-        </div>
-
-        {/* Sağ Taraf: Canlı Arama, Kritik Filtresi & Görünüm Değiştirici */}
+        {/* Sağ Taraf: Canlı Arama, Kritik Filtresi */}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, cursor: 'pointer', margin: 0, fontWeight: 600, color: filterCriticalOnly ? '#ef4444' : 'var(--color-text-secondary)' }}>
             <input type="checkbox" checked={filterCriticalOnly} onChange={e => setFilterCriticalOnly(e.target.checked)} />
             ⚠️ Sadece Kritik
           </label>
 
-          <div style={{ position: 'relative', width: 280 }}>
+          <div style={{ position: 'relative', width: 260 }}>
             <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 13, color: 'var(--color-text-muted)', pointerEvents: 'none' }}>🔍</span>
             <input
               type="text"
@@ -1113,177 +1053,8 @@ export default function Stock({ tabData }) {
               </button>
             )}
           </div>
-
-          <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 8, overflow: 'hidden' }}>
-            <button
-              type="button"
-              onClick={() => setViewMode('cards')}
-              className={`btn btn-xs ${viewMode === 'cards' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ borderRadius: 0, padding: '4px 8px', fontSize: 11, fontWeight: 700 }}
-              title="Kart Görünümü"
-            >
-              📱 Kart
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('table')}
-              className={`btn btn-xs ${viewMode === 'table' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ borderRadius: 0, padding: '4px 8px', fontSize: 11, fontWeight: 700 }}
-              title="Tablo Görünümü"
-            >
-              📊 Tablo
-            </button>
-          </div>
         </div>
       </div>
-
-      {/* Kompakt Hızlı Barkod / QR Tarayıcı Barı */}
-      <div style={{
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 10,
-        padding: '8px 14px',
-        marginBottom: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: 10,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 18, color: '#eab308' }}>⚡</span>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--color-text)' }}>Hızlı Barkod / QR Okuyucu</div>
-            <div style={{ fontSize: 10.5, color: 'var(--color-text-muted)' }}>Okutulan ürünün stok çıkış ve teslim penceresini anında açar</div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: 8, flex: '1 1 300px', maxWidth: 460 }}>
-          <div style={{ position: 'relative', flex: 1 }}>
-            <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', opacity: 0.6, fontSize: 13, pointerEvents: 'none' }}>
-              🏷️
-            </span>
-            <input
-              ref={scanRef}
-              className="form-control"
-              value={scanValue}
-              onChange={e => setScanValue(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') doScan(); }}
-              placeholder="Barkod veya Stok Kodu okutun / yazın..."
-              style={{
-                paddingLeft: 30,
-                height: 32,
-                fontSize: 12,
-                fontWeight: 600,
-                background: 'var(--color-surface-alt)',
-                color: 'var(--color-text)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 6
-              }}
-            />
-            {scanValue && (
-              <button
-                type="button"
-                onClick={() => setScanValue('')}
-                style={{
-                  position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 11
-                }}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={doScan}
-            style={{ display: 'flex', alignItems: 'center', gap: 5, height: 32, padding: '0 12px', fontWeight: 700, fontSize: 11.5, borderRadius: 6 }}
-          >
-            <span>🔍</span>
-            <span>Bul & Teslim Et</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Seçili Ürün Detay Önizleme Kartı (Tablo Modunda) */}
-      {viewMode !== 'cards' && selectedRow && (
-        <div style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 10,
-          padding: '8px 14px',
-          marginBottom: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 10,
-          fontSize: 12,
-          boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 15 }}>📦</span>
-              <strong style={{ fontSize: 13, color: 'var(--color-primary)' }}>{selectedRow.name}</strong>
-            </div>
-            <span style={{
-              padding: '2px 8px',
-              borderRadius: 6,
-              fontSize: 11,
-              fontWeight: 700,
-              background: selectedRow.stock_type === 'scrap' ? 'rgba(239, 68, 68, 0.12)' : 'rgba(14, 165, 233, 0.12)',
-              color: selectedRow.stock_type === 'scrap' ? '#ef4444' : '#0284c7',
-              border: `1px solid ${selectedRow.stock_type === 'scrap' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(14, 165, 233, 0.25)'}`
-            }}>
-              {selectedRow.stock_type === 'scrap' ? '♻️ Hurda Stoğu' : '🏢 Ofis Stoğu'}
-            </span>
-            <span style={{ fontFamily: 'monospace', color: 'var(--color-text-muted)', background: 'var(--color-surface-alt)', padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-border)' }}>
-              🏷️ {selectedRow.barcode || selectedRow.stock_code}
-            </span>
-            {selectedRow.category_name && (
-              <span style={{ color: 'var(--color-text-secondary)' }}>📁 {selectedRow.category_name}</span>
-            )}
-            {selectedRow.location && (
-              <span style={{ color: 'var(--color-text-muted)' }}>📍 Raf: {selectedRow.location}</span>
-            )}
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <span className={`badge ${Number(selectedRow.qty || 0) <= Number(selectedRow.critical_qty || 0) ? 'badge-danger' : 'badge-success'}`} style={{ fontSize: 11.5, fontWeight: 700 }}>
-              Stok: {selectedRow.qty} {selectedRow.unit}
-            </span>
-            {selectedRow.critical_qty > 0 && (
-              <span className="badge badge-secondary" style={{ fontSize: 11 }}>
-                Kritik: {selectedRow.critical_qty} {selectedRow.unit}
-              </span>
-            )}
-            {selectedRow.unit_price > 0 && (
-              <span style={{ fontWeight: 700, color: '#10b981' }}>
-                ₺{Number(selectedRow.unit_price).toFixed(2)}
-              </span>
-            )}
-            <button
-              type="button"
-              className="btn btn-secondary btn-xs"
-              onClick={() => { setLabelTarget(selectedRow); setLabelMode('barcode'); }}
-              style={{ borderRadius: 6, padding: '3px 8px', fontSize: 11 }}
-              title="Barkod / QR Etiketi Yazdır"
-            >
-              🏷️ Barkod Bas
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary btn-xs"
-              onClick={() => loadMovements(selectedRow)}
-              style={{ borderRadius: 6, padding: '3px 8px', fontSize: 11 }}
-              title="Ürün Stok Hareket Geçmişini Gör"
-            >
-              📜 Hareketler
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Veri Kartları veya AgGrid Tablosu */}
       <div style={{
@@ -1294,7 +1065,7 @@ export default function Stock({ tabData }) {
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
       }}>
         {viewMode === 'cards' ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10, maxHeight: 'calc(100vh - 430px)', overflowY: 'auto', paddingRight: 4 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10, maxHeight: 'calc(100vh - 215px)', overflowY: 'auto', paddingRight: 4 }}>
             {visibleItems.length === 0 ? (
               <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: 40, color: 'var(--color-text-muted)', fontSize: 13 }}>
                 Aranan kriterlere uygun stok kalemi bulunamadı.
@@ -1302,7 +1073,7 @@ export default function Stock({ tabData }) {
             ) : (
               visibleItems.map(item => {
                 const isCritical = Number(item.qty || 0) <= Number(item.critical_qty || 0);
-                const isScrap = item.stock_type === 'scrap';
+                const isScrap = isScrapItem(item);
                 return (
                   <div
                     key={item.id}
@@ -1327,10 +1098,11 @@ export default function Stock({ tabData }) {
                             borderRadius: 6,
                             fontSize: 10,
                             fontWeight: 700,
-                            background: isScrap ? 'rgba(239, 68, 68, 0.12)' : 'rgba(14, 165, 233, 0.12)',
-                            color: isScrap ? '#ef4444' : '#0284c7'
+                            background: isScrap ? 'rgba(16, 185, 129, 0.15)' : 'rgba(14, 165, 233, 0.15)',
+                            color: isScrap ? '#10b981' : '#0284c7',
+                            border: `1px solid ${isScrap ? 'rgba(16, 185, 129, 0.3)' : 'rgba(14, 165, 233, 0.3)'}`
                           }}>
-                            {isScrap ? '♻️ Hurda' : '🏢 Ofis'}
+                            {isScrap ? '♻️ Hurda' : '📦 Malzeme'}
                           </span>
                           <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--color-text)' }}>{item.name}</span>
                         </div>
@@ -1379,7 +1151,7 @@ export default function Stock({ tabData }) {
                       {hasPermission('stock', 'can_edit') && (
                         <button
                           className="btn btn-secondary btn-sm"
-                          onClick={() => { setEditItem(item); setForm({ ...item, barcode: item.barcode || item.stock_code, stock_type: item.stock_type || 'office' }); setShowForm(true); }}
+                          onClick={() => { setEditItem(item); setForm({ ...item, barcode: item.barcode || item.stock_code, stock_type: isScrapItem(item) ? 'scrap' : 'office' }); setShowForm(true); }}
                           title="Düzenle"
                           style={{ padding: '5px 8px', fontSize: 12, borderRadius: 6 }}
                         >
@@ -1403,7 +1175,7 @@ export default function Stock({ tabData }) {
             )}
           </div>
         ) : (
-          <div style={{ height: 'calc(100vh - 430px)', minHeight: 350 }}>
+          <div style={{ height: 'calc(100vh - 215px)', minHeight: 460 }}>
             <div
               className={theme === 'light' || theme === 'sakura' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'}
               style={{ height: '100%', width: '100%' }}
@@ -1436,7 +1208,7 @@ export default function Stock({ tabData }) {
         fontSize: 12
       }}>
         <span className="badge badge-secondary">
-          Filtre: <b>{stockTypeFilter === 'office' ? '🏢 Ofis Stoğu' : stockTypeFilter === 'scrap' ? '♻️ Hurda Stoğu' : '📋 Tüm Stoklar'}</b>
+          Filtre: <b>{stockTypeFilter === 'office' ? '📦 Malzeme Stoğu' : stockTypeFilter === 'scrap' ? '♻️ Hurda Stoğu' : '📋 Tüm Stoklar'}</b>
         </span>
         <span className="badge badge-secondary">Listelenen: <b>{visibleItems.length} / {items.length} Kalem</b></span>
         <span className="badge badge-secondary">Toplam Stok: <b>{totalQty.toFixed(0)} Adet</b></span>
@@ -1454,7 +1226,7 @@ export default function Stock({ tabData }) {
           <div className="form-grid-3" style={{ padding: 15 }}>
             {/* Stok Türü Seçimi */}
             <div className="form-group form-col-span-3">
-              <label style={{ fontWeight: 700, marginBottom: 8, display: 'block' }}>Stok Türü / Kullanım Alanı</label>
+              <label style={{ fontWeight: 700, marginBottom: 8, display: 'block' }}>Stok Bölümü / Türü</label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 10 }}>
                 <div
                   onClick={() => setForm(f => ({ ...f, stock_type: 'office' }))}
@@ -1479,10 +1251,10 @@ export default function Stock({ tabData }) {
                   />
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 13, color: form.stock_type !== 'scrap' ? '#0284c7' : 'var(--color-text)' }}>
-                      🏢 Ofis / Aktif Malzeme
+                      📦 Malzeme Stoğu (Ofis)
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                      Ofiste kullanılan, eldeki aktif demirbaş ve sarf malzemeleri
+                      Ofiste kullanılan, eldeki aktif yedek parça ve sarf malzemeleri
                     </div>
                   </div>
                 </div>
@@ -1490,8 +1262,8 @@ export default function Stock({ tabData }) {
                 <div
                   onClick={() => setForm(f => ({ ...f, stock_type: 'scrap' }))}
                   style={{
-                    border: `2px solid ${form.stock_type === 'scrap' ? '#ef4444' : 'var(--color-border)'}`,
-                    background: form.stock_type === 'scrap' ? 'rgba(239, 68, 68, 0.1)' : 'var(--color-surface-alt)',
+                    border: `2px solid ${form.stock_type === 'scrap' ? '#10b981' : 'var(--color-border)'}`,
+                    background: form.stock_type === 'scrap' ? 'rgba(16, 185, 129, 0.1)' : 'var(--color-surface-alt)',
                     borderRadius: 8,
                     padding: '10px 14px',
                     cursor: 'pointer',
@@ -1509,11 +1281,11 @@ export default function Stock({ tabData }) {
                     style={{ cursor: 'pointer' }}
                   />
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 13, color: form.stock_type === 'scrap' ? '#ef4444' : 'var(--color-text)' }}>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: form.stock_type === 'scrap' ? '#10b981' : 'var(--color-text)' }}>
                       ♻️ Hurda Stoğu (Depo)
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                      Depodaki hurdalar, arızalı/ayrılmış parçalar ve e-atıklar
+                      Depodaki hurda malzemeler, arızalı veya ayrılmış yedek parçalar
                     </div>
                   </div>
                 </div>
@@ -1617,6 +1389,58 @@ export default function Stock({ tabData }) {
             <div className="flex-gap" style={{ justifyContent: 'flex-end', marginTop: 15 }}>
               <button className="btn btn-secondary" onClick={() => setAdjustTarget(null)}>İptal</button>
               <button className="btn btn-primary" onClick={doAdjust}>Uygula</button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* Hızlı Barkod / QR Okuyucu Modalı */}
+      {showScannerModal && (
+        <Modal
+          isOpen
+          title="⚡ Hızlı Barkod / QR Okut & Teslim Et"
+          size="md"
+          onClose={() => setShowScannerModal(false)}
+        >
+          <div style={{ padding: 20 }}>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+              Barkodu okutun veya ürünün barkod/stok kodunu girip <b>Enter</b> tuşuna basın. Ürün otomatik bulunarak doğrudan stok çıkış ve teslim penceresi açılacaktır.
+            </p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <div style={{ position: 'relative', flex: 1 }}>
+                <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 16, pointerEvents: 'none' }}>
+                  🏷️
+                </span>
+                <input
+                  ref={scanRef}
+                  autoFocus
+                  className="form-control"
+                  value={scanValue}
+                  onChange={e => setScanValue(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      doScan();
+                    }
+                  }}
+                  placeholder="Barkod veya Stok Kodu..."
+                  style={{
+                    paddingLeft: 38,
+                    height: 42,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    borderRadius: 8
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={doScan}
+                style={{ height: 42, padding: '0 20px', fontWeight: 700, borderRadius: 8, display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                <span>🔍</span>
+                <span>Bul & Teslim Et</span>
+              </button>
             </div>
           </div>
         </Modal>

@@ -1,0 +1,6 @@
+# robots.txt for https://service.bitrox.com.tr/
+User-agent: *
+Allow: /
+
+# Sitemap link
+Sitemap: https://service.bitrox.com.tr/sitemap.xml

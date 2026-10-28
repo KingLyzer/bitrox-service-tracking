@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "title": "Bitrox ServiceTracker — Açık Kaynaklı IT Servis Masası ve Operasyon Portalı",
+    "description": "Kurumsal IT ekipleri için teknik servis arıza fişleri, yazıcı sayaç takibi, BitLocker kurtarma anahtarı kasası ve bakım protokollerini birleştiren self-hosted açık kaynak IT servis masası.",
+    "keywords": "IT servis takip yazılımı, teknik servis takip programı, açık kaynak servis masası, toner takip programı, Snipe-IT entegrasyonu"
+  },
+  "nav": {
+    "brand": "Bitrox ServiceTracker",
+    "features": "Özellikler",
+    "snipeit": "Snipe-IT",
+    "comparison": "Karşılaştırma",
+    "screenshots": "Ekranlar",
+    "install": "Kurulum",
+    "docs": "Docs",
+    "faq": "SSS",
+    "cta": "Hemen Kur",
+    "lang": "EN"
+  },
+  "hero": {
+    "versionBadge": "v2.3.2 Production",
+    "licenseBadge": "Açık Kaynak (MIT)",
+    "hostBadge": "Self-Hosted",
+    "title": "Kurumsal IT Ekipleri İçin Açık Kaynaklı Servis Masası",
+    "description": "Arıza fişleri, yazıcı sayaç takibi, BitLocker anahtar kasası ve periyodik donanım bakım tutanaklarını tek merkezde toplayan, Snipe-IT ile API tabanlı konuşabilen servis masası.",
+    "ctaInstall": "Hızlı Kurulum",
+    "ctaGithub": "GitHub Reposu",
+    "trustBadges": [
+      "Ücretsiz & MIT Lisanslı",
+      "Kendi Sunucunuzda (On-Premise)",
+      "Node.js 18+ & MySQL 8.0+",
+      "Snipe-IT REST API v1"
+    ]
+  },
+  "problemSolution": {
+    "tag": "Problem ve Çözüm",
+    "title": "Dağınık IT Araçlarını Tek Merkezde Birleştirin",
+    "description": "Snipe-IT demirbaş sayımında güçlü olsa da saha servis fişi, toner sayfa sayacı ve ıslak imzalı bakım formları çoğunlukla Excel tablolarına ve kağıtlara dağılır.",
+    "traditional": {
+      "title": "Geleneksel Dağınık Yöntem",
+      "items": [
+        "Arıza bildirimleri telefon, e-posta veya sözlü iletilir; teknik müdahale ve parça değişim kayıtları kaybolur.",
+        "Yazıcı tonerleri sayfa sayaçları kaydedilmeden depodan verilir; kartuş başına gerçek sayfa verimi ölçülemez.",
+        "Şube ve teknik servis kargo gönderileri takip kodsuz yönetilir; etiketler harici programlarda elle yazılır.",
+        "Bilgisayar teslim ve bakım formları kağıt klasörlerde tutulur; personel işten ayrılırken zimmet geçmişine ulaşmak zaman alır."
+      ]
+    },
+    "modern": {
+      "title": "ServiceTracker Çözümü",
+      "items": [
+        "Personel seçildiğinde zimmetli cihazlar otomatik gelir; 5 aşamalı servis süreci ve parça maliyeti kayıt altına alınır.",
+        "Her toner tesliminde yazıcı sayfa sayacı girilir; renk ve model bazında tüketim analizi ve eşik uyarıları üretilir.",
+        "Gelen ve giden kargolar tek tıkla fişle ilişkilendirilir; 100x150 mm termal barkodlu kargo etiketi üretilir.",
+        "Tüm süreçler yazdırılabilir, ıslak imza alanlı standart PDF tutanaklarına dönüştürülür ve yerel veritabanında arşivlenir."
+      ]
+    }
+  },
+  "workflows": {
+    "tag": "Saha İş Akışları",
+    "title": "Teknisyenlerin Günlük Kullandığı 4 Temel Akış",
+    "description": "Veri tekrarını ortadan kaldıran ve doğrudan çözüme odaklanan pratik adımlar.",
+    "items": [
+      {
+        "id": "tickets",
+        "title": "1. Teknik Servis & Arıza Fişi Döngüsü",
+        "description": "Seri no veya personel seçerek arıza kaydını açın. Kullanılan yedek parçaları (SSD, RAM) depodan düşerek fişe bağlayın ve onarım bedelini netleştirin.",
+        "steps": [
+          "Hızlı kayıt: Seri no, arıza şikayeti ve teslim eden personel seçimi",
+          "Aşamalı takip: Yeni, Onarımda, Parça Bekliyor, Dış Servis, Teslim Edildi",
+          "Maliyet dökümü: Kullanılan parça ve işçilik bedeli hesaplama"
+        ],
+        "image": "assets/screenshots/service-ticket.png"
+      },
+      {
+        "id": "toner",
+        "title": "2. Yazıcı Sayaç & Toner Sarfiyatı",
+        "description": "Yazıcıların yalnızca adet sayımını değil, her toner değişiminde güncel sayfa sayacını kaydedin. Bir kartuşun kaç sayfa yazdırdığını ve birimlerin tüketim oranlarını analiz edin.",
+        "steps": [
+          "Model ve renk bazlı depo eşikleri (Siyah, Cyan, Magenta, Yellow)",
+          "Değişim anında yazıcı sayaç (sayfa adedi) kaydı",
+          "Kritik stok uyarısı ile tükenmeden önce tedarik planlama"
+        ],
+        "image": "assets/screenshots/toner.png"
+      },
+      {
+        "id": "calendar",
+        "title": "3. Master Operasyon Takvimi & Planlama",
+        "description": "Tüm servis fişlerini, periyodik donanım bakımlarını, kargo teslimatlarını ve toner değişimlerini tek ajandada renk kodlarıyla izleyin.",
+        "steps": [
+          "Servis, periyodik bakım, kargo ve toner teslimatları birleşik ajandada",
+          "Tarihe tıklandığında ilgili servis fişine anında erişim",
+          "Geciken ve yaklaşan servisler için görsel takvim uyarıları"
+        ],
+        "image": "assets/screenshots/calendar.png"
+      },
+      {
+        "id": "documents",
+        "title": "4. Islak İmzalı PDF ve Termal Etiket Çıktıları",
+        "description": "Yasal donanım teslim-tesellüm formları ve kargo sevkiyatları için harici yazılım gerektirmeyen standart çıktılar.",
+        "steps": [
+          "Teknisyen ve teslim alan imza alanlı kurumsal PDF teslim tutanağı",
+          "Zebra ve Xprinter uyumlu 100x150 mm termal barkodlu koli etiketi",
+          "9 adımlı periyodik donanım bakım onay tutanağı"
+        ],
+        "image": "assets/screenshots/dashboard.png"
+      }
+    ]
+  },
+  "modules": {
+    "tag": "Eksiksiz Modüler Mimari",
+    "title": "IT Operasyonunuz İçin 21 Temel Modül",
+    "description": "Sistem kılavuzundaki tüm fonksiyonel birimler tek çatı altında, granüler rol yetkileriyle çalışır.",
+    "filters": [
+      { "id": "all", "label": "Tüm Modüller (21)" },
+      { "id": "servis", "label": "Servis & Lojistik" },
+      { "id": "donanim", "label": "Donanım & Varlık" },
+      { "id": "guvenlik", "label": "Güvenlik & Roller" },
+      { "id": "araclar", "label": "İletişim & Araçlar" }
+    ],
+    "list": [
+      { "id": "tickets", "category": "servis", "title": "Teknik Servis Fişleri", "desc": "Seri no ile hızlı kabul, 5 aşamalı durum yönetimi, parça maliyet dökümü ve yazdırılabilir imza alanlı servis formu.", "code": "3.1 Servis Fişleri" },
+      { "id": "toner", "category": "donanim", "title": "Toner Takip Modülü", "desc": "Yazıcı model ve renk bazlı kartuş stokları, kritik seviye uyarıları ve departman sarfiyat analizleri.", "code": "3.2 Toner Takibi" },
+      { "id": "counter", "category": "donanim", "title": "Sayaç Takip Modülü", "desc": "Toner çıkışında güncel sayfa sayacı kaydı; iki değişim arasındaki net sayfa verimi ve tüketim grafikleri.", "code": "3.3 Sayaç Takibi" },
+      { "id": "cargo", "category": "servis", "title": "Kargo Takip Modülü", "desc": "Gelen ve giden kargoların kurye ve takip no eşleşmesi, şube gönderi kayıtları ve servis fişi bağlantısı.", "code": "3.4 Kargo Takibi" },
+      { "id": "thermal", "category": "servis", "title": "Termal Etiket Baskı Motoru", "desc": "100x150 mm termal kargo koli etiketleri, Code128 barkod ve cihaz seri no etiket şablonları.", "code": "3.5 Termal Etiket" },
+      { "id": "bitlocker", "category": "guvenlik", "title": "BitLocker Anahtar Kasası", "desc": "48 haneli şifreli kurtarma anahtarları ve Key ID depolama; tek tıkla panoya kopyalama ve arama.", "code": "3.6 BitLocker Kasası" },
+      { "id": "maintenance", "category": "servis", "title": "Periyodik Bakım Protokolü", "desc": "9 adımlı donanım kontrol protokolü (termal macun, fan, portlar, antivirüs) ve imzalı resmi bakım tutanağı.", "code": "3.7 Periyodik Bakım" },
+      { "id": "user360", "category": "donanim", "title": "360° Kullanıcı Portresi (User360)", "desc": "Personelin tüm IT geçmişi: aktif Snipe-IT zimmetleri, geçmiş servis fişleri, toner teslimatları ve kargo logları.", "code": "3.8 User360" },
+      { "id": "inventory", "category": "donanim", "title": "Yerel Envanter Yönetimi", "desc": "Cihaz, marka, model, seri no ve lokasyon takibi. Snipe-IT bağlıyken önbellek senkronizasyonu; değilken bağımsız envanter.", "code": "3.9 Envanter" },
+      { "id": "stock", "category": "donanim", "title": "Stok & Yedek Parça Takibi", "desc": "Depodaki SSD, RAM, adaptör gibi parçaların adet, birim fiyat ve fatura takibi; servis fişinde otomatik düşüm.", "code": "3.10 Stok & Parça" },
+      { "id": "tasks", "category": "araclar", "title": "Görev & İş Takibi (Kanban)", "desc": "IT ekibi içi günlük işlerin Yapılacak, Devam Eden ve Tamamlandı sütunlarında teknisyen atamalarıyla takibi.", "code": "3.11 Görev Takibi" },
+      { "id": "pdf", "category": "servis", "title": "Islak İmzalı PDF Çıktıları", "desc": "Kurumsal arıza kabul, parça değişim, zimmet teslim-tesellüm ve hurdaya ayırma tutanaklarının vektörel PDF çıktısı.", "code": "3.12 Belge Motoru" },
+      { "id": "chat", "category": "araclar", "title": "Dahili Sohbet Barı (Socket.IO)", "desc": "Ekranın sağ alt köşesinde oturan masaüstü sohbet barı; IT ekibi arasında anlık mesajlaşma ve fiş paylaşımı.", "code": "3.13 Ekip Sohbeti" },
+      { "id": "ai", "category": "araclar", "title": "Bito AI Operasyon Asistanı", "desc": "Envanter ve servis veritabanını tarayarak cihaz ve arıza kayıtlarını doğal dille sorgulayan yerel asistan.", "code": "3.14 Bito AI" },
+      { "id": "roles", "category": "guvenlik", "title": "Roller & Yetki Matrisi", "desc": "Super Admin, Admin, Teknisyen ve Kullanıcı rolleri için modül bazlı (Görüntüle, Ekle, Düzenle, Sil) yetki matrisi.", "code": "3.15 Yetki Matrisi" },
+      { "id": "themes", "category": "araclar", "title": "15+ Dinamik Tema Sistemi", "desc": "Modern Koyu, Gece Mavisi, Zümrüt Yeşili, Mor Nebula, Akçaağaç, Nordik Gri ve OLED Siyah gibi temalar.", "code": "3.16 Tema Sistemi" },
+      { "id": "smtp", "category": "araclar", "title": "E-posta & SMTP Bildirimleri", "desc": "Servis durumu değişimlerinde personele ve teknisyene otomatik SMTP bildirim e-postaları.", "code": "3.17 E-posta Motoru" },
+      { "id": "audit", "category": "guvenlik", "title": "Değiştirilemez Denetim İzi (Audit Log)", "desc": "Kimin, ne zaman, hangi servis kaydını veya kullanıcıyı güncellediğini kaydeden sistem güvenlik günlüğü.", "code": "3.18 Denetim İzi" },
+      { "id": "snipeitSync", "category": "donanim", "title": "Snipe-IT REST API Entegrasyonu", "desc": "Snipe-IT REST API v1 üzerinden kullanıcı, varlık ve yazıcıların salt okunur çekilip yerel MySQL'de önbelleklenmesi.", "code": "3.19 Snipe-IT Motoru" },
+      { "id": "reporting", "category": "araclar", "title": "Raporlama & Veri Dışa Aktarma", "desc": "Arıza istatistikleri, departman toner tüketimleri ve servis sürelerinin Excel ve PDF dökümleri.", "code": "3.20 Raporlama" },
+      { "id": "electron", "category": "araclar", "title": "Masaüstü İstemcisi (Electron)", "desc": "Windows (exe/zip) ve Linux (AppImage/deb) ortamlarında bağımsız masaüstü yazılımı olarak çalışma desteği.", "code": "3.21 Masaüstü / Electron" }
+    ]
+  },
+  "snipeitArchitecture": {
+    "tag": "Veri Mimarisi",
+    "title": "Snipe-IT ile Güvenli ve Salt-Okunur API Senkronizasyonu",
+    "description": "ServiceTracker, mevcut Snipe-IT veritabanınıza doğrudan SQL sorgusu atmaz. Resmi REST API üzerinden Bearer Token ile iletişim kurar ve varlıklarınızı yerel MySQL tablosunda önbellekler.",
+    "points": [
+      { "title": "Salt-Okunur Bağlantı", "desc": "Snipe-IT demirbaş kayıtları API üzerinden sadece okunur; ana envanter tablonuzda veri bütünlüğü korunur." },
+      { "title": "Yerel MySQL Önbelleği", "desc": "Cihaz ve personel listesi yerel önbelleğe aktarılır; fiş açarken veya arama yaparken gecikme yaşanmaz." },
+      { "title": "Tam Bağımsız Çalışabilme", "desc": "Snipe-IT sunucunuz kapalı olsa ya da hiç kullanılmasa bile tüm servis, toner ve bakım modülleri bağımsız çalışır." }
+    ]
+  },
+  "comparison": {
+    "tag": "Adil Karşılaştırma",
+    "title": "Snipe-IT ve ServiceTracker Birlikte Nasıl Çalışır?",
+    "description": "ServiceTracker, Snipe-IT'nin yerine geçmeyi hedeflemez. Snipe-IT'nin kapsamı dışındaki saha servis, sayaç ve tutanak süreçlerini tamamlar.",
+    "footerNotice": "Not: Bilgiler 20 Ekim 2026 tarihinde Snipe-IT resmi dokümantasyonu ve ServiceTracker 2.3.2 sürümü incelenerek doğrulanmıştır. Snipe-IT tescilli bir markadır.",
+    "headers": ["Fonksiyonel Yetkinlik", "Tek Başına Snipe-IT", "ServiceTracker + Snipe-IT"],
+    "rows": [
+      { "feature": "IT Demirbaş & Donanım Envanteri (ITAM)", "desc": "Seri no, model, satın alma ve zimmet durumu", "snipeit": "Tam (Yerleşik)", "st": "Tam (API ile Senkron)" },
+      { "feature": "Personel Zimmet Eşleşmesi", "desc": "Kimin üzerinde hangi bilgisayar/ekipman var dökümü", "snipeit": "Tam (Yerleşik)", "st": "Tam (User360 Masası)" },
+      { "feature": "Teknik Servis Arıza Fişi Aşamaları", "desc": "Yeni, Onarımda, Parça Bekliyor, Dış Servis, Teslim", "snipeit": "Kapsam Dışı", "st": "Tam (Entegre Modül)" },
+      { "feature": "Yazıcı Sayaç Logu & Toner Sarfiyatı", "desc": "Sayfa adedi okuma, renk seviyeleri, sayfa maliyet analizi", "snipeit": "Temel (Sadece adet sayımı)", "st": "Tam (Sayaç + Eşik Uyarısı)" },
+      { "feature": "Periyodik Donanım Bakım Tutanağı", "desc": "Toz, macun, port ve güvenlik kontrol listesi", "snipeit": "Temel (Bakım tarihi ve maliyet kaydı)", "st": "Tam (9 Adımlı İmzalı Form)" },
+      { "feature": "Kargo Gönderisi & Termal Barkod Basımı", "desc": "100x150 mm termal kargo koli etiketi üretimi", "snipeit": "Kapsam Dışı", "st": "Tam (Entegre Lojistik)" },
+      { "feature": "BitLocker Kurtarma Anahtarı Kasası", "desc": "48 haneli şifreli anahtarlar ve Key ID depolama", "snipeit": "Temel (Özel alan ile metin kaydı)", "st": "Tam (Şifreli Kasa + Kopyalama)" },
+      { "feature": "Yazdırılabilir İmza Alanlı PDF Tutanakları", "desc": "Teknisyen ve teslim alan imza alanlı formlar", "snipeit": "Temel (Zimmet kabul formu)", "st": "Tam (Servis, Bakım ve İade)" },
+      { "feature": "Dahili Ekip Sohbeti & Bito AI", "desc": "IT ekibi içi anlık mesajlaşma ve doğal dil arama", "snipeit": "Kapsam Dışı", "st": "Tam (Socket.IO + Bito AI)" },
+      { "feature": "Lisans & Dağıtım Modeli", "desc": "Kullanım lisansı ve maliyet", "snipeit": "Açık Kaynak (GPLv3)", "st": "Açık Kaynak (MIT) • Ücretsiz" }
+    ]
+  },
+  "install": {
+    "tag": "Hızlı Kurulum",
+    "title": "Dakikalar İçinde Kendi Sunucunuza Kurun",
+    "description": "Ön koşullar: Node.js (v18.0+) ve MySQL / MariaDB (8.0+).",
+    "securityAlert": {
+      "title": "Güvenlik Uyarısı (Şifre Değişimi)",
+      "desc": "Varsayılan kullanıcı bilgileri: Kullanıcı: admin / Şifre: admin123. İlk girişte Ayarlar veya Profil sekmesinden şifrenizi mutlaka değiştirin."
+    },
+    "tabs": [
+      {
+        "id": "linux",
+        "name": "Linux (Ubuntu/Debian)",
+        "code": "git clone https://github.com/KingLyzer/bitrox-service-tracking.git\ncd bitrox-service-tracking\nnpm install\nmysql -u root -p < database_schema.sql\ncp .env.example .env\n# .env dosyasında veritabanı parolanızı yazın\nnpm run build\nnpm start"
+      },
+      {
+        "id": "pm2",
+        "name": "PM2 Servis (Canlı Sunucu)",
+        "code": "npm install -g pm2\ncd /path/to/bitrox-service-tracking\npm2 start server/server.js --name \"servicetracker\"\npm2 save\npm2 startup"
+      },
+      {
+        "id": "windows",
+        "name": "Windows (PowerShell)",
+        "code": "git clone https://github.com/KingLyzer/bitrox-service-tracking.git\ncd bitrox-service-tracking\nnpm install\nGet-Content database_schema.sql | mysql -u root -p\nCopy-Item .env.example .env\n# .env dosyasını yapılandırın\nnpm run build\nnpm start"
+      }
+    ]
+  },
+  "security": {
+    "tag": "Güvenlik ve Veri Sahipliği",
+    "title": "Verileriniz Kendi Donanımınızda Kalır",
+    "description": "Üçüncü taraf bulut sunucularına veri iletilmez. Tüm veritabanı kendi sunucunuzda saklanır.",
+    "items": [
+      { "title": "On-Premise Mimari", "desc": "İnternet bağlantısı kesilse dahi yerel ağınızda (LAN) tam işlevsel çalışır." },
+      { "title": "Bcrypt Şifreleme", "desc": "Kullanıcı parolaları bcrypt ile tek yönlü hashlenerek veritabanında saklanır." },
+      { "title": "Granüler Yetki Matrisi", "desc": "Teknisyenlerin hangi menüleri görüntüleyip düzenleyebileceği yetki tablosuyla sınırlandırılır." },
+      { "title": "Değiştirilemez Günlük Kaydı", "desc": "Fiş silme ve güncelleme gibi kritik işlemler zaman damgasıyla denetim izine kaydedilir." }
+    ]
+  },
+  "faq": {
+    "tag": "Sıkça Sorulan Sorular",
+    "title": "Merak Edilen Sorular ve Yanıtlar",
+    "items": [
+      {
+        "q": "Bitrox ServiceTracker'ı Snipe-IT olmadan kullanabilir miyim?",
+        "a": "Evet. Snipe-IT entegrasyonu tamamen isteğe bağlıdır. Snipe-IT olmadan tüm teknik servis fişleri, toner/sayaç takibi, stok, görev ve bakım modülleri bağımsız olarak yerel veritabanınızda çalışır."
+      },
+      {
+        "q": "Lisans veya kullanıcı başı ücret ödemem gerekir mi?",
+        "a": "Hayır. Yazılım MIT lisansıyla dağıtılan açık kaynaklı bir projedir. Kullanıcı sayısı veya cihaz sınırı olmadan tamamen ücretsizdir."
+      },
+      {
+        "q": "Verilerim nerede depolanır? Dış buluta veri aktarılır mı?",
+        "a": "Tüm verileriniz kendi sunucunuzdaki (On-Premise / Self-Hosted) MySQL veritabanında saklanır. Hiçbir dış bulut sunucusuna veri iletilmez."
+      },
+      {
+        "q": "Snipe-IT entegrasyonu mevcut veritabanıma doğrudan yazar mı?",
+        "a": "Hayır. Entegrasyon Snipe-IT'nin resmi REST API v1 arayüzü üzerinden Bearer Token ile salt okunur ve kontrollü isteklerle çalışır."
+      },
+      {
+        "q": "Masaüstü uygulaması olarak çalıştırılabilir mi?",
+        "a": "Evet. Electron desteği sayesinde Windows (exe/zip) ve Linux (AppImage/deb) ortamlarında bağımsız masaüstü uygulaması olarak da derlenebilir."
+      },
+      {
+        "q": "Sistem gereksinimleri nelerdir?",
+        "a": "Node.js 18 veya üzeri, MySQL veya MariaDB 8.0+ veritabanı ve npm veya yarn paket yöneticisi yeterlidir."
+      },
+      {
+        "q": "BitLocker kurtarma anahtarları güvenli midir?",
+        "a": "BitLocker modülü 48 haneli anahtarları yerel veritabanında tutar ve yetkisiz kullanıcıların görmesini engellemek için rol bazlı yetki kontrolüne tabidir."
+      },
+      {
+        "q": "Yazıcı sayfa sayacı nasıl hesaplanır?",
+        "a": "Her toner değişiminde girilen toplam sayfa sayısı, bir önceki değişimdeki sayaçtan çıkarılarak o kartuşla kaç sayfa yazdırıldığı tam olarak hesaplanır."
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2026 Bitrox ServiceTracker. MIT Lisansı ile dağıtılmaktadır.",
+    "tagline": "Kurumsal IT ekipleri için açık kaynaklı servis masası portalı.",
+    "links": {
+      "docs": "Dokümantasyon",
+      "changelog": "Sürüm Notları",
+      "github": "GitHub Deposu",
+      "issues": "Sorun Bildir (Issues)",
+      "license": "MIT Lisansı",
+      "email": "admin@bitrox.com.tr"
+    }
+  }
+}

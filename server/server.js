@@ -337,6 +337,17 @@ server.listen(PORT, '0.0.0.0', async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // Ensure AUTO_INCREMENT on id columns so inserts with qty > 0 never fail
+    try {
+      await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+    } catch (_) {}
+    try {
+      await pool.execute('ALTER TABLE used_parts MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+    } catch (_) {}
+    try {
+      await pool.execute('ALTER TABLE attachments MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+    } catch (_) {}
+
     // 4. cached tables
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS cached_users (

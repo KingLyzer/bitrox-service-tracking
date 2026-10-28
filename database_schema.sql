@@ -294,7 +294,7 @@ CREATE TABLE `stock_items` (
   `supplier_id` INT NULL,
   `location` VARCHAR(150) NULL,
   `description` TEXT NULL,
-  `stock_type` VARCHAR(32) NOT NULL DEFAULT 'office',
+  `stock_type` VARCHAR(32) NOT NULL DEFAULT 'material',
   `snipeit_component_id` INT NULL,
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,

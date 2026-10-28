@@ -1,0 +1,443 @@
+================================================================================
+          BITROX SERVICETRACKER & WEB SİTESİ KAPSAMLI ÇALIŞMA KILAVUZU
+                   Tüm Fonksiyonlar, Modüller ve Adım Adım İşleyiş
+================================================================================
+Tarih: 20 Ekim 2026
+Sürüm: v2.3.2 Production
+Yazar: KingLyzer / Bitrox Bilişim
+Dosya: SISTEM_VE_WEB_SITESI_KULLANIM_KILAVUZU.txt
+================================================================================
+
+İÇİNDEKİLER:
+--------------------------------------------------------------------------------
+BÖLÜM 1: GENEL BAKIŞ VE SİSTEM MİMARİSİ
+BÖLÜM 2: LANDING PAGE WEB SİTESİ (service.bitrox.com.tr) & server.js
+BÖLÜM 3: SERVICETRACKER UYGULAMASI TÜM MODÜLLERİ VE ÇALIŞMA MANTIĞI
+  3.1. Giriş & Kimlik Doğrulama (Login & Auth)
+  3.2. Yönetim Paneli & Master Takvim (Dashboard & MasterCalendar)
+  3.3. Teknik Servis Fişleri Modülü (ServiceTickets)
+  3.4. Toner & Sarf Malzeme Takip Modülü (Toner)
+  3.5. Kargo & Lojistik Yönetimi (Cargo)
+  3.6. BitLocker Şifreli Kurtarma Anahtarı Kasası (Bitlocker)
+  3.7. Periyodik Bakım Protokolü Modülü (Maintenance)
+  3.8. 360° Kullanıcı Portresi (User360)
+  3.9. Envanter & Demirbaş Modülü (Inventory)
+  3.10. Stok & Yedek Parça Yönetimi (Stock)
+  3.11. Görev & İş Takip Modülü (Tasks)
+  3.12. Belgeler, Formlar & Islak İmzalı PDF Çıktıları (DocsAndLabels)
+  3.13. Termal Kargo ve Adres Etiketleri (AddressLabel)
+  3.14. Zimmet Teslim / İade Protokolü (HandoverProtocol)
+  3.15. Dosya Yöneticisi & Ekler (FilesManager)
+  3.16. Raporlar & İstatistiksel Grafikler (Reports)
+  3.17. Dahili Sohbet Barı (Socket.IO Chat)
+  3.18. Bito AI Asistanı & Doğal Dil Sorgulama (AI & snipeitAi)
+  3.19. Sistem Kullanıcıları, Roller ve Yetki Matrisi (SystemUsers)
+  3.20. Ayarlar & Snipe-IT Entegrasyon Yapılandırması (Settings)
+  3.21. Canlı Görsel Temalar & Özelleştirme (Themes & ThemeModal)
+BÖLÜM 4: SNIPE-IT ENTEGRASYONU NASIL ÇALIŞIR?
+BÖLÜM 5: ADIM ADIM KURULUM, ÇALIŞTIRMA VE DAĞITIM REHBERİ
+================================================================================
+
+
+================================================================================
+BÖLÜM 1: GENEL BAKIŞ VE SİSTEM MİMARİSİ
+================================================================================
+
+Bitrox ServiceTracker, kurumsal IT departmanları, teknik servis ekipleri ve 
+bilgi işlem yöneticileri için özel olarak geliştirilmiş hibrit bir IT Servis 
+Masası (Service Desk) ve operasyon portalıdır.
+
+Sistem 3 temel platformda eş zamanlı çalışabilir:
+1. Web Tarayıcısı (Modern Chrome, Edge, Firefox, Safari)
+2. Linux / Debian Sunucu Servisi (Node.js + PM2 veya Docker)
+3. Masaüstü Uygulaması (Electron tabanlı Windows .exe ve Linux .AppImage)
+
+Kullanılan Teknolojiler:
+-----------------------
+- Frontend: React 18, Vite 5, AG-Grid (Endüstri standardı zengin tablolar),
+  Chart.js (Performanslı grafikler), Three.js (3D görsel efektler),
+  Socket.IO Client (Canlı anlık bildirimler).
+- Backend: Node.js, Express.js REST API, MySQL2 (İlişkisel veritabanı sürücüsü),
+  Bcryptjs (Parola güvenliği), Web-Push / VAPID (Masaüstü push bildirimleri),
+  Multer (Dosya yükleme motoru).
+- Masaüstü: Electron 28, Electron-Builder (Otomatik paketleyici).
+- Veritabanı: MySQL 8.0+ / MariaDB (InnoDB, utf8mb4_unicode_ci tam Türkçe destek).
+
+
+================================================================================
+BÖLÜM 2: LANDING PAGE WEB SİTESİ (service.bitrox.com.tr) & server.js
+================================================================================
+
+Projenin kökündeki "landing/" dizini ve sunucudaki "/home/esat/bitrox-landing" 
+klasörü, sistemin vitrin tanıtım web sitesidir (https://service.bitrox.com.tr).
+
+Bu klasördeki dosyalar ve işlevleri:
+-------------------------------------
+1. server.js:
+   - Node.js'in dahili "http", "fs" ve "path" kütüphaneleriyle sıfır ek 
+     bağımlılıkla çalışan, son derece hafif ve güvenli bir statik dosya sunucusudur.
+   - Port 3000 üzerinde dinleme yapar ("0.0.0.0").
+   - İstek geldiğinde URL'deki sorgu parametrelerini ayıklar ve güvenli dosya 
+     yoluna çevirir (dizin dışına çıkma açıklarını '..' engelleyerek önler).
+   - Dosya uzantısına göre (html, css, js, json, xml, txt, png, jpg, svg vb.) 
+     doğru MIME tipini başlığa basar.
+   - Önbellek sorunlarını önlemek için "Cache-Control: no-store, no-cache" 
+     başlıklarıyla çalışır; böylece yaptığınız bir değişiklik ziyaretçiye anında yansır.
+   - PM2 üzerinde "bitrox-landing" adıyla 7/24 arka planda kesintisiz çalışır.
+
+2. index.html:
+   - Modern, SEO uyumlu ve semantik HTML5 iskeletidir.
+   - Google aramaları için Schema.org JSON-LD (SoftwareApplication ve FAQPage) 
+     yapısal verilerini barındırır.
+   - Sosyal medya kartları için OpenGraph ve Twitter Cards etiketlerini içerir.
+   - Bölümleri:
+     * Sabit Üst Menü (Glassmorphism Navbar)
+     * Mobil Çekmece Menü (Mobile Drawer Menu)
+     * Hero Alanı (3D Canlı Ekran Mockup'ı ve Süzülen Hologram Kartlar)
+     * Metrikler & Sayısal Göstergeler (15+ Modül, %80+ Entegrasyon vb.)
+     * Snipe-IT Entegrasyon Vitrini (İki yönlü senkron şeması)
+     * İnteraktif Modül Tarayıcısı (Sekmeli 8 ana modül canlı önizlemesi)
+     * 9 Modüllük Zengin Fonksiyon Kartları
+     * Snipe-IT Karşılaştırma Matrisi (Farkları gösteren tablo)
+     * Canlı Tema Önizleme Aracı (Obsidian, Cyberpunk, Aurora, Solaris, Dracula)
+     * ROI & Zaman Tasarrufu Hesaplayıcı (Personel ve arıza sürgüleri)
+     * Çok Sekmeli Terminal Kurulum Penceresi (Bash, Docker, Windows, PM2)
+     * S.S.S. Akordiyonu (Açılır-kapanır 5 temel soru-cevap)
+     * Hata Bildirim & Destek Kartı
+     * Kurumsal Altbilgi (Footer)
+
+3. style.css:
+   - Saf CSS3 ile sıfır framework (Tailwind/Bootstrap olmadan) yazılmış ultra-modern 
+     Dark Glassmorphism tasarım sistemidir.
+   - Canlı tema desteği için CSS custom properties (:root ve [data-theme]) kullanır.
+   - Arka planda yumuşak nabız gibi atan auralar ve fütüristik grid çizgileri sunar.
+   - Tamamen responsive'dir (Masaüstü, Tablet, Telefon ekranlarına kusursuz uyar).
+
+4. script.js:
+   - Sayfadaki tüm interaktiviteyi yönetir:
+     * Sayfa kaydırıldığında menüyü küçültme ve cam efektini artırma.
+     * Yukarı Çık (Back to Top) butonunun görünürlüğü ve yumuşak kaydırması.
+     * Mobil menünün açılıp kapanması.
+     * Kurulum kodlarının tek tıkla veya tümünün panoya kopyalanması.
+     * Toast bildirimlerinin ekranda süzülmesi.
+     * Modül sekmelerinin (Tabs) değiştirilmesi.
+     * Tema butonlarına tıklandığında sitenin tüm renk paletinin canlı değişmesi.
+     * ROI hesaplayıcıdaki formülün (aylık kazanılan saat hesabı) anlık çalışması.
+     * S.S.S. akordiyonlarının açılıp kapanması.
+     * Kartların sayfaya girerken süzülerek belirmesi (IntersectionObserver).
+
+5. robots.txt ve sitemap.xml:
+   - Google ve diğer arama motoru botlarının siteyi taraması ve tüm sayfaları 
+     dizine eklemesi için yapılandırılmış resmi protokol dosyalarıdır.
+
+
+================================================================================
+BÖLÜM 3: SERVICETRACKER UYGULAMASI TÜM MODÜLLERİ VE ÇALIŞMA MANTIĞI
+================================================================================
+
+ServiceTracker ana yazılımı, kurumsal bir IT biriminin sabah mesaiye başladığı 
+andan akşam çıkışına kadar yaptığı her işlemi kayıt altına alır.
+
+--------------------------------------------------------------------------------
+3.1. Giriş & Kimlik Doğrulama (Login & Auth)
+--------------------------------------------------------------------------------
+- Nasıl Çalışır?
+  Kullanıcı adı ve şifre girilir. Arka planda Node.js bcrypt ile hash doğrulaması 
+  yapar. Oturum açıldığında kullanıcı bilgileri ve modül yetkileri React 
+  AuthContext'e aktarılır.
+- Varsayılan Giriş Bilgileri:
+  Kullanıcı Adı: admin
+  Şifre: admin123
+- Güvenlik:
+  Yetkisiz erişimler otomatik olarak Login ekranına yönlendirilir. Kullanıcının 
+  rolüne göre menüdeki modüller dinamik olarak gizlenir veya gösterilir.
+
+--------------------------------------------------------------------------------
+3.2. Yönetim Paneli & Master Takvim (Dashboard & MasterCalendar)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Tüm IT operasyonunun kuşbakışı izlendiği kontrol merkezidir.
+- Nasıl Çalışır?
+  * Üst Özet Kartları: Açık servis fişi sayısı, onarımdaki cihazlar, kritik 
+    seviyedeki tonerler, beklenen kargolar ve bu ayki bakım durumları listelenir.
+  * Master Takvim: FullCalendar mantığında çalışan interaktif bir takvimdir.
+    Servis teslim tarihleri (Mavi), Kargo sevkiyatları (Mor), Toner çıkışları 
+    (Turuncu) ve Donanım Bakımları (Yeşil) renk kodlarıyla takvim üzerinde görünür.
+  * Günlük Slide-in Panel: Takvimde herhangi bir güne tıklandığında sağdan 
+    açılan şık çekmecede o günün tüm IT ajandası listelenir.
+
+--------------------------------------------------------------------------------
+3.3. Teknik Servis Fişleri Modülü (ServiceTickets)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Arızalanan bilgisayar, monitör, telefon, yazıcı vb. cihazların kabulünden 
+  teslimine kadar tüm teknik aşamalarını yönetir.
+- Adım Adım İşleyiş:
+  1. "Yeni Fiş Aç" butonuna basılır.
+  2. Personel/Müşteri seçilir. EĞER Snipe-IT bağlıysa, o personelin üzerine 
+     zimmetli olan tüm cihazlar otomatik bir açılır listede gelir!
+  3. Cihaz seçildiğinde seri no, model ve demirbaş kodu fişe otomatik dolar.
+  4. Şikayet ve arıza açıklaması girilir, kabul eden teknisyen atanır.
+  5. Fiş Durum Aşamaları:
+     - Yeni Kayıt -> Onarımda -> Parça Bekliyor -> Dış Serviste -> Teslim Edildi
+  6. Yedek Parça Ekleme: Onarım sırasında kullanılan RAM, SSD, adaptör vb. 
+     stoktan düşülerek fişe eklenir, maliyet otomatik toplanır.
+  7. Islak İmzalı Çıktı: "Yazdır" butonuna basıldığında kurumsal logolu, 
+     teslim eden ve teslim alan imza alanları bulunan resmi PDF servis fişi basılır.
+
+--------------------------------------------------------------------------------
+3.4. Toner & Sarf Malzeme Takip Modülü (Toner)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Yazıcıların toner tüketimini, stok seviyelerini ve sayfa sayaçlarını denetler.
+- Adım Adım İşleyiş:
+  1. Toner Tanımları: Model (ör. HP CF237A), Renk (Siyah, Mavi, Kırmızı, Sarı), 
+     uyumlu yazıcı modelleri ve "Kritik Eşik Miktarı" sisteme girilir.
+  2. Çıkış / Değişim İşlemi: Bir birim toner istediğinde yazıcı seçilir, 
+     toneri alan personel kaydedilir ve yazıcının o anki "Sayfa Sayacı" girilir.
+  3. Sayfa Verimlilik Hesabı: Sistem iki değişim arasındaki sayfa farkını 
+     hesaplayarak o tonerin kaç sayfa yazdırdığını raporlar.
+  4. Kritik Stok Alarmı: Depodaki adet kritik eşiğin altına indiğinde sistem 
+     otomatik sarı/kırmızı uyarı verir ve bildirim çalar.
+
+--------------------------------------------------------------------------------
+3.5. Kargo & Lojistik Yönetimi (Cargo)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Şubelere gönderilen veya merkez ofise tamir/iade için gelen donanımların 
+  kargo süreçlerini yönetir.
+- Adım Adım İşleyiş:
+  1. Kargo Yönü Belirlenir: "Gelen Kargo" veya "Giden Kargo".
+  2. Kurye Firması (Yurtiçi, Aras, MNG vb.), Takip Numarası, Alıcı/Gönderici ve 
+     içerik bilgisi girilir.
+  3. İlgili Servis Fişi ile Bağlantı: Cihaz tamir için dış servise gidiyorsa 
+     doğrudan ilgili servis fişine bağlanır.
+  4. Termal Barkod Etiketi: Tek tıkla 100x150 mm standart kargo koli etiketi 
+     oluşturulur ve termal barkod yazıcıya gönderilir.
+
+--------------------------------------------------------------------------------
+3.6. BitLocker Şifreli Kurtarma Anahtarı Kasası (Bitlocker)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Windows bilgisayarların disk şifreleme anahtarlarını (48 haneli Recovery Key) 
+  güvenli, aranabilir bir kasada saklar.
+- Adım Adım İşleyiş:
+  1. Bilgisayar adı, Key ID (ilk 8 karakter) ve 48 haneli Recovery Key girilir.
+  2. İsteğe bağlı olarak Windows'un ürettiği TXT veya PDF yedek dosyası eklenir.
+  3. Mavi Ekran / Kilitlenme Anında: Teknisyen arama çubuğuna bilgisayar adını 
+     veya Key ID'yi yazar; tek tıkla şifreyi panoya kopyalayıp kilitli diski açar.
+
+--------------------------------------------------------------------------------
+3.7. Periyodik Bakım Protokolü Modülü (Maintenance)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Şirket bilgisayarlarının periyodik (3, 6 veya 12 aylık) donanım ve yazılım 
+  bakımlarını kurumsal protokole bağlar.
+- Adım Adım İşleyiş:
+  1. Bakım Planı Açılır (İşletme, Departman ve Cihazlar seçilir).
+  2. 9 Zorunlu Kontrol Adımı Teknisyen Tarafından İşaretlenir:
+     [1] Kasa içi & Fan toz temizliği
+     [2] Termal macun kontrolü ve yenilenmesi
+     [3] Port ve bağlantı kontrolleri
+     [4] RAM / Slot oksit temizliği
+     [5] Disk sağlık taraması (SMART / Bad Sector)
+     [6] Antivirüs veritabanı güncellemesi ve tam tarama
+     [7] İşletim sistemi ve güvenlik yamaları
+     [8] Lisans doğrulama
+     [9] Performans testi ve son kontrol
+  3. Resmi Tutanak Basımı: İşletme Müdürü ve Teknisyenin ıslak imzalayacağı 
+     resmi teslim-tesellüm tutanağı PDF olarak basılır ve arşivlenir.
+
+--------------------------------------------------------------------------------
+3.8. 360° Kullanıcı Portresi (User360)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Bir çalışanın IT ile olan tüm ilişkisini tek bir ekranda birleştirir.
+- Nasıl Çalışır?
+  Personel adı yazıldığında tek ekranda 4 ana sekme açılır:
+  * Zimmetler: Snipe-IT'de üzerine kayıtlı laptop, monitör, telefon vb.
+  * Servis Geçmişi: Bugüne kadar açtırdığı tüm arıza fişleri ve tamir logları.
+  * Toner / Sarfiyat: Personelin teslim aldığı tonerler ve malzemeler.
+  * Kargolar: Adına gelen veya şubesine gönderilen donanım sevkiyatları.
+  İşten ayrılan veya yeni başlayan personel için tek tıkla toplu döküm verir.
+
+--------------------------------------------------------------------------------
+3.9. Envanter & Demirbaş Modülü (Inventory)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Kurumdaki tüm teknolojik varlıkların marka, model, seri no, demirbaş no, 
+  lokasyon ve garanti bitiş tarihlerini listeler.
+- Snipe-IT Entegrasyonu:
+  Snipe-IT bağlıysa veriler doğrudan Snipe-IT API'sinden çekilir ve yerel 
+  önbelleğe alınır. Snipe-IT yoksa yerel veritabanında bağımsız envanter tutulur.
+
+--------------------------------------------------------------------------------
+3.10. Stok & Yedek Parça Yönetimi (Stock)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  IT deposundaki yedek parçaları (SSD, RAM, klavye, mouse, kablo, adaptör) yönetir.
+- Nasıl Çalışır?
+  Giriş faturası, birim maliyet, raf konumu girilir. Bir teknik servis fişinde 
+  SSD kullanıldığında stoktan otomatik düşer ve fiş maliyetine yansır.
+
+--------------------------------------------------------------------------------
+3.11. Görev & İş Takip Modülü (Tasks)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  IT ekibi içi günlük görevlerin (Kanban veya liste mantığında) takibidir.
+- Nasıl Çalışır?
+  "Yapılacak", "Sürüyor", "Tamamlandı" sütunlarında görevler teknisyenlere atanır, 
+  son teslim tarihleri belirlenir ve hatırlatıcılar üretilir.
+
+--------------------------------------------------------------------------------
+3.12. Belgeler, Formlar & Islak İmzalı PDF Çıktıları (DocsAndLabels)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Kurumsal evrak şablonlarını (Arıza kabul, malzeme talep, hurda tutanağı, 
+  zimmet formu) PDF formatında otomatik olarak doldurup basar.
+
+--------------------------------------------------------------------------------
+3.13. Termal Kargo ve Adres Etiketleri (AddressLabel)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Zebra, Xprinter gibi termal barkod yazıcılar için özel tasarlanmış 
+  etiket şablonları üretir.
+
+--------------------------------------------------------------------------------
+3.14. Zimmet Teslim / İade Protokolü (HandoverProtocol)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Personele verilen cihazların (Şarj aleti, çanta, mouse dahil) eksiksiz teslim 
+  edildiğine dair yasal teslim tutanağını üretir ve ıslak imzaya hazır eder.
+
+--------------------------------------------------------------------------------
+3.15. Dosya Yöneticisi & Ekler (FilesManager)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Servis fişlerine eklenen arıza fotoğrafları, faturalar, sürücüler ve BIOS 
+  dosyalarını sunucuda organize eder.
+
+--------------------------------------------------------------------------------
+3.16. Raporlar & İstatistiksel Grafikler (Reports)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Aylık arıza trendleri, en çok arızalanan bilgisayar markaları, departman bazlı 
+  toner sarfiyat grafikleri ve teknisyen onarım sürelerini Chart.js ile görselleştirir.
+
+--------------------------------------------------------------------------------
+3.17. Dahili Sohbet Barı (Socket.IO Chat)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Uygulamanın sağ alt köşesine yerleşen, masaüstü tarzı anlık mesajlaşma barıdır.
+- Nasıl Çalışır?
+  IT personeli kendi arasında gerçek zamanlı konuşabilir, fiş linki paylaşabilir. 
+  Socket.IO sayesinde mesajlar sayfa yenilenmeden anında iletilir.
+
+--------------------------------------------------------------------------------
+3.18. Bito AI Asistanı & Doğal Dil Sorgulama (AI & snipeitAi)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Entegre yapay zeka operasyon asistanıdır.
+- Nasıl Çalışır?
+  Teknisyen doğal dille soru sorabilir:
+  Örnek: "Muhasebe departmanında kaç adet aktif laptop var?"
+  Örnek: "Mehmet Kaya'nın üzerindeki monitörün seri numarası nedir?"
+  Bito AI arka planda Snipe-IT ve yerel MySQL veritabanını tarar ve saniyeler 
+  içinde net cevabı ekrana yazar.
+
+--------------------------------------------------------------------------------
+3.19. Sistem Kullanıcıları, Roller ve Yetki Matrisi (SystemUsers)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Sisteme girebilecek kullanıcıları ve yetkilerini yönetir.
+- Roller:
+  1. Super Admin: Her şeye tam yetkili.
+  2. Admin: Genel yönetici.
+  3. Teknisyen: Fiş açma, toner çıkışı ve bakım işlemlerine yetkili.
+  4. Kullanıcı: Yalnızca kendi durumunu görmeye yetkili standart personel.
+- Granüler Yetki Matrisi:
+  Her rol için her modülde (Görüntüle, Ekle, Düzenle, Sil, Yönet) ayrı ayrı 
+  yetki kutuları işaretlenebilir.
+
+--------------------------------------------------------------------------------
+3.20. Ayarlar & Snipe-IT Entegrasyon Yapılandırması (Settings)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Sistem genel parametreleri, firma logosu, başlıklar ve Snipe-IT API bağlantı 
+  ayarlarının yapıldığı yerdir.
+
+--------------------------------------------------------------------------------
+3.21. Canlı Görsel Temalar & Özelleştirme (Themes & ThemeModal)
+--------------------------------------------------------------------------------
+- Ne İşe Yarar?
+  Kullanıcının göz zevkine ve çalışma ortamına göre arayüzü anında değiştirmesini sağlar.
+- Desteklenen Temalar:
+  * Standart Koyu (Dark / Slate)
+  * Cyberpunk (Neon Pembe & Camgöbeği)
+  * Aurora (Zümrüt Yeşili & Kuzey Işıkları)
+  * Solaris (Ateş Turuncusu & Altın Sarısı)
+  * Midnight Dracula (Gece Moru)
+  * Sakura, Retro, Minimalist vb. toplam 15+ tema.
+
+
+================================================================================
+BÖLÜM 4: SNIPE-IT ENTEGRASYONU NASIL ÇALIŞIR?
+================================================================================
+
+1. Snipe-IT Nedir?
+   Dünyanın en popüler açık kaynaklı donanım ve demirbaş takip (ITAM) yazılımıdır.
+2. Neden Bitrox ServiceTracker'a İhtiyaç Duyulur?
+   Snipe-IT demirbaşı listeler ama sahada o cihaz arızalandığında fiş açamaz, 
+   yazıcının sayfa sayacını takip edemez, kargo etiketi basamaz ve bakım tutanağı 
+   düzenleyemez. ServiceTracker bu boşluğu kapatır.
+3. Bağlantı Mantığı:
+   - Ayarlar -> Snipe-IT Entegrasyonu alanına sunucu URL'si ve API Token girilir.
+   - Sistem Snipe-IT REST API v1 ile konuşur.
+   - Kullanıcılar, Cihazlar ve Zimmetler yerel önbellek tablolarına aktarılır.
+   - Böylece 5000 cihazlık devasa bir envanterde bile arama yaptığınızda 
+     sonuçlar milisaniyeler (0.2 ms) içinde ekrana gelir.
+4. Çift Yönlü Esneklik:
+   Snipe-IT sunucunuz kapalı olsa veya internet kesilse dahi ServiceTracker 
+   yerel MySQL veritabanıyla %100 bağımsız çalışmaya devam eder!
+
+
+================================================================================
+BÖLÜM 5: ADIM ADIM KURULUM, ÇALIŞTIRMA VE DAĞITIM REHBERİ
+================================================================================
+
+1. Gereksinimler:
+   - Node.js (v18+)
+   - MySQL / MariaDB (v8.0+)
+   - Git
+
+2. Kurulum Komutları (Tek Seferlik):
+   $ git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+   $ cd bitrox-service-tracking
+   $ npm install
+   $ mysql -u root -p < database_schema.sql
+   $ cp .env.example .env
+   (Not: .env içine veritabanı şifrenizi yazın)
+
+3. Geliştirme Ortamı (Canlı Kodlama):
+   $ npm run dev
+   (Tarayıcıda: http://localhost:5173 açılır)
+
+4. Canlı Sunucu / Üretim Başlatma:
+   $ npm run build
+   $ npm start
+   (Tarayıcıda: http://localhost:9999 açılır)
+
+5. Arka Planda Kesintisiz Servis Olarak Çalıştırma (PM2):
+   - Ana Servis Takip Uygulaması:
+     $ pm2 start server/server.js --name "servicetracker"
+   - Tanıtım Web Sitesi (Landing Page):
+     $ pm2 start /home/esat/bitrox-landing/server.js --name "bitrox-landing"
+   - Otomatik Başlatma:
+     $ pm2 save && pm2 startup
+
+================================================================================
+Özet:
+Bitrox ServiceTracker, kurumsal bilgi işlem ekiplerinin kağıt, excel ve dağınık 
+yazılımlar arasında kaybolmasını engelleyen, Snipe-IT ile el ele çalışan 
+eksiksiz ve modern bir IT Operasyon Masasıdır.
+================================================================================

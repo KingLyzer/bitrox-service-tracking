@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sürüm Notları (Changelog) — Bitrox ServiceTracker</title>
+  
+  <meta name="description" content="Bitrox ServiceTracker sürüm geçmişi, yeni eklenen özellikler, hata düzeltmeleri ve değişiklikler." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://service.bitrox.com.tr/changelog/" />
+
+  
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=5.0.0" />
+
+  <style>
+    .changelog-timeline { max-width: 800px; margin: var(--space-8) auto var(--space-16); display: flex; flex-direction: column; gap: var(--space-10); }
+    .release-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-8); }
+    .release-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-3); flex-wrap: wrap; gap: 8px; }
+    .release-ver { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
+    .release-date { font-size: 0.875rem; color: var(--text-muted); }
+    .release-category { margin-top: var(--space-4); }
+    .release-cat-title { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: var(--space-2); }
+    .release-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .release-item { font-size: 0.9375rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+    .release-item::before { content: "•"; color: var(--accent); font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" aria-label="Ana Gezinti">
+      <div class="container nav-container">
+        <a href="/" class="brand">
+          <img src="../assets/logo.png" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
+          <span>Bitrox ServiceTracker</span>
+        </a>
+
+        <div class="nav-actions">
+          <a href="/" class="btn btn-ghost btn-sm">← Ana Sayfa</a>
+          <a href="/docs/" class="btn btn-ghost btn-sm">Dokümantasyon</a>
+          <button type="button" class="icon-btn" id="themeToggleBtn" title="Tema Değiştir" aria-label="Tema Değiştir">
+            <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24"></svg>
+          </button>
+          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub ⭐</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    
+    <div class="section-header" style="margin-top: var(--space-12); margin-bottom: var(--space-8);">
+      <span class="section-tag">Sürüm Tarihçesi</span>
+      <h1 class="section-title">Changelog & Güncellemeler</h1>
+      <p class="section-desc">Bitrox ServiceTracker için yayımlanan kararlı sürümler ve değişiklikler.</p>
+    </div>
+
+    <div class="changelog-timeline">
+      
+      <!-- v2.3.2 -->
+      <article class="release-card">
+        <div class="release-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="release-ver">v2.3.2</span>
+            <span class="badge badge-accent">En Son Sürüm</span>
+          </div>
+          <span class="release-date">Ekim 2026</span>
+        </div>
+        <div class="release-category">
+          <div class="release-cat-title">Yeni Özellikler & İyileştirmeler</div>
+          <ul class="release-list">
+            <li class="release-item">Snipe-IT REST API v1 önbellekleme mimarisi optimize edildi (milisaniyelik yerel arama).</li>
+            <li class="release-item">9 kontrol adımlı periyodik donanım bakım protokolü ve resmi PDF tutanak basımı eklendi.</li>
+            <li class="release-item">Bito AI operasyon asistanında doğal dille donanım sorgulama yetenekleri güçlendirildi.</li>
+            <li class="release-item">VAPID Web Push masaüstü bildirimleri ve Socket.IO canlı durum senkronizasyonu güncellendi.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- v2.2.0 -->
+      <article class="release-card">
+        <div class="release-header">
+          <span class="release-ver">v2.2.0</span>
+          <span class="release-date">Haziran 2026</span>
+        </div>
+        <div class="release-category">
+          <div class="release-cat-title">Modül Güncellemeleri</div>
+          <ul class="release-list">
+            <li class="release-item">User360 profili eklendi (personelin zimmet, servis, toner ve kargo logları tek ekranda).</li>
+            <li class="release-item">100x150 mm termal barkod kargo etiketi oluşturucu (Code128 desteği) devreye alındı.</li>
+            <li class="release-item">BitLocker 48 haneli şifreli kurtarma anahtarı kasası ve tek tıkla kopyalama özelliği eklendi.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- v2.1.0 -->
+      <article class="release-card">
+        <div class="release-header">
+          <span class="release-ver">v2.1.0</span>
+          <span class="release-date">Nisan 2026</span>
+        </div>
+        <div class="release-category">
+          <div class="release-cat-title">Arayüz & Raporlama</div>
+          <ul class="release-list">
+            <li class="release-item">Master Operasyon Takvimi ile servis, kargo ve bakım hareketlerinin renkli takibi eklendi.</li>
+            <li class="release-item">AG Grid veri tabloları ve Chart.js aylık arıza istatistik grafikleri entegre edildi.</li>
+            <li class="release-item">15+ modern görsel tema seçeneği eklendi (themes.css).</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- v2.0.0 -->
+      <article class="release-card">
+        <div class="release-header">
+          <span class="release-ver">v2.0.0</span>
+          <span class="release-date">Ocak 2026</span>
+        </div>
+        <div class="release-category">
+          <div class="release-cat-title">Mimari Yenilenmesi</div>
+          <ul class="release-list">
+            <li class="release-item">React 18 + Vite 5 altyapısına tam geçiş yapıldı.</li>
+            <li class="release-item">Electron 28 ile Windows (.exe) ve Linux (.AppImage) masaüstü derleme desteği getirildi.</li>
+            <li class="release-item">Granüler rol ve yetki matrisi (Super Admin, Admin, Teknisyen, Kullanıcı) devreye alındı.</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding-top: var(--space-8); padding-bottom: var(--space-8);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.8125rem; color: var(--text-muted);">
+      <div>© 2026 Bitrox ServiceTracker. MIT Lisansı.</div>
+      <div><a href="mailto:admin@bitrox.com.tr" style="color: inherit;">admin@bitrox.com.tr</a></div>
+    </div>
+  </footer>
+
+  <script src="../script.js?v=5.0.0"></script>
+</body>
+</html>

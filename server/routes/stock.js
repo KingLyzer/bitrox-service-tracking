@@ -29,17 +29,37 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
       } else {
         results.receiver = 'exists';
       }
+      // Ensure AUTO_INCREMENT on id columns so inserts with qty > 0 never fail with "Field 'id' doesn't have a default value"
+      try {
+        await pool.execute('ALTER TABLE stock_movements MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+        results.stock_movements_ai = 'ok';
+      } catch (e) {
+        results.stock_movements_ai = e.message;
+      }
+      try {
+        await pool.execute('ALTER TABLE used_parts MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+      } catch (e) {}
+      try {
+        await pool.execute('ALTER TABLE attachments MODIFY COLUMN id INT(11) NOT NULL AUTO_INCREMENT');
+      } catch (e) {}
       res.json({ success: true, ...results });
     } catch (err) {
       dbError(res, err, 'stock:ensure-schema');
     }
   });
 
+  // ── Helper to normalize stock type ──
+  function normalizeStockType(type) {
+    const raw = String(type || '').trim().toLowerCase();
+    if (raw === 'scrap' || raw === 'hurda' || raw === 'screen' || raw === 'ekran') return 'scrap';
+    return 'office';
+  }
+
   // ── Items ──
   app.get('/api/stock/items', async (req, res) => {
     try {
       if (req.query.compact === '1' || req.query.compact === 'true') {
-        const [rows] = await pool.query('SELECT qty, critical_qty, is_active FROM stock_items');
+        const [rows] = await pool.query('SELECT qty, critical_qty, is_active, stock_type FROM stock_items');
         return res.json({ success: true, data: rows });
       }
       const [rows] = await pool.query(
@@ -74,7 +94,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
         return res.status(400).json({ success: false, message: 'Ürün adı zorunludur.' });
       }
       const numericQty = Math.max(0, Number(qty) || 0);
-      const sanitizedStockType = stock_type === 'scrap' ? 'scrap' : 'office';
+      const sanitizedStockType = normalizeStockType(stock_type);
 
       conn = await pool.getConnection();
       await conn.beginTransaction();
@@ -123,7 +143,7 @@ module.exports = function registerStock(app, { pool, emit, helpers }) {
       if (!Number.isFinite(id)) return res.status(400).json({ success: false, message: 'Geçersiz id.' });
 
       const { name, barcode, category_id, unit, critical_qty, unit_price, location, description, stock_type } = req.body;
-      const sanitizedStockType = stock_type === 'scrap' ? 'scrap' : 'office';
+      const sanitizedStockType = normalizeStockType(stock_type);
 
       await pool.execute(
         `UPDATE stock_items

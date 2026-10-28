@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitrox ServiceTracker — Open Source IT Service Desk & Operations Portal</title>
+  
+  <!-- SEO Meta -->
+  <meta name="description" content="Self-hosted, open-source IT service desk integrated with Snipe-IT. Manage hardware service tickets, printer toner counters, BitLocker keys, and maintenance protocols." />
+  <meta name="keywords" content="IT service desk software, open source help desk, Snipe-IT integration, service tracking software, printer toner management, BitLocker key vault, hardware maintenance log" />
+  <meta name="author" content="KingLyzer" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  
+  <link rel="canonical" href="https://service.bitrox.com.tr/en/" />
+  <link rel="alternate" hreflang="tr" href="https://service.bitrox.com.tr/" />
+  <link rel="alternate" hreflang="en" href="https://service.bitrox.com.tr/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://service.bitrox.com.tr/" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Bitrox ServiceTracker" />
+  <meta property="og:title" content="Bitrox ServiceTracker — Open Source IT Service Desk" />
+  <meta property="og:description" content="Centralize IT field operations. Snipe-IT integrated, self-hosted, MIT-licensed IT management portal." />
+  <meta property="og:image" content="https://service.bitrox.com.tr/assets/ServiceTracker.png" />
+  <meta property="og:url" content="https://service.bitrox.com.tr/en/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bitrox ServiceTracker — Open Source IT Service Desk" />
+  <meta name="twitter:description" content="Snipe-IT integrated open source IT service desk and operations software." />
+  <meta name="twitter:image" content="https://service.bitrox.com.tr/assets/ServiceTracker.png" />
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+
+  <!-- Self-Hosted WOFF2 Fonts & Preload -->
+  <link rel="preload" href="/assets/fonts/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="../assets/screenshots/dashboard.webp?v=5.2.0" type="image/webp" fetchpriority="high">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="../style.css?v=5.3.0" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://service.bitrox.com.tr/en/#website",
+        "url": "https://service.bitrox.com.tr/en/",
+        "name": "Bitrox ServiceTracker",
+        "description": "Open Source IT Service Desk & Operations Portal",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://service.bitrox.com.tr/en/#software",
+        "name": "Bitrox ServiceTracker",
+        "operatingSystem": "Linux, Windows",
+        "applicationCategory": "BusinessApplication",
+        "softwareVersion": "2.3.2",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "KingLyzer",
+          "url": "https://github.com/KingLyzer"
+        },
+        "description": "Self-hosted, open-source IT service desk integrated with Snipe-IT for repair tickets, toner counters, BitLocker keys, and maintenance protocols."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://service.bitrox.com.tr/en/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can ServiceTracker run standalone without Snipe-IT?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Bitrox ServiceTracker works both as a standalone IT service desk and with Snipe-IT integration. When Snipe-IT is offline or not configured, all records are stored in your local MySQL database."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are there licensing or per-seat fees?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The software is 100% free and open-source under the MIT license, with no user, ticket, or asset limitations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where is my data stored?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "All data stays on your own on-premise or cloud server in your local MySQL database. No telemetry or external cloud transfers occur."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="container nav-container">
+        
+        <a href="/en/" class="brand" aria-label="Bitrox ServiceTracker Home">
+          <img src="../assets/logo.webp?v=5.2.0" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
+          <span>Bitrox ServiceTracker</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#snipeit" class="nav-link">Snipe-IT</a></li>
+          <li><a href="#comparison" class="nav-link">Comparison</a></li>
+          <li><a href="#screenshots" class="nav-link">Screenshots</a></li>
+          <li><a href="#install" class="nav-link">Install</a></li>
+          <li><a href="docs/" class="nav-link">Docs</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <!-- Language Selector -->
+          <a href="/" class="icon-btn" title="Türkçe Sürüm" aria-label="Türkçe sürümüne geç">
+            TR
+          </a>
+
+          <!-- Theme Toggle -->
+          <button type="button" class="icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+            <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24"></svg>
+          </button>
+
+          <!-- GitHub Star Badge -->
+          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="star-badge" aria-label="GitHub Repository and Stars">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            <span>GitHub</span>
+            <span class="star-count" id="githubStarsCount"></span>
+          </a>
+
+          <!-- Primary Install Button -->
+          <a href="#install" class="btn btn-primary btn-sm">
+            Quick Start
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button type="button" class="icon-btn menu-toggle" id="menuToggle" aria-label="Open / Close Menu" aria-expanded="false">
+            <svg class="icon-svg" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#snipeit" class="nav-link">Snipe-IT Integration</a>
+      <a href="#comparison" class="nav-link">Comparison</a>
+      <a href="#screenshots" class="nav-link">Screenshots</a>
+      <a href="#install" class="nav-link">Installation Guide</a>
+      <a href="docs/" class="nav-link">Documentation</a>
+      <a href="#faq" class="nav-link">Frequently Asked Questions</a>
+      <div style="margin-top: 16px; display: flex; gap: 10px;">
+        <a href="#install" class="btn btn-primary" style="flex: 1; justify-content: center;">Install Now</a>
+        <a href="/" class="btn btn-secondary" style="justify-content: center;">Türkçe (TR)</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main id="main-content">
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          
+          <div class="hero-content">
+            <div class="hero-badge-row">
+              <span class="badge badge-accent">v2.3.2 Production</span>
+              <span class="badge badge-neutral">Open Source (MIT)</span>
+              <span class="badge badge-neutral">Self-Hosted</span>
+            </div>
+
+            <h1 class="hero-title">
+              Open-Source IT Service Desk for Enterprise Teams
+            </h1>
+
+            <p class="hero-desc">
+              Unify hardware repair tickets, printer toner counter logs, BitLocker recovery keys, and maintenance handover protocols in a single platform integrated with Snipe-IT.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#install" class="btn btn-primary btn-lg">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span>Install Guide</span>
+              </a>
+              <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>GitHub Repo</span>
+              </a>
+            </div>
+
+            <div class="hero-trust-row">
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>100% Free & MIT</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Self-Hosted Privacy</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Node.js 18+ & PM2 Ready</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Snipe-IT REST API v1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/dashboard</div>
+              </div>
+              <div class="browser-body">
+                <img src="../assets/screenshots/dashboard.webp?v=5.2.0" fetchpriority="high" decoding="async" alt="Bitrox ServiceTracker Management Dashboard Screenshot" width="1280" height="720" loading="eager" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem -> Solution -->
+    <section class="section problem-solution-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Problem & Solution</span>
+          <h2 class="section-title">Replace Scattered Tools with a Unified Desk</h2>
+          <p class="section-desc">
+            While Snipe-IT excels at asset counting, field repair tickets, toner page counters, and signed protocols frequently end up fragmented in spreadsheets.
+          </p>
+        </div>
+
+        <div class="comparison-split">
+          <div class="split-card">
+            <div class="split-card-header">
+              <span class="split-badge negative">Traditional Disjointed Setup</span>
+            </div>
+            <ul class="split-list">
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Hardware failure reports arrive through phone calls, sticky notes, and random emails; audit trails get lost.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Toner changes logged in spreadsheets without printer page counters, making page yield calculation impossible.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Branch courier shipments are disconnected from tickets, requiring manual carrier portal checks.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="split-card" style="border-color: var(--accent-border);">
+            <div class="split-card-header">
+              <span class="split-badge positive">Bitrox ServiceTracker Workflow</span>
+            </div>
+            <ul class="split-list">
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Selecting an employee instantly lists their assigned Snipe-IT devices with a structured 5-stage repair workflow.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Printer counter (page volume) and CMYK stock levels tracked with automated threshold reorder alerts.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Inbound and outbound shipments linked to tickets, generating standard 100x150 mm thermal shipping barcodes.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Workflows -->
+    <section class="section" id="workflows">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Field Workflows</span>
+          <h2 class="section-title">4 Core Flows Built for IT Technicians</h2>
+          <p class="section-desc">Practical workflows eliminating duplicate entries and manual handoffs.</p>
+        </div>
+
+        <div class="workflow-item">
+          <div class="workflow-text">
+            <h3>1. Service Ticket & Repair Lifecycle</h3>
+            <p>Scan a barcode or enter a serial number for immediate check-in. Deduct replacement parts (SSD, RAM) from local inventory and track total repair expenses.</p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Serial number lookup with customer auto-fill</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Staged workflow: New, In Repair, Awaiting Parts, External Service, Completed</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Cost breakdown and signed PDF receipt generation</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/service-tickets</div>
+              </div>
+              <div class="browser-body">
+                <img src="../assets/screenshots/service-ticket.webp?v=5.2.0" decoding="async" alt="Service Tickets Management Screen" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-item reversed">
+          <div class="workflow-text">
+            <h3>2. Printer Page Counters & Toner Stock</h3>
+            <p>Record the page counter on each toner replacement to analyze page yields per cartridge and identify cost patterns across departments.</p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Model and color stock thresholds (CMYK)</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Page counter recording on cartridge change</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Automated low-stock warning banners</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/toner-tracking</div>
+              </div>
+              <div class="browser-body">
+                <img src="../assets/screenshots/toner.webp?v=5.2.0" decoding="async" alt="Printer Page Counters and Supplies" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-item">
+          <div class="workflow-text">
+            <h3>3. Master Operations Calendar</h3>
+            <p>Track all service tickets, preventive hardware inspections, courier deliveries, and toner replacements on a unified calendar view with status indicators.</p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Unified agenda combining tickets, maintenance, and logistics</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Click any event badge to open the full ticket modal</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Color-coded visual alerts for overdue and scheduled services</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/calendar</div>
+              </div>
+              <div class="browser-body">
+                <img src="../assets/screenshots/calendar.webp?v=5.2.0" decoding="async" alt="Master Operations Calendar Screen" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- All 21 Modules -->
+    <section class="section" id="features" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Modular Architecture</span>
+          <h2 class="section-title">21 Essential Modules for IT Operations</h2>
+          <p class="section-desc">Every functional unit described in the product specification, governed by role-based access control.</p>
+        </div>
+
+        <div class="modules-filter-row" role="group" aria-label="Module Category Filters">
+          <button type="button" class="filter-btn active" data-filter="all">All Modules (21)</button>
+          <button type="button" class="filter-btn" data-filter="service">Service & Logistics</button>
+          <button type="button" class="filter-btn" data-filter="hardware">Hardware & Assets</button>
+          <button type="button" class="filter-btn" data-filter="security">Security & Roles</button>
+          <button type="button" class="filter-btn" data-filter="tools">Comms & Utilities</button>
+        </div>
+
+        <div class="modules-grid">
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div>
+            <h3>Service Tickets</h3>
+            <p>Serial intake, 5 repair stages, replacement parts cost logging, and signed PDF repair receipts.</p>
+            <span class="module-tag">ServiceTickets</span>
+          </article>
+
+          <article class="module-card" data-category="hardware">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><rect x="6" y="14" width="12" height="8"></rect></svg></div>
+            <h3>Toner & Supply Tracking</h3>
+            <p>CMYK inventory, printer page counters, department usage logs, and automated low-stock reorder warnings.</p>
+            <span class="module-tag">Toner</span>
+          </article>
+
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+            <h3>Shipping & Logistics</h3>
+            <p>Inbound and outbound parcel tracking, carrier integration, and 100x150 mm thermal shipping barcode generation.</p>
+            <span class="module-tag">Cargo</span>
+          </article>
+
+          <article class="module-card" data-category="security">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+            <h3>BitLocker Recovery Vault</h3>
+            <p>48-digit encryption keys and Key ID management with one-click clipboard copying and encrypted backup exports.</p>
+            <span class="module-tag">Bitlocker</span>
+          </article>
+
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+            <h3>Maintenance Protocols</h3>
+            <p>9-step standardized hardware inspections (fans, paste, dust, virus checks) with signed executive sign-off PDF forms.</p>
+            <span class="module-tag">Maintenance</span>
+          </article>
+
+          <article class="module-card" data-category="hardware">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+            <h3>360° User Portrait (User360)</h3>
+            <p>Unified employee profile aggregating Snipe-IT checkouts, ticket history, toner consumption, and parcel shipments.</p>
+            <span class="module-tag">User360</span>
+          </article>
+
+          <article class="module-card" data-category="hardware">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"></rect></svg></div>
+            <h3>Hardware Inventory</h3>
+            <p>Serial, model, location, and warranty tracking cached locally from Snipe-IT or managed as a standalone registry.</p>
+            <span class="module-tag">Inventory</span>
+          </article>
+
+          <article class="module-card" data-category="hardware">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+            <h3>Spare Parts Stock</h3>
+            <p>SSD, RAM, and adapter warehouse management with automatic ticket deduction and purchase invoice logs.</p>
+            <span class="module-tag">Stock</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path></svg></div>
+            <h3>Kanban Tasks</h3>
+            <p>Daily internal IT team task boards with technician assignments, priority queues, and due-date alerts.</p>
+            <span class="module-tag">Tasks</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg></div>
+            <h3>Master Operations Calendar</h3>
+            <p>Color-coded live view of pending repairs, courier deliveries, scheduled maintenance, and toner changes.</p>
+            <span class="module-tag">Calendar</span>
+          </article>
+
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div>
+            <h3>Document Templates</h3>
+            <p>Standardized PDF generation for equipment handovers, scrap write-offs, and service acceptance.</p>
+            <span class="module-tag">DocsAndLabels</span>
+          </article>
+
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></div>
+            <h3>Thermal Label Studio</h3>
+            <p>Direct formatting for Zebra, Xprinter, and standard 100x150 mm thermal shipping barcode label printers.</p>
+            <span class="module-tag">AddressLabel</span>
+          </article>
+
+          <article class="module-card" data-category="service">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle></svg></div>
+            <h3>Asset Handover Protocols</h3>
+            <p>Signed equipment receipt protocols recording serial numbers, adapters, and peripheral accessories.</p>
+            <span class="module-tag">HandoverProtocol</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
+            <h3>File & Attachment Storage</h3>
+            <p>Local server organization for ticket repair photos, invoices, firmware dumps, and warranty documents.</p>
+            <span class="module-tag">FilesManager</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+            <h3>Analytics & Reports</h3>
+            <p>Visual incident trends, failure rates per hardware model, department consumable costs, and technician stats.</p>
+            <span class="module-tag">Reports</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+            <h3>Desktop Team Chat</h3>
+            <p>Real-time team chat bar docked to the bottom-right corner powered by Socket.IO for internal IT collaboration.</p>
+            <span class="module-tag">Chat</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle></svg></div>
+            <h3>Bito AI Operations Assistant</h3>
+            <p>Natural language queries over Snipe-IT and local databases (e.g., *"Which printers in Accounting need service?"*).</p>
+            <span class="module-tag">snipeitAi</span>
+          </article>
+
+          <article class="module-card" data-category="security">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+            <h3>Role & Permission Matrix</h3>
+            <p>Granular view, create, edit, and delete permissions configured per module for Super Admin, Admin, and Techs.</p>
+            <span class="module-tag">SystemUsers</span>
+          </article>
+
+          <article class="module-card" data-category="security">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+            <h3>Settings & Snipe-IT Config</h3>
+            <p>API URL, Bearer Token validation, cache intervals, and branding parameters.</p>
+            <span class="module-tag">Settings</span>
+          </article>
+
+          <article class="module-card" data-category="tools">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10c0 4.5-3.5 8-8 8"></path></svg></div>
+            <h3>15+ Interface Themes</h3>
+            <p>Support for Dark, Cyberpunk, Aurora, Solaris, and Dracula themes switchable on the fly.</p>
+            <span class="module-tag">Themes</span>
+          </article>
+
+          <article class="module-card" data-category="security">
+            <div class="module-icon-wrap"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></div>
+            <h3>Secure Authentication</h3>
+            <p>Bcrypt password hashing, secure session management, and route guards.</p>
+            <span class="module-tag">Auth</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="section" id="comparison">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Comparison</span>
+          <h2 class="section-title">Snipe-IT Alone vs. Snipe-IT with ServiceTracker</h2>
+          <p class="section-desc">An objective look at where each tool focuses its capabilities.</p>
+        </div>
+
+        <div class="comparison-table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Functionality</th>
+                <th style="width: 31%; text-align: center;">Snipe-IT Standalone</th>
+                <th style="width: 31%; text-align: center;">Snipe-IT + ServiceTracker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Asset Management (ITAM)</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Native)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Synced via API)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Employee Checkouts & Assignments</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Native)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Visible in User360)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Repair Ticket Stages & Costing</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-out">Out of Scope</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Integrated Module)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Printer Page Counters & Toner Yield</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Basic (Count only)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Counter + Yield Logs)</span></td>
+              </tr>
+              <tr>
+                <td><strong>9-Step Hardware Maintenance</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Basic (Date notes)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Signed Protocols)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Courier Tracking & Thermal Barcodes</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-out">Out of Scope</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Thermal Label Engine)</span></td>
+              </tr>
+              <tr>
+                <td><strong>BitLocker Recovery Key Vault</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Basic (Custom text field)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Encrypted Vault)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Signed Delivery PDF Forms</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Basic (Checkout accept)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Full (Repairs, Loans, Maintenance)</span></td>
+              </tr>
+              <tr>
+                <td><strong>License & Cost</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Open Source (GPLv3)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Open Source (MIT) • Free</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6;">
+          * Bitrox ServiceTracker complements Snipe-IT; it does not replace it. Workshop repair tickets, counters, and signed forms are designed to extend Snipe-IT ITAM operations.<br>
+          Information verified against official Snipe-IT documentation and ServiceTracker v2.3.2 on October 20, 2026. Snipe-IT is a registered trademark of Grokability, Inc.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- Screenshots Gallery -->
+    <section class="section" id="screenshots" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interface Showcase</span>
+          <h2 class="section-title">Production Screenshots</h2>
+          <p class="section-desc">Real views from live IT helpdesk environments. Click any card to view in full resolution.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-card" data-full="../assets/screenshots/dashboard.png?v=5.1.0">
+            <img src="../assets/screenshots/dashboard.webp?v=5.2.0" fetchpriority="high" decoding="async" alt="Operations Control Center Dashboard" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Operations Control Center</div>
+              <div class="gallery-card-desc">Daily tickets, active workloads, department distribution, and critical stock alerts</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="../assets/screenshots/service-ticket.png?v=5.1.0">
+            <img src="../assets/screenshots/service-ticket.webp?v=5.2.0" decoding="async" alt="Service Tickets Management Desk" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Service Tickets Desk</div>
+              <div class="gallery-card-desc">Intake forms, serial numbers, technician assignments, repair stages, and quick actions</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="../assets/screenshots/toner.png?v=5.1.0">
+            <img src="../assets/screenshots/toner.webp?v=5.2.0" decoding="async" alt="Printer Page Counters & Supplies Desk" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Printer Counters & Supplies</div>
+              <div class="gallery-card-desc">Toner checkout logs, unit cost calculation, low-stock threshold triggers, and history</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="../assets/screenshots/calendar.png?v=5.1.0">
+            <img src="../assets/screenshots/calendar.webp?v=5.2.0" decoding="async" alt="Master Operations Calendar" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Master Operations Calendar</div>
+              <div class="gallery-card-desc">Unified calendar mapping service repairs, hardware checks, courier logistics, and toner deliveries</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox Modal Container -->
+    <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-label="Image Zoom Dialog">
+      <div class="lightbox-content">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+        <img src="" alt="" class="lightbox-img" id="lightboxImg" />
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+    </div>
+
+    <!-- Installation -->
+    <section class="section" id="install" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Quick Start</span>
+          <h2 class="section-title">Deploy in Minutes</h2>
+          <p class="section-desc">Prerequisites: Node.js (v18.0+) and MySQL / MariaDB (8.0+).</p>
+        </div>
+
+        <div class="install-tabs" role="tablist">
+          <button type="button" class="install-tab-btn active" data-tab="bash">Linux / Bash</button>
+          <button type="button" class="install-tab-btn" data-tab="pm2">PM2 Daemon (Production)</button>
+          <button type="button" class="install-tab-btn" data-tab="windows">PowerShell (Windows)</button>
+        </div>
+
+        <div class="code-block-window">
+          <div class="code-block-header">
+            <span class="code-block-title">bash — bitrox-service-tracking</span>
+            <button type="button" class="btn-code-copy" data-target="activeCodePreEn">Copy Commands</button>
+          </div>
+
+          <div class="install-code-block" id="install-bash">
+            <pre class="code-pre" id="activeCodePreEn"><code># 1. Clone repository
+git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+cd bitrox-service-tracking
+
+# 2. Install dependencies
+npm install
+
+# 3. Create database tables
+mysql -u root -p &lt; database_schema.sql
+
+# 4. Configure environment
+cp .env.example .env
+
+# 5. Build assets and launch
+npm run build
+npm start</code></pre>
+          </div>
+
+          <div class="install-code-block" id="install-windows" style="display:none;">
+            <pre class="code-pre"><code>git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+Set-Location bitrox-service-tracking
+npm install
+Copy-Item .env.example .env
+npm run build
+npm start</code></pre>
+          </div>
+
+          <div class="install-code-block" id="install-pm2" style="display:none;">
+            <pre class="code-pre"><code>npm install -g pm2
+pm2 start server/server.js --name "servicetracker"
+pm2 save
+pm2 startup</code></pre>
+          </div>
+        </div>
+
+        <div class="install-warning-box">
+          <svg class="icon-svg" style="color:var(--warning);" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+          <div><strong>Security Notice:</strong> Default login credentials are <code>admin</code> / <code>admin123</code>. Change this password immediately under <em>Settings → User Management</em> upon first login.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">FAQ</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-desc">Common answers regarding self-hosting, privacy, and integration.</p>
+        </div>
+
+        <div class="faq-accordion">
+          <div class="faq-item open">
+            <button type="button" class="faq-question">
+              <span>Can ServiceTracker run standalone without Snipe-IT?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. Bitrox ServiceTracker operates both as an independent service desk and with Snipe-IT integration. All data lives in your local MySQL database even if Snipe-IT is not configured.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Are there any licensing or per-seat costs?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>No. It is fully open-source under the MIT license with no limits on users, devices, or tickets.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Where is my data stored? Does it send telemetry?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>All data remains on your own infrastructure. No external telemetry or cloud communication takes place.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/en/" class="brand">
+            <img src="../assets/logo.webp?v=5.2.0" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
+            <span>Bitrox ServiceTracker</span>
+          </a>
+          <p>Open-source IT service desk and operations portal for enterprise teams.</p>
+          <div style="margin-top: 14px; font-size: 0.8125rem; color: var(--text-muted); font-family: var(--font-mono);">Version: v2.3.2 Production</div>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Navigation</p>
+          <ul class="footer-links">
+            <li><a href="#features" class="footer-link">Features</a></li>
+            <li><a href="#snipeit" class="footer-link">Snipe-IT</a></li>
+            <li><a href="#comparison" class="footer-link">Comparison</a></li>
+            <li><a href="#install" class="footer-link">Installation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Documentation</p>
+          <ul class="footer-links">
+            <li><a href="docs/" class="footer-link">Installation Guide</a></li>
+            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer-link">MIT License</a></li>
+            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repository</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Contact</p>
+          <ul class="footer-links">
+            <li><a href="mailto:admin@bitrox.com.tr" class="footer-link">admin@bitrox.com.tr</a></li>
+            <li><a href="/" class="footer-link">Türkçe Sürüm</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 <strong>Bitrox ServiceTracker</strong>. Licensed under MIT.</div>
+        <div>Developer: <a href="https://github.com/KingLyzer" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">KingLyzer</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-notice" id="toastNotice"><span id="toastMessage">Copied!</span></div>
+  <script src="../script.js?v=5.0.0"></script>
+</body>
+</html>

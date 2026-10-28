@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "title": "Bitrox ServiceTracker — Open Source IT Service Desk & Operations Portal",
+    "description": "Self-hosted, open-source IT service desk unifying hardware repair tickets, printer page counters, BitLocker recovery keys, and maintenance protocols with Snipe-IT integration.",
+    "keywords": "IT service desk, technical repair tracking software, open source helpdesk, toner counter tracking, Snipe-IT integration"
+  },
+  "nav": {
+    "brand": "Bitrox ServiceTracker",
+    "features": "Features",
+    "snipeit": "Snipe-IT",
+    "comparison": "Comparison",
+    "screenshots": "Screenshots",
+    "install": "Install",
+    "docs": "Docs",
+    "faq": "FAQ",
+    "cta": "Install Now",
+    "lang": "TR"
+  },
+  "hero": {
+    "versionBadge": "v2.3.2 Production",
+    "licenseBadge": "Open Source (MIT)",
+    "hostBadge": "Self-Hosted",
+    "title": "Open-Source IT Service Desk for Enterprise Teams",
+    "description": "Unify hardware failure tickets, printer page counters, BitLocker recovery key vaults, and maintenance handover protocols in a single platform integrated with Snipe-IT.",
+    "ctaInstall": "Quick Install",
+    "ctaGithub": "GitHub Repository",
+    "trustBadges": [
+      "100% Free & MIT Licensed",
+      "On-Premise / Self-Hosted",
+      "Node.js 18+ & MySQL 8.0+",
+      "Snipe-IT REST API v1"
+    ]
+  },
+  "problemSolution": {
+    "tag": "Problem & Solution",
+    "title": "Unify Fragmented IT Operations in One Place",
+    "description": "While Snipe-IT excels at asset custody counting, field repair stages, toner page counter logs, and signed maintenance forms frequently end up scattered across spreadsheets and paper.",
+    "traditional": {
+      "title": "Traditional Fragmented Setup",
+      "items": [
+        "Failure reports arrive via phone, email, or post-it notes; technician intervention and replacement part histories get lost.",
+        "Printer toner cartridges are distributed without recording page counters; true cost-per-page yield cannot be tracked.",
+        "Branch couriers and depot shipments lack tracking links; labels are manually typed in carrier portals.",
+        "Device loan and inspection records are filed in paper folders; retrieving asset audit histories during offboarding takes hours."
+      ]
+    },
+    "modern": {
+      "title": "ServiceTracker Workflow",
+      "items": [
+        "Selecting an employee automatically lists their assigned devices with a structured 5-stage repair and cost ledger.",
+        "Each cartridge replacement logs printer page volume; automated threshold warnings trigger before stock runs out.",
+        "Inbound and outbound parcels are linked to service tickets; generating standard 100x150 mm thermal shipping barcodes.",
+        "Every event converts into printable, signed PDF handover protocols archived directly in your local MySQL database."
+      ]
+    }
+  },
+  "workflows": {
+    "tag": "Field Workflows",
+    "title": "4 Core Flows Built for IT Technicians",
+    "description": "Practical workflows eliminating duplicate entries and focused on quick resolution.",
+    "items": [
+      {
+        "id": "tickets",
+        "title": "1. Service Ticket & Repair Lifecycle",
+        "description": "Scan a barcode or enter a serial number for immediate check-in. Deduct replacement parts (SSD, RAM) from local inventory and track total repair expenses.",
+        "steps": [
+          "Serial intake: Serial number, problem description, and employee selection",
+          "Staged workflow: New, In Repair, Awaiting Parts, External Service, Completed",
+          "Expense tracking: Replaced components and labor cost calculation"
+        ],
+        "image": "assets/screenshots/service-ticket.png"
+      },
+      {
+        "id": "toner",
+        "title": "2. Printer Page Counters & Toner Stock",
+        "description": "Record the page counter on each toner replacement to analyze page yields per cartridge and identify cost patterns across departments.",
+        "steps": [
+          "Model and color stock thresholds (CMYK)",
+          "Page counter recording on cartridge change",
+          "Automated low-stock warning banners"
+        ],
+        "image": "assets/screenshots/toner.png"
+      },
+      {
+        "id": "calendar",
+        "title": "3. Master Operations Calendar",
+        "description": "Track all service tickets, preventive hardware inspections, courier deliveries, and toner replacements on a unified calendar view.",
+        "steps": [
+          "Unified agenda combining tickets, maintenance, logistics, and supplies",
+          "Click any event badge to open the full ticket modal",
+          "Color-coded visual alerts for overdue and scheduled services"
+        ],
+        "image": "assets/screenshots/calendar.png"
+      },
+      {
+        "id": "documents",
+        "title": "4. Signed PDF Forms & Thermal Barcodes",
+        "description": "Standardized document generation for hardware handovers and courier logistics without requiring third-party software.",
+        "steps": [
+          "Printable hardware handover receipt with technician and recipient signature lines",
+          "Zebra and Xprinter compatible 100x150 mm thermal shipping parcel labels",
+          "9-step preventive hardware maintenance sign-off protocol"
+        ],
+        "image": "assets/screenshots/dashboard.png"
+      }
+    ]
+  },
+  "modules": {
+    "tag": "Modular Architecture",
+    "title": "21 Essential Modules for IT Operations",
+    "description": "Every functional unit described in the product specification, governed by role-based access control.",
+    "filters": [
+      { "id": "all", "label": "All Modules (21)" },
+      { "id": "service", "label": "Service & Logistics" },
+      { "id": "hardware", "label": "Hardware & Assets" },
+      { "id": "security", "label": "Security & Roles" },
+      { "id": "tools", "label": "Comms & Utilities" }
+    ],
+    "list": [
+      { "id": "tickets", "category": "service", "title": "Service Tickets", "desc": "Serial intake, 5 repair stages, replacement parts cost logging, and signed PDF repair receipts.", "code": "3.1 ServiceTickets" },
+      { "id": "toner", "category": "hardware", "title": "Toner & Supply Tracking", "desc": "CMYK inventory, printer page counters, department usage logs, and automated low-stock reorder warnings.", "code": "3.2 Toner" },
+      { "id": "counter", "category": "hardware", "title": "Printer Page Counters", "desc": "Page counter readings on toner replacements; delta calculations to measure exact cartridge page yields.", "code": "3.3 Counter" },
+      { "id": "cargo", "category": "service", "title": "Shipping & Logistics", "desc": "Inbound and outbound parcel tracking, carrier integration, and ticket attachment for branch repair transfers.", "code": "3.4 Cargo" },
+      { "id": "thermal", "category": "service", "title": "Thermal Barcode Engine", "desc": "100x150 mm thermal shipping barcodes, Code128 asset labels, and parcel printing templates.", "code": "3.5 AddressLabel" },
+      { "id": "bitlocker", "category": "security", "title": "BitLocker Recovery Vault", "desc": "48-digit encryption keys and Key ID management with one-click clipboard copying and encrypted backup exports.", "code": "3.6 Bitlocker" },
+      { "id": "maintenance", "category": "service", "title": "Maintenance Protocols", "desc": "9-step standardized hardware inspections (fans, thermal paste, dust, virus checks) with signed executive sign-off PDF forms.", "code": "3.7 Maintenance" },
+      { "id": "user360", "category": "hardware", "title": "360° User Portrait (User360)", "desc": "Unified employee profile aggregating Snipe-IT checkouts, ticket history, toner consumption, and parcel shipments.", "code": "3.8 User360" },
+      { "id": "inventory", "category": "hardware", "title": "Hardware Inventory", "desc": "Serial, model, location, and warranty tracking cached locally from Snipe-IT or managed as a standalone registry.", "code": "3.9 Inventory" },
+      { "id": "stock", "category": "hardware", "title": "Spare Parts Stock", "desc": "SSD, RAM, and adapter warehouse management with automatic ticket deduction and purchase invoice logs.", "code": "3.10 Stock" },
+      { "id": "tasks", "category": "tools", "title": "Kanban Tasks", "desc": "Daily internal IT team task boards with technician assignments, priority queues, and due-date alerts.", "code": "3.11 Tasks" },
+      { "id": "pdf", "category": "service", "title": "Printable PDF Receipts", "desc": "Intake forms, disposal records, component replacement sign-offs, and return receipts with signature fields.", "code": "3.12 DocsAndLabels" },
+      { "id": "chat", "category": "tools", "title": "Live Team Chat (Socket.IO)", "desc": "Floating desktop bottom bar for instant technician messaging, ticket link sharing, and team notifications.", "code": "3.13 Chat / Socket.IO" },
+      { "id": "ai", "category": "tools", "title": "Bito AI Assistant", "desc": "Local AI assistant querying the inventory and ticket database using natural language search queries.", "code": "3.14 Bito AI" },
+      { "id": "roles", "category": "security", "title": "Role & Permission Matrix", "desc": "Granular module-level rights (View, Create, Edit, Delete) for Super Admin, Admin, Technician, and User roles.", "code": "3.15 Permissions" },
+      { "id": "themes", "category": "tools", "title": "15+ Visual Themes", "desc": "Dark, Cyberpunk, Aurora, Solaris, Sakura, Nordic Gray, and Minimalist themes with persistent user preferences.", "code": "3.16 ThemeModal" },
+      { "id": "smtp", "category": "tools", "title": "Email & SMTP Alerts", "desc": "Configurable SMTP engine triggering automated email alerts upon ticket intake, stage transitions, and resolutions.", "code": "3.17 Email / SMTP" },
+      { "id": "audit", "category": "security", "title": "Immutable Audit Logs", "desc": "Security logging tracking user logins, ticket updates, permission edits, and data exports with timestamps.", "code": "3.18 Audit Log" },
+      { "id": "snipeitSync", "category": "hardware", "title": "Snipe-IT REST API Sync", "desc": "Read-only polling of Snipe-IT REST API v1 caching assets, users, and locations to local MySQL tables.", "code": "3.19 Snipe-IT Sync" },
+      { "id": "reporting", "category": "tools", "title": "Reports & Data Exports", "desc": "Failure frequency analysis, department toner cost summaries, and repair duration analytics in Excel and PDF.", "code": "3.20 Reports" },
+      { "id": "electron", "category": "tools", "title": "Desktop Client (Electron)", "desc": "Cross-platform standalone desktop runtime for Linux (AppImage, deb) and Windows (exe, zip) environments.", "code": "3.21 Electron" }
+    ]
+  },
+  "snipeitArchitecture": {
+    "tag": "Architecture",
+    "title": "Secure & Read-Only API Synchronization with Snipe-IT",
+    "description": "ServiceTracker never writes directly to your Snipe-IT database. It queries the official REST API via Bearer Token and stores read-only snapshots in local MySQL cache tables.",
+    "points": [
+      { "title": "Read-Only Connection", "desc": "Snipe-IT asset tables are strictly queried; your authoritative ITAM database remains untouched." },
+      { "title": "Local MySQL Caching", "desc": "Assets and users are cached locally, ensuring instant lookups during ticket check-in without external lag." },
+      { "title": "Complete Standalone Capability", "desc": "If Snipe-IT is unreachable or not used, all ticket, toner, and maintenance modules operate independently." }
+    ]
+  },
+  "comparison": {
+    "tag": "Honest Comparison",
+    "title": "How Snipe-IT and ServiceTracker Work Together",
+    "description": "ServiceTracker is designed to complement Snipe-IT by providing the hands-on workshop workflows, page counter tracking, and signed protocols that fall outside Snipe-IT's ITAM scope.",
+    "footerNotice": "Note: Information verified against Snipe-IT documentation and ServiceTracker v2.3.2 as of October 20, 2026. Snipe-IT is a registered trademark of Grokability, Inc.",
+    "headers": ["Capability", "Snipe-IT Standalone", "Snipe-IT + ServiceTracker"],
+    "rows": [
+      { "feature": "IT Asset Management (ITAM)", "desc": "Hardware inventory, serial numbers, warranties, and depreciation", "snipeit": "Full (Native)", "st": "Full (Synced via API)" },
+      { "feature": "Employee Checkouts & Assignments", "desc": "Who is currently assigned which computer or peripheral", "snipeit": "Full (Native)", "st": "Full (Visible in User360)" },
+      { "feature": "Repair Ticket Stages & Costing", "desc": "New, In Repair, Parts Pending, External Service, Completed", "snipeit": "Out of Scope", "st": "Full (Integrated Module)" },
+      { "feature": "Printer Page Counters & Toner Yield", "desc": "Delta page calculations, CMYK levels, cost-per-page reports", "snipeit": "Basic (Item count only)", "st": "Full (Counters + Threshold Alerts)" },
+      { "feature": "Preventive Hardware Maintenance", "desc": "Dust removal, paste renewal, port checks, and security checklist", "snipeit": "Basic (Date notes and expense logging)", "st": "Full (9-Step Signed Protocol)" },
+      { "feature": "Courier Tracking & Thermal Barcodes", "desc": "100x150 mm thermal shipping parcel labels and carrier tracking", "snipeit": "Out of Scope", "st": "Full (Integrated Logistics)" },
+      { "feature": "BitLocker Recovery Key Vault", "desc": "48-digit encryption keys and Key ID management with one-click copy", "snipeit": "Basic (Custom text field)", "st": "Full (Encrypted Vault + Clipboard)" },
+      { "feature": "Printable Signed PDF Receipts", "desc": "Technician and recipient signature lines for formal handovers", "snipeit": "Basic (Checkout acceptance form)", "st": "Full (Repairs, Loans, Maintenance)" },
+      { "feature": "Internal Team Chat & Bito AI", "desc": "Socket.IO real-time desktop chat and natural language inventory search", "snipeit": "Out of Scope", "st": "Full (Built-in Desktop Bar)" },
+      { "feature": "License & Pricing Model", "desc": "Deployment license and recurring fees", "snipeit": "Open Source (GPLv3)", "st": "Open Source (MIT) • Free" }
+    ]
+  },
+  "install": {
+    "tag": "Quick Start",
+    "title": "Deploy on Your Own Server in Minutes",
+    "description": "Prerequisites: Node.js (v18.0+) and MySQL / MariaDB (8.0+).",
+    "securityAlert": {
+      "title": "Security Notice (Mandatory Password Change)",
+      "desc": "Default credentials: Username: admin / Password: admin123. Change your password in Settings or Profile immediately upon first login."
+    },
+    "tabs": [
+      {
+        "id": "linux",
+        "name": "Linux (Ubuntu/Debian)",
+        "code": "git clone https://github.com/KingLyzer/bitrox-service-tracking.git\ncd bitrox-service-tracking\nnpm install\nmysql -u root -p < database_schema.sql\ncp .env.example .env\n# Configure database password in .env\nnpm run build\nnpm start"
+      },
+      {
+        "id": "pm2",
+        "name": "PM2 Service (Production)",
+        "code": "npm install -g pm2\ncd /path/to/bitrox-service-tracking\npm2 start server/server.js --name \"servicetracker\"\npm2 save\npm2 startup"
+      },
+      {
+        "id": "windows",
+        "name": "Windows (PowerShell)",
+        "code": "git clone https://github.com/KingLyzer/bitrox-service-tracking.git\ncd bitrox-service-tracking\nnpm install\nGet-Content database_schema.sql | mysql -u root -p\nCopy-Item .env.example .env\n# Configure database password in .env\nnpm run build\nnpm start"
+      }
+    ]
+  },
+  "security": {
+    "tag": "Security & Data Ownership",
+    "title": "Your Data Stays on Your Infrastructure",
+    "description": "No external cloud dependencies. Your database resides entirely on your own server.",
+    "items": [
+      { "title": "On-Premise Architecture", "desc": "Functions fully on your local network (LAN) even without internet connectivity." },
+      { "title": "Bcrypt Hashing", "desc": "Passwords are protected using industry-standard one-way bcrypt hashing." },
+      { "title": "Granular Permission Matrix", "desc": "Restricts technicians to specific modules with granular view/edit/delete flags." },
+      { "title": "Immutable Audit Trails", "desc": "Critical operations such as ticket deletion or status edits are logged with timestamps." }
+    ]
+  },
+  "faq": {
+    "tag": "FAQ",
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "q": "Can I use Bitrox ServiceTracker without Snipe-IT?",
+        "a": "Yes. Snipe-IT integration is completely optional. All repair tickets, printer counters, inventory, tasks, and maintenance modules operate standalone on your local database."
+      },
+      {
+        "q": "Are there per-user licensing fees or subscriptions?",
+        "a": "No. The software is released under the permissive MIT license. It is 100% free with no user or device limitations."
+      },
+      {
+        "q": "Where is data stored? Does it send telemetry to third parties?",
+        "a": "All data is stored exclusively in your own on-premise MySQL database. No telemetry, customer data, or keys are sent to external cloud servers."
+      },
+      {
+        "q": "Does Snipe-IT integration write directly to my database?",
+        "a": "No. Integration is performed via Snipe-IT's official REST API v1 using Bearer Token authorization with read-only requests."
+      },
+      {
+        "q": "Can ServiceTracker run as a native desktop application?",
+        "a": "Yes. Built-in Electron packaging allows compiling native desktop binaries for Windows (exe/zip) and Linux (AppImage/deb)."
+      },
+      {
+        "q": "What are the server prerequisites?",
+        "a": "Node.js 18+, MySQL or MariaDB 8.0+, Git, and npm or yarn package manager."
+      },
+      {
+        "q": "How are BitLocker recovery keys secured?",
+        "a": "BitLocker keys are stored in your local database and protected by granular role-based permissions to prevent unauthorized viewing."
+      },
+      {
+        "q": "How does the toner page counter work?",
+        "a": "Technicians record the printer page counter upon each cartridge swap. The system computes the page delta since the last swap to calculate true cartridge yield."
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2026 Bitrox ServiceTracker. Released under the MIT License.",
+    "tagline": "Open-source IT service desk and operations portal for enterprise teams.",
+    "links": {
+      "docs": "Documentation",
+      "changelog": "Changelog",
+      "github": "GitHub Repository",
+      "issues": "Report an Issue",
+      "license": "MIT License",
+      "email": "admin@bitrox.com.tr"
+    }
+  }
+}

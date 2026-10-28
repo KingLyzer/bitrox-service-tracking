@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokümantasyon — Bitrox ServiceTracker Kullanım & Kurulum Rehberi</title>
+  
+  <meta name="description" content="Bitrox ServiceTracker kurulum, çevre değişkenleri yapılandırması, Snipe-IT API bağlantısı ve modül kullanım kılavuzu." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://service.bitrox.com.tr/docs/" />
+  <link rel="alternate" hreflang="tr" href="https://service.bitrox.com.tr/docs/" />
+  <link rel="alternate" hreflang="en" href="https://service.bitrox.com.tr/en/docs/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bitrox ServiceTracker Dokümantasyonu" />
+  <meta property="og:description" content="Kurulum, yapılandırma ve Snipe-IT entegrasyonu rehberi." />
+  <meta property="og:url" content="https://service.bitrox.com.tr/docs/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://service.bitrox.com.tr/assets/ServiceTracker.png" />
+
+  
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=5.0.0" />
+
+  <style>
+    .docs-layout { display: grid; grid-template-columns: 240px 1fr; gap: var(--space-12); padding-top: var(--space-8); padding-bottom: var(--space-16); }
+    .docs-sidebar { position: sticky; top: calc(var(--navbar-height) + 24px); height: calc(100vh - var(--navbar-height) - 48px); overflow-y: auto; padding-right: var(--space-4); border-right: 1px solid var(--border-subtle); }
+    .docs-nav-group { margin-bottom: var(--space-6); }
+    .docs-nav-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 700; margin-bottom: var(--space-2); }
+    .docs-sidebar-links { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .docs-sidebar-link { font-size: 0.875rem; color: var(--text-secondary); padding: 4px 8px; border-radius: var(--radius-sm); display: block; transition: all var(--transition-fast); }
+    .docs-sidebar-link:hover { color: var(--text-primary); background: var(--bg-hover); }
+    .docs-article h1 { font-size: 2.25rem; margin-bottom: var(--space-4); }
+    .docs-article h2 { font-size: 1.5rem; margin-top: var(--space-10); margin-bottom: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-subtle); }
+    .docs-article h3 { font-size: 1.15rem; margin-top: var(--space-6); margin-bottom: var(--space-2); }
+    .docs-article p { font-size: 1rem; line-height: 1.7; margin-bottom: var(--space-4); }
+    .docs-article ul, .docs-article ol { margin-bottom: var(--space-4); padding-left: var(--space-6); }
+    .docs-article li { font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-2); color: var(--text-secondary); }
+    .docs-callout { background: var(--bg-surface); border: 1px solid var(--border-default); border-left: 4px solid var(--accent); padding: var(--space-4) var(--space-5); border-radius: var(--radius-sm); margin: var(--space-6) 0; }
+    .docs-callout.warning { border-left-color: var(--warning); background: rgba(245, 158, 11, 0.06); }
+    @media (max-width: 900px) {
+      .docs-layout { grid-template-columns: 1fr; }
+      .docs-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip link -->
+  <a href="#docs-content" class="skip-link">İçeriğe atla</a>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" aria-label="Ana Gezinti">
+      <div class="container nav-container">
+        <a href="/" class="brand">
+          <img src="../assets/logo.png" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
+          <span>Bitrox ServiceTracker</span>
+        </a>
+
+        <div class="nav-actions">
+          <a href="/" class="btn btn-ghost btn-sm">← Ana Sayfa</a>
+          <a href="/en/docs/" class="icon-btn" title="English Docs">EN</a>
+          <button type="button" class="icon-btn" id="themeToggleBtn" title="Tema Değiştir" aria-label="Tema Değiştir">
+            <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24"></svg>
+          </button>
+          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub ⭐</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container docs-layout" id="docs-content">
+    
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">Başlarken</div>
+        <ul class="docs-sidebar-links">
+          <li><a href="#giris" class="docs-sidebar-link">Genel Bakış</a></li>
+          <li><a href="#gereksinimler" class="docs-sidebar-link">Sistem Gereksinimleri</a></li>
+          <li><a href="#hizli-kurulum" class="docs-sidebar-link">Hızlı Kurulum (5 Adım)</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">Yapılandırma</div>
+        <ul class="docs-sidebar-links">
+          <li><a href="#env-ayarlari" class="docs-sidebar-link">Çevre Değişkenleri (.env)</a></li>
+          <li><a href="#veritabani" class="docs-sidebar-link">MySQL Veritabanı Şeması</a></li>
+          <li><a href="#snipeit-setup" class="docs-sidebar-link">Snipe-IT Bağlantısı</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">Dağıtım & Üretim</div>
+        <ul class="docs-sidebar-links">
+          <li><a href="#pm2-dagitim" class="docs-sidebar-link">PM2 Servis Kurulumu</a></li>
+          <li><a href="#guvenlik-ipuclari" class="docs-sidebar-link">Güvenlik & Yedekleme</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <article class="docs-article">
+      
+      <span class="badge badge-accent" style="margin-bottom: 12px;">Teknik Dokümantasyon</span>
+      <h1 id="giris">Bitrox ServiceTracker Kurulum ve Yapılandırma Kılavuzu</h1>
+      
+      <p>
+        Bu dokümantasyon, Bitrox ServiceTracker uygulamasının yerel geliştirme veya canlı Linux/Windows sunucu ortamında sıfırdan kurulması, MySQL veritabanı ayarları ve Snipe-IT REST API entegrasyonu için gerekli tüm adımları içerir.
+      </p>
+
+      <h2 id="gereksinimler">1. Sistem Gereksinimleri</h2>
+      <ul>
+        <li><strong>Node.js:</strong> v18.0.0 veya üzeri (LTS sürümü önerilir)</li>
+        <li><strong>MySQL / MariaDB:</strong> v8.0 veya üzeri (InnoDB motoru ve utf8mb4 karakter seti ile)</li>
+        <li><strong>npm</strong> veya <strong>yarn</strong> paket yöneticisi</li>
+        <li><strong>Git:</strong> Depoyu klonlamak için</li>
+        <li><em>(İsteğe Bağlı)</em> Snipe-IT v5.0+ (API erişimi etkinleştirilmiş) — Snipe-IT olmadan da tüm modüller yerel veritabanıyla bağımsız çalışır.</li>
+      </ul>
+
+      <h2 id="hizli-kurulum">2. Hızlı Kurulum (5 Basit Adım)</h2>
+
+      <h3>Adım 1: Depoyu Klonlayın</h3>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+cd bitrox-service-tracking</code></pre>
+      </div>
+
+      <h3>Adım 2: Bağımlılıkları Yükleyin</h3>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>npm install</code></pre>
+      </div>
+
+      <h3>Adım 3: Temiz Veritabanını Oluşturun</h3>
+      <p>Proje kök dizininde hazır bulunan <code>database_schema.sql</code> dosyasını MySQL sunucunuzda çalıştırın. Bu dosya <code>servicetracker_db</code> tablosunu, başlangıç rollerini ve varsayılan yönetici hesabını oluşturur:</p>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>mysql -u root -p &lt; database_schema.sql</code></pre>
+      </div>
+
+      <h3>Adım 4: .env Dosyasını Yapılandırın</h3>
+      <p>Kök dizindeki <code>.env.example</code> dosyasını kopyalayarak <code>.env</code> adıyla kaydedin ve veritabanı parolanızı yazın:</p>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>cp .env.example .env</code></pre>
+      </div>
+
+      <h3>Adım 5: Arayüzü Derleyin ve Sunucuyu Başlatın</h3>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>npm run build
+npm start</code></pre>
+      </div>
+      <p>Uygulama varsayılan olarak <code>http://localhost:9999</code> portunda yayına girecektir.</p>
+
+      <div class="docs-callout warning">
+        <strong>Önemli:</strong> Varsayılan giriş bilgileri: Kullanıcı Adı: <code>admin</code> / Şifre: <code>admin123</code>. Giriş yaptıktan sonra şifrenizi Ayarlar sayfasından değiştiriniz.
+      </div>
+
+      <h2 id="snipeit-setup">3. Snipe-IT API Entegrasyonu</h2>
+      <p>
+        ServiceTracker'ın personel zimmetli cihazları ve yazıcıları otomatik listelemesi için Snipe-IT bağlantısını tanımlayın:
+      </p>
+      <ol>
+        <li>Snipe-IT yönetim panelinize girin: <em>Yönetici → API Anahtarlarını Yönet (Manage API Keys)</em> sekmesine gidin.</li>
+        <li>Yeni bir API Token (Bearer Token) oluşturun ve anahtarı kopyalayın.</li>
+        <li>ServiceTracker arayüzünde <em>Ayarlar → Genel Ayarlar → Snipe-IT Entegrasyonu</em> bölümüne gelin:
+          <ul>
+            <li><strong>Snipe-IT URL:</strong> <code>https://envanter.sirketiniz.com</code></li>
+            <li><strong>API Token:</strong> Kopyaladığınız token'ı yapıştırın.</li>
+          </ul>
+        </li>
+        <li><strong>Kaydet</strong> butonuna basın. Arka planda senkronizasyon motoru devreye girecek ve kullanıcı/cihaz listesini yerel MySQL önbellek tablosuna aktaracaktır.</li>
+      </ol>
+
+      <h2 id="pm2-dagitim">4. PM2 ile Canlı Sunucu Dağıtımı</h2>
+      <p>Sunucunuz yeniden başladığında uygulamanın kesintisiz çalışması için PM2 önerilir:</p>
+      <div class="code-block-window" style="margin-bottom: 16px;">
+        <pre class="code-pre"><code>npm install -g pm2
+pm2 start server/server.js --name "servicetracker"
+pm2 save
+pm2 startup</code></pre>
+      </div>
+
+      <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between;">
+        <a href="/" class="btn btn-secondary btn-sm">← Ana Sayfaya Dön</a>
+        <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">GitHub Deposu ⭐</a>
+      </div>
+
+    </article>
+
+  </main>
+
+  <footer class="footer" style="padding-top: var(--space-8); padding-bottom: var(--space-8);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.8125rem; color: var(--text-muted);">
+      <div>© 2026 Bitrox ServiceTracker. MIT Lisansı.</div>
+      <div><a href="mailto:admin@bitrox.com.tr" style="color: inherit;">admin@bitrox.com.tr</a></div>
+    </div>
+  </footer>
+
+  <script src="../script.js?v=5.0.0"></script>
+</body>
+</html>

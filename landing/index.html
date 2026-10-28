@@ -1,702 +1,1406 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bitrox Service Tracking — Açık Kaynak IT Servis ve Envanter Takip Portalı</title>
+  <title>Bitrox ServiceTracker — Açık Kaynak IT Servis Takip Yazılımı & Saha Masası</title>
   
-  <!-- Meta SEO -->
-  <meta name="description" content="Kurumsal IT departmanları ve teknik servis ekipleri için Snipe-IT entegreli, açık kaynaklı IT servis masası, toner sayaç, arıza fişi, BitLocker ve bakım takip sistemi." />
-  <meta name="keywords" content="IT Servis Takip, Snipe-IT Entegrasyonu, Arıza Fişi, Toner Takip, IT Envanter, Açık Kaynak, Service Desk, BitLocker" />
+  <!-- SEO Meta -->
+  <meta name="description" content="Kurumsal BT departmanları için self-hosted, Snipe-IT entegreli açık kaynaklı IT servis takip yazılımı. Arıza fişleri, toner sayaç takibi, BitLocker kasası ve periyodik bakım yönetimi." />
+  <meta name="keywords" content="IT servis takip yazılımı, teknik servis takip programı, açık kaynak servis masası, toner takip programı, Snipe-IT entegrasyonu, BitLocker kasası, periyodik bakım tutanağı" />
   <meta name="author" content="KingLyzer" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  
+  <link rel="canonical" href="https://service.bitrox.com.tr/" />
+  <link rel="alternate" hreflang="tr" href="https://service.bitrox.com.tr/" />
+  <link rel="alternate" hreflang="en" href="https://service.bitrox.com.tr/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://service.bitrox.com.tr/" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Bitrox Service Tracking — IT Servis & Envanter Takip Sistemi" />
-  <meta property="og:description" content="BT operasyonlarınızı tek merkezden yönetin. Snipe-IT ile %80 derin entegre açık kaynaklı IT yönetim portali." />
-  <meta property="og:image" content="assets/ServiceTracker.png" />
-  <meta property="og:url" content="https://github.com/KingLyzer/bitrox-service-tracking" />
+  <meta property="og:site_name" content="Bitrox ServiceTracker" />
+  <meta property="og:title" content="Bitrox ServiceTracker — Açık Kaynak IT Servis Takip Yazılımı" />
+  <meta property="og:description" content="BT operasyonlarınızı tek merkezden yönetin. Snipe-IT entegreli, açık kaynaklı ve self-hosted kurumsal IT servis masası." />
+  <meta property="og:image" content="https://service.bitrox.com.tr/assets/ServiceTracker.png" />
+  <meta property="og:url" content="https://service.bitrox.com.tr/" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="tr_TR" />
 
-  <!-- Google Fonts & FontAwesome -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bitrox ServiceTracker — Açık Kaynak IT Servis Takip Yazılımı" />
+  <meta name="twitter:description" content="Snipe-IT entegreli açık kaynaklı IT servis masası, toner sayaç ve bakım takip sistemi." />
+  <meta name="twitter:image" content="https://service.bitrox.com.tr/assets/ServiceTracker.png" />
+  <!-- Standard Favicons for Google Search & Browsers -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
 
-  <!-- Custom Stylesheet with Cache Busting -->
-  <link rel="stylesheet" href="style.css?v=3.5.0" />
+  <!-- Self-Hosted WOFF2 Fonts & Preload -->
+  <link rel="preload" href="/assets/fonts/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/screenshots/dashboard.webp?v=5.2.0" type="image/webp" fetchpriority="high">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=5.3.0" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://service.bitrox.com.tr/#website",
+        "url": "https://service.bitrox.com.tr/",
+        "name": "Bitrox ServiceTracker",
+        "description": "Açık Kaynak IT Servis Masası ve Envanter Yönetim Portalı",
+        "inLanguage": "tr"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://service.bitrox.com.tr/#software",
+        "name": "Bitrox ServiceTracker",
+        "operatingSystem": "Linux, Windows",
+        "applicationCategory": "BusinessApplication",
+        "softwareVersion": "2.3.2",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "TRY",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "KingLyzer",
+          "url": "https://github.com/KingLyzer"
+        },
+        "description": "Kurumsal IT departmanları için Snipe-IT entegreli, açık kaynaklı teknik servis, toner sayaç, kargo ve periyodik bakım takip sistemi."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://service.bitrox.com.tr/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Snipe-IT olmadan ServiceTracker tek başına çalışır mı?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Bitrox ServiceTracker hem bağımsız bir servis masası olarak çalışabilir hem de Snipe-IT ile entegre olabilir. Snipe-IT kapalıyken tüm kayıtlar yerel MySQL veritabanınızda tutulur."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Lisans veya kullanıcı başı ücret ödemem gerekir mi?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hayır. Yazılım MIT lisansıyla dağıtılan açık kaynaklı bir projedir. Kullanıcı sayısı veya cihaz sınırı olmadan tamamen ücretsizdir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Verilerim nerede depolanır? Dış buluta veri aktarılır mı?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tüm verileriniz kendi sunucunuzdaki (On-Premise / Self-Hosted) MySQL veritabanında saklanır. Hiçbir dış bulut sunucusuna veya üçüncü tarafa veri iletilmez."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Snipe-IT entegrasyonu mevcut veritabanıma doğrudan yazar mı?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hayır. Entegrasyon Snipe-IT'nin resmi REST API v1 arayüzü üzerinden Bearer Token ile salt okunur ve kontrollü isteklerle çalışır."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Masaüstü uygulaması olarak çalıştırılabilir mi?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Electron desteği sayesinde Windows (exe/zip) ve Linux (AppImage/deb) ortamlarında bağımsız masaüstü uygulaması olarak da derlenebilir."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
-  <!-- ========================================================================
-       Navigation Bar
-       ======================================================================== -->
-  <nav class="navbar" id="navbar">
-    <div class="container nav-container">
-      <a href="#" class="brand-logo">
-        <img src="assets/logo.png" alt="Bitrox Logo" class="brand-logo-img" />
-        <span class="brand-title">Bitrox <span class="gradient-text">ServiceTracker</span></span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="#features" class="nav-link">Modüller</a></li>
-        <li><a href="#snipeit" class="nav-link">Snipe-IT</a></li>
-        <li><a href="#quick-start" class="nav-link">Kurulum</a></li>
-        <li><a href="#stats" class="nav-link">Metrikler</a></li>
-        <li><a href="#support" class="nav-link">Destek</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-github btn-sm">
-          <i class="fa-brands fa-github"></i>
-          <span>GitHub ⭐</span>
-        </a>
-        <a href="#quick-start" class="btn btn-primary btn-sm">
-          <i class="fa-solid fa-download"></i>
-          <span>Hemen Kur</span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menüyü Aç/Kapat">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Menu Drawer -->
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-header">
-      <span class="brand-badge">v2.3.2</span>
-      <span class="free-pill-badge"><i class="fa-solid fa-gift"></i> %100 Ücretsiz</span>
-    </div>
-    <div class="mobile-menu-links">
-      <a href="#features" class="mobile-nav-link">
-        <span><i class="fa-solid fa-cubes-stacked" style="color: #60a5fa; margin-right: 10px;"></i>Modüller & Özellikler</span>
-        <i class="fa-solid fa-chevron-right chevron-icon"></i>
-      </a>
-      <a href="#snipeit" class="mobile-nav-link">
-        <span><i class="fa-solid fa-arrows-rotate" style="color: #fb923c; margin-right: 10px;"></i>Snipe-IT Entegrasyonu</span>
-        <i class="fa-solid fa-chevron-right chevron-icon"></i>
-      </a>
-      <a href="#quick-start" class="mobile-nav-link">
-        <span><i class="fa-solid fa-terminal" style="color: #38bdf8; margin-right: 10px;"></i>Hızlı Kurulum</span>
-        <i class="fa-solid fa-chevron-right chevron-icon"></i>
-      </a>
-      <a href="#stats" class="mobile-nav-link">
-        <span><i class="fa-solid fa-chart-simple" style="color: #34d399; margin-right: 10px;"></i>Metrikler</span>
-        <i class="fa-solid fa-chevron-right chevron-icon"></i>
-      </a>
-      <a href="#support" class="mobile-nav-link">
-        <span><i class="fa-solid fa-headset" style="color: #c084fc; margin-right: 10px;"></i>Destek & Geri Bildirim</span>
-        <i class="fa-solid fa-chevron-right chevron-icon"></i>
-      </a>
-    </div>
-    <div class="mobile-menu-actions">
-      <a href="#quick-start" class="btn btn-primary mobile-nav-link" style="width: 100%; justify-content: center;">
-        <i class="fa-solid fa-download"></i> Hemen Kur
-      </a>
-      <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-github" style="width: 100%; justify-content: center;">
-        <i class="fa-brands fa-github"></i> GitHub Reposu ⭐
-      </a>
-    </div>
-  </div>
+  <!-- Skip Link for Keyboard Navigation -->
+  <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
 
   <!-- ========================================================================
-       Hero Section
+       1. Navigation Bar
        ======================================================================== -->
-  <section class="hero-section" id="hero">
-    <div class="container">
-      <div class="hero-grid">
+  <header>
+    <nav class="navbar" aria-label="Ana Gezinti">
+      <div class="container nav-container">
         
-        <!-- Hero Text -->
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="pulse-dot"></span>
-            <span class="hero-badge-free">%100 Ücretsiz</span>
-            <span class="hero-badge-text">Snipe-IT Entegre IT Masası</span>
-          </div>
+        <a href="/" class="brand" aria-label="Bitrox ServiceTracker Ana Sayfası">
+          <img src="assets/logo.webp?v=5.2.0" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
+          <span>Bitrox ServiceTracker</span>
+        </a>
 
-          <h1 class="hero-title">
-            BT Operasyonlarınızı <br />
-            <span class="gradient-text">Tek Merkezden</span> Yönetin.
-          </h1>
+        <ul class="nav-links">
+          <li><a href="#features" class="nav-link">Özellikler</a></li>
+          <li><a href="#snipeit" class="nav-link">Snipe-IT</a></li>
+          <li><a href="#comparison" class="nav-link">Karşılaştırma</a></li>
+          <li><a href="#screenshots" class="nav-link">Ekranlar</a></li>
+          <li><a href="#install" class="nav-link">Kurulum</a></li>
+          <li><a href="docs/" class="nav-link">Docs</a></li>
+          <li><a href="#faq" class="nav-link">SSS</a></li>
+        </ul>
 
-          <p class="hero-desc">
-            Teknik servis fişlerinden toner sayaç takibine, BitLocker kurtarma anahtarı kasasından periyodik bakım protokollerine kadar tüm kurumsal IT hareketlerinizi tek çatı altında toplayın.
-          </p>
+        <div class="nav-actions">
+          <!-- Language Selector -->
+          <a href="/en/" class="icon-btn" title="English Version" aria-label="EN - Switch to English">
+            EN
+          </a>
 
-          <div class="hero-cta-group">
-            <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-github">
-              <i class="fa-brands fa-github"></i>
-              <span>GitHub'da İncele</span>
-            </a>
-            <a href="#quick-start" class="btn btn-primary">
-              <i class="fa-solid fa-terminal"></i>
-              <span>Hemen Kur</span>
-            </a>
-          </div>
+          <!-- Theme Toggle -->
+          <button type="button" class="icon-btn" id="themeToggleBtn" title="Tema Değiştir" aria-label="Tema Değiştir">
+            <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24"></svg>
+          </button>
 
-          <div class="hero-trust-badges">
-            <div class="trust-item">
-              <i class="fa-solid fa-gift" style="color: #34d399;"></i>
-              <span><strong>%100 Tamamen Ücretsiz</strong></span>
-            </div>
-            <div class="trust-item">
-              <i class="fa-solid fa-code-branch" style="color: #60a5fa;"></i>
-              <span>Açık Kaynak (MIT)</span>
-            </div>
-            <div class="trust-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>Snipe-IT v1 API Uyumlu</span>
-            </div>
-            <div class="trust-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>Docker & PM2 Hazır</span>
-            </div>
-          </div>
-        </div>
+          <!-- GitHub Star Badge -->
+          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="star-badge" aria-label="GitHub Deposu ve Yıldız Sayısı">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            <span>GitHub</span>
+            <span class="star-count" id="githubStarsCount"></span>
+          </a>
 
-        <!-- Hero Visual / Mockup Window -->
-        <div class="hero-visual-wrapper">
-          <div class="hero-mockup-window">
-            <div class="mockup-header">
-              <div class="window-dots">
-                <span class="dot-red"></span>
-                <span class="dot-yellow"></span>
-                <span class="dot-green"></span>
-              </div>
-              <div class="mockup-url-bar">
-                <i class="fa-solid fa-lock" style="font-size: 0.65rem; color: #10b981; margin-right: 5px;"></i>
-                <span>https://servicetracker.local:9999/dashboard</span>
-              </div>
-              <div style="width: 40px;"></div>
-            </div>
-            
-            <div class="mockup-body">
-              <img src="assets/ServiceTracker.png" alt="Bitrox ServiceTracker Dashboard Mockup" loading="lazy" />
-            </div>
-          </div>
+          <!-- Primary Demo / Install Button -->
+          <a href="#install" class="btn btn-primary btn-sm">
+            Hemen Kur
+          </a>
 
-          <!-- Floating Badges -->
-          <div class="floating-glass-card card-top">
-            <div class="floating-icon blue">
-              <i class="fa-solid fa-bolt"></i>
-            </div>
-            <div>
-              <div style="font-weight: 700; color: #fff;">15+ Canlı Modül</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">Servis, Toner, Kargo, Bakım</div>
-            </div>
-          </div>
-
-          <div class="floating-glass-card card-bottom">
-            <div class="floating-icon orange">
-              <i class="fa-solid fa-arrows-rotate"></i>
-            </div>
-            <div>
-              <div style="font-weight: 700; color: #fff;">Snipe-IT Canlı Senkronizasyon</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">Zimmet, Cihaz & Kullanıcı Eşleme</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Metrics / Stats Section
-       ======================================================================== -->
-  <section class="stats-section" id="stats">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number gradient-blue">15+</div>
-          <div class="stat-label">Entegre IT Modülü</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number gradient-orange">%80</div>
-          <div class="stat-label">Snipe-IT Omurga Entegrasyonu</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number gradient-green">%100</div>
-          <div class="stat-label">Tamamen Ücretsiz & Açık Kaynak</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number gradient-blue">100%</div>
-          <div class="stat-label">Şeffaf & Özelleştirilebilir</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Snipe-IT Integration Highlight
-       ======================================================================== -->
-  <section class="snipeit-section" id="snipeit">
-    <div class="container">
-      <div class="snipeit-banner">
-        <div class="snipeit-grid">
-          
-          <div class="snipeit-info">
-            <span class="snipeit-tag">
-              <i class="fa-solid fa-plug-circle-bolt"></i>
-              Sistemin Kalbi
-            </span>
-            <h2 class="snipeit-title">
-              Neden <span class="gradient-orange">Snipe-IT Entegrasyonu</span> Kritik?
-            </h2>
-            <p class="snipeit-desc">
-              Snipe-IT dünyanın en popüler demirbaş yönetim yazılımıdır, ancak saha operasyonlarında arıza fişi takibi, yazıcı toner sayaçları, kargo lojistiği ve periyodik bakım tutanağı gibi süreçleri barındırmaz. <strong>Bitrox ServiceTracker</strong>, Snipe-IT'nin üzerine kurulan mükemmel bir <strong>IT Servis Masası (Service Desk)</strong> katmanıdır.
-            </p>
-
-            <div class="snipeit-features-list">
-              <div class="snipeit-item">
-                <i class="fa-solid fa-check"></i>
-                <span>Personel seçildiğinde zimmetli cihazları anında listeleme</span>
-              </div>
-              <div class="snipeit-item">
-                <i class="fa-solid fa-check"></i>
-                <span>Yazıcı bazlı toner çıkışları ve sayaç kayıtları</span>
-              </div>
-              <div class="snipeit-item">
-                <i class="fa-solid fa-check"></i>
-                <span>User360: Zimmet + Servis + Toner tek profil görünümü</span>
-              </div>
-              <div class="snipeit-item">
-                <i class="fa-solid fa-check"></i>
-                <span>Milisaniyelik arama için yerel veritabanı önbellekleme</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="snipeit-sync-box">
-            <div class="sync-nodes-row">
-              <div class="sync-node">
-                <i class="fa-solid fa-cubes" style="color: #60a5fa; font-size: 1.6rem;"></i>
-                <span>Snipe-IT</span>
-                <span style="font-size: 0.7rem; color: #94a3b8;">ITAM Demirbaş</span>
-              </div>
-              
-              <div class="sync-arrow">
-                <i class="fa-solid fa-arrows-left-right"></i>
-              </div>
-
-              <div class="sync-node" style="border-color: rgba(249, 115, 22, 0.4);">
-                <i class="fa-solid fa-screwdriver-wrench" style="color: #fb923c; font-size: 1.6rem;"></i>
-                <span>ServiceTracker</span>
-                <span style="font-size: 0.7rem; color: #fb923c;">Operasyon Masası</span>
-              </div>
-            </div>
-
-            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
-              API üzerinden iki yönlü otomatik senkronizasyon ile tüm donanım ve kullanıcı hareketleri anlık eşleşir.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Features / Modules Section
-       ======================================================================== -->
-  <section class="features-section" id="features">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-tag">Zengin Fonksiyonel Mimari</span>
-        <h2 class="section-title">IT Departmanınız İçin Eksiksiz Araç Kiti</h2>
-        <p class="section-desc">
-          Teknik servisten lojistiğe, şifreli anahtar kasasından takvime kadar kurumsal bilgi işlem ekiplerinin ihtiyaç duyduğu tüm araçlar tek ekranda.
-        </p>
-      </div>
-
-      <div class="features-grid">
-
-        <!-- Card 1 -->
-        <div class="feature-card highlight-orange">
-          <div class="feature-icon-wrapper icon-orange">
-            <i class="fa-solid fa-receipt"></i>
-          </div>
-          <h3 class="feature-title">Teknik Servis Fişleri</h3>
-          <p class="feature-desc">
-            Seri no veya barkod ile hızlı kabul, Snipe-IT zimmetli cihaz otomatik eşleme, onarım aşamaları (*Yeni, Parça Bekliyor, Dış Servis, Teslim Edildi*) ve ıslak imzalı PDF çıktısı.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Durum Aşamaları</span>
-            <span class="feature-tag">Yedek Parça Maliyeti</span>
-            <span class="feature-tag">PDF Fiş Çıktısı</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="feature-card">
-          <div class="feature-icon-wrapper icon-blue">
-            <i class="fa-solid fa-print"></i>
-          </div>
-          <h3 class="feature-title">Toner & Sarf Malzeme Takibi</h3>
-          <p class="feature-desc">
-            Model, renk ve kritik eşik bazında toner stokları. Yazıcı ve personel bazında çıkış logları, sayaç (sayfa sayısı) kayıtları ve otomatik kritik stok uyarıları.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Kritik Stok Uyarısı</span>
-            <span class="feature-tag">Sayaç Takibi</span>
-            <span class="feature-tag">Yazıcı Eşleme</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="feature-card highlight-orange">
-          <div class="feature-icon-wrapper icon-emerald">
-            <i class="fa-solid fa-calendar-days"></i>
-          </div>
-          <h3 class="feature-title">Master Operasyon Takvimi</h3>
-          <p class="feature-desc">
-            Servis fişleri, kargo sevkiyatları, toner değişimleri ve periyodik bakımların tek ekranda renk kodlarıyla canlı takibi. Slide-in günlük operasyon raporu paneli.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Renk Kodlaması</span>
-            <span class="feature-tag">Günlük Rapor Paneli</span>
-            <span class="feature-tag">Hatırlatıcılar</span>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="feature-card">
-          <div class="feature-icon-wrapper icon-purple">
-            <i class="fa-solid fa-truck-fast"></i>
-          </div>
-          <h3 class="feature-title">Kargo & Lojistik Yönetimi</h3>
-          <p class="feature-desc">
-            Gelen ve giden kargoların kurye, takip no, irsaliye ve alıcı bilgileriyle kaydı. Cihaz ve fiş ilişkilendirme, termal yazıcılar için tek tıkla standart barkodlu kargo etiketi.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Kargo Takip No</span>
-            <span class="feature-tag">Termal Etiket</span>
-            <span class="feature-tag">Servis Bağlantısı</span>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="feature-card">
-          <div class="feature-icon-wrapper icon-blue">
-            <i class="fa-solid fa-key"></i>
-          </div>
-          <h3 class="feature-title">BitLocker Anahtar Kasası</h3>
-          <p class="feature-desc">
-            Kurumsal bilgisayarların BitLocker kurtarma anahtarları (Recovery Key) ve Key ID kayıtları. TXT/PDF dosya ekleri, şifreli metin yedekleri ve tek tıkla panoya kopyalama.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Recovery Key</span>
-            <span class="feature-tag">Güvenli Kasa</span>
-            <span class="feature-tag">TXT/PDF Dışa Aktar</span>
-          </div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="feature-card highlight-orange">
-          <div class="feature-icon-wrapper icon-orange">
-            <i class="fa-solid fa-id-badge"></i>
-          </div>
-          <h3 class="feature-title">360° Kullanıcı Portresi (User360)</h3>
-          <p class="feature-desc">
-            Bir personelin üzerine kayıtlı tüm donanım ve yazılımlar tek ekranda: Snipe-IT zimmetleri, geçmiş servis fişleri, toner teslimatları ve kargo logları.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Tam IT Geçmişi</span>
-            <span class="feature-tag">Zimmet Raporu</span>
-            <span class="feature-tag">Departman Filtresi</span>
-          </div>
-        </div>
-
-        <!-- Card 7 -->
-        <div class="feature-card">
-          <div class="feature-icon-wrapper icon-emerald">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <h3 class="feature-title">Periyodik Bakım Protokolü</h3>
-          <p class="feature-desc">
-            İşletme bazlı planlama, 9 zorunlu kontrol adımı (toz temizliği, fan, portlar, antivirüs, lisans vb.) ve İşletme Müdürü ile Teknisyen imzalı resmi teslim-tesellüm tutanağı.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">9 Kontrol Adımı</span>
-            <span class="feature-tag">Resmi Tutanak</span>
-            <span class="feature-tag">İmza Blokları</span>
-          </div>
-        </div>
-
-        <!-- Card 8 -->
-        <div class="feature-card highlight-orange">
-          <div class="feature-icon-wrapper icon-purple">
-            <i class="fa-solid fa-robot"></i>
-          </div>
-          <h3 class="feature-title">Dahili İletişim & Bito AI</h3>
-          <p class="feature-desc">
-            Sağ alt köşeye sıfır oturan modern masaüstü sohbet barı. IT personeli arasında anlık mesajlaşma (Socket.IO) ve Snipe-IT envanterini doğal dil ile tarayabilen akıllı operasyon asistanı.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">Masaüstü Barı</span>
-            <span class="feature-tag">Socket.IO Sohbet</span>
-            <span class="feature-tag">AI Doğal Dil Sorgu</span>
-          </div>
-        </div>
-
-        <!-- Card 9 -->
-        <div class="feature-card">
-          <div class="feature-icon-wrapper icon-blue">
-            <i class="fa-solid fa-bell"></i>
-          </div>
-          <h3 class="feature-title">Web Push & Canlı Temalar</h3>
-          <p class="feature-desc">
-            Masaüstü VAPID Web Push bildirimleri ile yeni arıza veya kargo geldiğinde anında haberdar olun. Cyberpunk, Sakura, Aurora, Dark gibi 15+ zengin görsel tema desteği.
-          </p>
-          <div class="feature-tags">
-            <span class="feature-tag">VAPID Push</span>
-            <span class="feature-tag">15+ Görsel Tema</span>
-            <span class="feature-tag">Sesli Uyarı</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Quick Start / Terminal Section
-       ======================================================================== -->
-  <section class="terminal-section" id="quick-start">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-tag">Dakikalar İçinde Yayında</span>
-        <h2 class="section-title">Hemen Kurun ve Kullanmaya Başlayın</h2>
-        <p class="section-desc">
-          Tek bir Linux veya Windows sunucuda 5 basit komut ile kuruluma hazır.
-        </p>
-      </div>
-
-      <div class="terminal-window">
-        <div class="terminal-top-bar">
-          <div class="window-dots">
-            <span class="dot-red"></span>
-            <span class="dot-yellow"></span>
-            <span class="dot-green"></span>
-          </div>
-          <div class="terminal-title">
-            <i class="fa-solid fa-terminal" style="color: #60a5fa;"></i>
-            <span>bash — bitrox-service-tracking install</span>
-          </div>
-          <button class="btn-copy-all" id="btnCopyAll">
-            <i class="fa-regular fa-copy"></i>
-            <span>Tümünü Kopyala</span>
+          <!-- Mobile Hamburger Toggle -->
+          <button type="button" class="icon-btn menu-toggle" id="menuToggle" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+            <svg class="icon-svg" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
           </button>
         </div>
 
-        <div class="terminal-content" id="terminalCommands">
+      </div>
+    </nav>
+
+    <!-- Mobile Drawer Navigation -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="#features" class="nav-link">Özellikler</a>
+      <a href="#snipeit" class="nav-link">Snipe-IT Entegrasyonu</a>
+      <a href="#comparison" class="nav-link">Karşılaştırma</a>
+      <a href="#screenshots" class="nav-link">Ekran Görüntüleri</a>
+      <a href="#install" class="nav-link">Kurulum Kılavuzu</a>
+      <a href="docs/" class="nav-link">Dokümantasyon</a>
+      <a href="changelog/" class="nav-link">Sürüm Notları (Changelog)</a>
+      <a href="#faq" class="nav-link">Sıkça Sorulan Sorular</a>
+      <div style="margin-top: 16px; display: flex; gap: 10px;">
+        <a href="#install" class="btn btn-primary" style="flex: 1; justify-content: center;">Hemen Kur</a>
+        <a href="/en/" class="btn btn-secondary" style="justify-content: center;">English (EN)</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       2. Hero Section
+       ======================================================================== -->
+  <main id="main-content">
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
           
-          <div class="terminal-step">
-            <span class="terminal-comment"># 1. Proje reposunu GitHub üzerinden klonlayın</span>
-            <div class="terminal-line">
-              <span class="terminal-cmd"><span class="keyword">git</span> clone https://github.com/KingLyzer/bitrox-service-tracking.git && <span class="keyword">cd</span> bitrox-service-tracking</span>
-              <button class="btn-copy-line" data-cmd="git clone https://github.com/KingLyzer/bitrox-service-tracking.git && cd bitrox-service-tracking" title="Komutu Kopyala">
-                <i class="fa-regular fa-copy"></i>
-              </button>
+          <div class="hero-content">
+            <div class="hero-badge-row">
+              <span class="badge badge-accent">v2.3.2 Production</span>
+              <span class="badge badge-neutral">Açık Kaynak (MIT)</span>
+              <span class="badge badge-neutral">Self-Hosted</span>
+            </div>
+
+            <h1 class="hero-title">
+              Kurumsal BT Ekipleri İçin Açık Kaynaklı IT Servis Masası
+            </h1>
+
+            <p class="hero-desc">
+              Teknik servis arıza fişleri, yazıcı sayaç takibi, BitLocker kurtarma kasası ve periyodik bakım protokollerini tek merkezde toplayan, Snipe-IT ile entegre IT operasyon portalı.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#install" class="btn btn-primary btn-lg">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span>Hızlı Kurulum</span>
+              </a>
+              <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>GitHub Reposu</span>
+              </a>
+            </div>
+
+            <div class="hero-trust-row">
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>%100 Ücretsiz (MIT)</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Kendi Sunucunuzda (On-Premise)</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Node.js 18+ & PM2 Uyumlu</span>
+              </div>
+              <div class="trust-item">
+                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Snipe-IT REST API v1</span>
+              </div>
             </div>
           </div>
 
-          <div class="terminal-step">
-            <span class="terminal-comment"># 2. Gerekli tüm bağımlılıkları indirin</span>
-            <div class="terminal-line">
-              <span class="terminal-cmd"><span class="keyword">npm</span> install</span>
-              <button class="btn-copy-line" data-cmd="npm install" title="Komutu Kopyala">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="terminal-step">
-            <span class="terminal-comment"># 3. Temiz veritabanı şemasını ve tabloları oluşturun</span>
-            <div class="terminal-line">
-              <span class="terminal-cmd"><span class="keyword">mysql</span> -u root -p &lt; database_schema.sql</span>
-              <button class="btn-copy-line" data-cmd="mysql -u root -p < database_schema.sql" title="Komutu Kopyala">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="terminal-step">
-            <span class="terminal-comment"># 4. Çevre değişkenini yapılandırın (.env dosyasına veritabanı şifrenizi yazın)</span>
-            <div class="terminal-line">
-              <span class="terminal-cmd"><span class="keyword">cp</span> .env.example .env</span>
-              <button class="btn-copy-line" data-cmd="cp .env.example .env" title="Komutu Kopyala">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="terminal-step">
-            <span class="terminal-comment"># 5. Arayüzü derleyin ve sunucuyu başlatın!</span>
-            <div class="terminal-line">
-              <span class="terminal-cmd"><span class="keyword">npm</span> run build && <span class="keyword">npm</span> start</span>
-              <button class="btn-copy-line" data-cmd="npm run build && npm start" title="Komutu Kopyala">
-                <i class="fa-regular fa-copy"></i>
-              </button>
+          <div class="hero-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/dashboard</div>
+              </div>
+              <div class="browser-body">
+                <img src="assets/screenshots/dashboard.webp?v=5.2.0" alt="Bitrox ServiceTracker Yönetim Paneli Ekran Görüntüsü" width="1280" height="720" style="aspect-ratio: 16 / 9;" fetchpriority="high" decoding="async" />
+              </div>
             </div>
           </div>
 
         </div>
       </div>
+    </section>
 
-      <div class="terminal-info-card">
-        <div>
-          <i class="fa-solid fa-circle-info" style="color: #60a5fa; margin-right: 8px;"></i>
-          <strong>Varsayılan Giriş Bilgileri:</strong> Kullanıcı Adı: <code>admin</code> / Şifre: <code>admin123</code>
-        </div>
-        <div>
-          <span style="font-size: 0.8rem; color: #94a3b8;">Port: <strong>9999</strong></span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Call To Action Banner
-       ======================================================================== -->
-  <section class="cta-section">
-    <div class="container">
-      <div class="cta-banner">
-        <h2 class="cta-title">
-          IT Operasyonlarınızı Modernleştirmeye <br />
-          <span class="gradient-text">Bugün Başlayın.</span>
-        </h2>
-        <p class="cta-desc">
-          Bitrox ServiceTracker, kurumsal IT departmanları ve topluluk için açık kaynak olarak geliştirildi. Hemen GitHub'da yıldızlayın veya yerel sunucunuza kurun.
-        </p>
-        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-          <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-github">
-            <i class="fa-brands fa-github"></i>
-            <span>GitHub Reposu</span>
-          </a>
-          <a href="#quick-start" class="btn btn-primary">
-            <i class="fa-solid fa-rocket"></i>
-            <span>Kurulum Kılavuzuna Git</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Support & Feedback Section (Geliştirme & Hata Bildirimi)
-       ======================================================================== -->
-  <section class="support-section" id="support">
-    <div class="container">
-      <div class="support-card">
-        <div class="support-glow"></div>
+    <!-- ========================================================================
+         3. Problem → Solution Section
+         ======================================================================== -->
+    <section class="section problem-solution-section">
+      <div class="container">
         
-        <div class="support-icon-box">
-          <i class="fa-solid fa-envelope-open-text"></i>
+        <div class="section-header">
+          <span class="section-tag">Problem ve Çözüm</span>
+          <h2 class="section-title">Dağınık IT Süreçlerini Tek Masada Toplayın</h2>
+          <p class="section-desc">
+            Kurumsal BT ekipleri demirbaş sayımını Snipe-IT ile çözebilse de arıza kabulü, toner sayaç logları ve resmi bakım tutanakları genellikle kağıt veya Excel tablolarına dağılır.
+          </p>
         </div>
 
-        <h3 class="support-title">
-          Geliştirme Önerisi & Hata Bildirimi
-        </h3>
+        <div class="comparison-split">
+          
+          <div class="split-card">
+            <div class="split-card-header">
+              <span class="split-badge negative">Geleneksel Dağınık Yöntem</span>
+            </div>
+            <ul class="split-list">
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Arıza bildirimleri telefon, e-posta ve sözlü taleplerle gelir; kayıtlar unutulur veya kaybolur.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Toner değişimleri Excel dosyalarında tutulur, hangi yazıcının kaç sayfa yazdırdığı hesaplanamaz.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Şubelere giden kargolar kurye takip ekranlarında kaybolur, arıza fişiyle doğrudan ilişkilendirilemez.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon cross"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                <span>Yıllık donanım bakımlarında kimin hangi adımı kontrol ettiği belgelenemez; denetimlerde tutanak bulunamaz.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="split-card" style="border-color: var(--accent-border);">
+            <div class="split-card-header">
+              <span class="split-badge positive">Bitrox ServiceTracker Yaklaşımı</span>
+            </div>
+            <ul class="split-list">
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Personel seçildiği anda zimmetli cihazı otomatik gelir; 5 aşamalı onarım iş akışıyla takip edilir.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Yazıcı sayaç (sayfa adedi) ve CMYK renk takibi yapılır; kritik stok seviyesinde sistem otomatik uyarır.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>Gelen ve giden kargolar tek tıkla standart 100x150 mm termal barkod koli etiketine dönüştürülür.</span>
+              </li>
+              <li class="split-item">
+                <span class="split-icon check"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span>9 zorunlu adımlı periyodik bakım protokolü uygulanır ve işletme müdürü imzalı resmi tutanak üretilir.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         4. Core Workflows (Öne Çıkan 4 Ana Akış)
+         ======================================================================== -->
+    <section class="section" id="workflows">
+      <div class="container">
         
-        <p class="support-desc">
-          Bitrox ServiceTracker'ı deneyimlerken karşılaştığınız bir hata mı var veya sisteme eklenmesini istediğiniz harika bir fikir mi buldunuz? Doğrudan teknik ekibimize mail atarak projeye katkıda bulunabilirsiniz.
+        <div class="section-header">
+          <span class="section-tag">Uygulama İçi Akışlar</span>
+          <h2 class="section-title">Saha Teknisyenleri İçin Tasarlanan 4 Temel Süreç</h2>
+          <p class="section-desc">
+            Gereksiz tıklamaları ve veri tekrarını ortadan kaldıran pratik iş akışları.
+          </p>
+        </div>
+
+        <!-- Flow 1: Service Tickets -->
+        <div class="workflow-item">
+          <div class="workflow-text">
+            <h3>1. Teknik Servis & Arıza Fişi Akışı</h3>
+            <p>
+              Barkod okutarak veya seri numarası girerek cihaz kabulü yapın. Kullanılan yedek parçaları (SSD, RAM vb.) depodan düşerek fişe ekleyin ve onarım maliyetini net olarak görün.
+            </p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Hızlı kabul: Seri no, arıza şikayeti ve teslim eden personel kaydı</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Aşamalı durum: <em>Yeni, Onarımda, Parça Bekliyor, Dış Servis, Teslim</em></span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Maliyet takibi: Değişen parçalar ve işçilik bedeli dökümü</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/service-tickets</div>
+              </div>
+              <div class="browser-body">
+                <img src="assets/screenshots/service-ticket.webp?v=5.2.0" decoding="async" alt="Teknik Servis Fişleri Masası Ekranı" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow 2: Toner Counter -->
+        <div class="workflow-item reversed">
+          <div class="workflow-text">
+            <h3>2. Yazıcı Sayaç & Toner Sarfiyatı</h3>
+            <p>
+              Yazıcıların sadece stok sayısını değil, her toner değişimindeki sayfa sayacını kaydedin. Bir tonerin kaç sayfa yazdırdığını ve birimlerin tüketim oranlarını analiz edin.
+            </p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Model ve renk bazlı depo eşikleri (Siyah, Cyan, Magenta, Yellow)</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Değişim esnasında yazıcı sayaç (sayfa adedi) kaydı</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Kritik stok uyarısı ile tükenmeden önce satın alma planı</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/toner-tracking</div>
+              </div>
+              <div class="browser-body">
+                <img src="assets/screenshots/toner.webp?v=5.2.0" decoding="async" alt="Sarf Malzeme ve Toner Takip Masası" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow 3: Operations Calendar -->
+        <div class="workflow-item">
+          <div class="workflow-text">
+            <h3>3. Master Operasyon Takvimi & Planlama</h3>
+            <p>
+              Tüm teknik servis fişlerini, periyodik donanım bakımlarını, kargo hareketlerini ve toner teslimatlarını tek merkezi ajandada renk kodlarıyla izleyin.
+            </p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Servis, periyodik bakım, kargo ve sarf malzeme hareketleri tek takvimde</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>Tarihe tıklandığında ilgili fiş detayını doğrudan çağırma</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>Geciken ve yaklaşan servisler için görsel takvim işaretçileri</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url">https://servicetracker.local:9999/calendar</div>
+              </div>
+              <div class="browser-body">
+                <img src="assets/screenshots/calendar.webp?v=5.2.0" decoding="async" alt="Master Operasyon Takvimi Ekranı" width="1280" height="720" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow 4: Signed PDF & Thermal Label -->
+        <div class="workflow-item reversed">
+          <div class="workflow-text">
+            <h3>4. Islak İmzalı PDF ve Termal Kargo Etiketi</h3>
+            <p>
+              Hem yasal teslim-tesellüm formları hem de kargo lojistik operasyonları için standart çıktı şablonları. Harici etiket tasarım programlarına ihtiyaç duymaz.
+            </p>
+            <ul class="step-list">
+              <li class="step-item"><span class="step-number">1</span><span>Teknisyen ve teslim alan imza alanlı kurumsal PDF fiş dökümü</span></li>
+              <li class="step-item"><span class="step-number">2</span><span>100x150 mm termal barkodlu kargo koli etiketi</span></li>
+              <li class="step-item"><span class="step-number">3</span><span>9 adımlı periyodik donanım bakım onay tutanağı</span></li>
+            </ul>
+          </div>
+          <div class="workflow-visual">
+            <div class="screen-wireframe">
+              <div class="wireframe-header">
+                <strong>Resmi Belge & Etiket Önizleme</strong>
+                <span class="badge badge-neutral">Standart PDF / 100x150mm</span>
+              </div>
+              <div class="wireframe-row"><span>Belge Türü:</span> <span>Donanım Teslim-Tesellüm Tutanağı</span></div>
+              <div class="wireframe-row"><span>Format:</span> <span>Vektörel PDF (Islak İmza Alanları Dahil)</span></div>
+              <div class="wireframe-row"><span>Barkod Desteği:</span> <span>Code128 / QR Kod Çıktısı</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         5. All 21 Modules (Kılavuzdaki Tüm Modüller)
+         ======================================================================== -->
+    <section class="section" id="features" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Eksiksiz Modüler Mimari</span>
+          <h2 class="section-title">IT Operasyonunuz İçin 21 Temel Modül</h2>
+          <p class="section-desc">
+            Sistem kılavuzunda yer alan tüm fonksiyonel birimler tek çatı altında, rol bazlı yetki kontrolüyle çalışır.
+          </p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="modules-filter-row" role="group" aria-label="Modül Kategori Filtreleri">
+          <button type="button" class="filter-btn active" data-filter="all">Tüm Modüller (21)</button>
+          <button type="button" class="filter-btn" data-filter="servis">Servis & Lojistik</button>
+          <button type="button" class="filter-btn" data-filter="donanim">Donanım & Envanter</button>
+          <button type="button" class="filter-btn" data-filter="guvenlik">Güvenlik & Yönetim</button>
+          <button type="button" class="filter-btn" data-filter="araclar">İletişim & Araçlar</button>
+        </div>
+
+        <div class="modules-grid">
+
+          <!-- 1. ServiceTickets -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3>Teknik Servis Fişleri</h3>
+            <p>Barkod/seri no ile kabul, onarım aşamaları (*Yeni, Parça Bekliyor, Dış Servis, Teslim*), yedek parça maliyetleri ve PDF fiş çıktısı.</p>
+            <span class="module-tag">ServiceTickets</span>
+          </article>
+
+          <!-- 2. Toner -->
+          <article class="module-card" data-category="donanim">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            </div>
+            <h3>Toner & Sarf Malzeme Takibi</h3>
+            <p>Model, renk (CMYK) ve kritik eşik bazında toner stokları. Yazıcı ve personel bazlı çıkış logları, sayaç kayıtları ve otomatik uyarılar.</p>
+            <span class="module-tag">Toner</span>
+          </article>
+
+          <!-- 3. Cargo -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </div>
+            <h3>Kargo & Lojistik Yönetimi</h3>
+            <p>Gelen ve giden kargoların kurye ve takip no kaydı. Cihaz ilişkilendirme ve termal yazıcılar için 100x150 mm barkodlu kargo etiketi.</p>
+            <span class="module-tag">Cargo</span>
+          </article>
+
+          <!-- 4. Bitlocker -->
+          <article class="module-card" data-category="guvenlik">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h3>BitLocker Anahtar Kasası</h3>
+            <p>48 haneli kurtarma anahtarları (Recovery Key) ve Key ID kayıtları. TXT/PDF dosya ekleri ve kilitlenme anında tek tıkla kopyalama.</p>
+            <span class="module-tag">Bitlocker</span>
+          </article>
+
+          <!-- 5. Maintenance -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h3>Periyodik Bakım Protokolü</h3>
+            <p>İşletme bazlı planlama, 9 zorunlu kontrol adımı (toz, termal macun, port, virüs vb.) ve İşletme Müdürü imzalı resmi tutanak.</p>
+            <span class="module-tag">Maintenance</span>
+          </article>
+
+          <!-- 6. User360 -->
+          <article class="module-card" data-category="donanim">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <h3>360° Kullanıcı Portresi</h3>
+            <p>Personelin tüm IT geçmişi tek ekranda: Snipe-IT zimmetleri, geçmiş servis fişleri, toner teslimatları ve kargo logları.</p>
+            <span class="module-tag">User360</span>
+          </article>
+
+          <!-- 7. Inventory -->
+          <article class="module-card" data-category="donanim">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            </div>
+            <h3>Envanter & Demirbaş Takibi</h3>
+            <p>Cihaz, model, seri no, lokasyon ve garanti takibi. Snipe-IT bağlıyken önbellek senkronizasyonu; değilken bağımsız envanter.</p>
+            <span class="module-tag">Inventory</span>
+          </article>
+
+          <!-- 8. Stock -->
+          <article class="module-card" data-category="donanim">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <h3>Stok & Yedek Parça Yönetimi</h3>
+            <p>Depodaki SSD, RAM, adaptör gibi yedek parçaların adet, birim fiyat ve fatura takibi. Servis fişinde kullanıldığında otomatik düşüm.</p>
+            <span class="module-tag">Stock</span>
+          </article>
+
+          <!-- 9. Tasks -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+            </div>
+            <h3>Görev & İş Takibi (Kanban)</h3>
+            <p>IT ekibi içi günlük işlerin *Yapılacak, Devam Eden, Tamamlandı* sütunlarında teknisyen atamalarıyla takibi.</p>
+            <span class="module-tag">Tasks</span>
+          </article>
+
+          <!-- 10. Dashboard & Calendar -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </div>
+            <h3>Master Operasyon Takvimi</h3>
+            <p>Servis fişleri, kargolar, toner değişimleri ve periyodik bakımların tek takvimde renk kodlarıyla canlı izlenmesi.</p>
+            <span class="module-tag">Dashboard / Calendar</span>
+          </article>
+
+          <!-- 11. Docs & Labels -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            </div>
+            <h3>Belgeler & Form Şablonları</h3>
+            <p>Kurumsal arıza kabul, hurdaya ayırma, malzeme talep ve teslim tutanaklarının standart PDF çıktısı.</p>
+            <span class="module-tag">DocsAndLabels</span>
+          </article>
+
+          <!-- 12. AddressLabel -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M7 15h0M2 9.5h20"></path></svg>
+            </div>
+            <h3>Termal Adres & Koli Etiketleri</h3>
+            <p>Zebra, Xprinter gibi endüstriyel termal yazıcılar için standart ebatlarda barkodlu adres ve koli etiket şablonları.</p>
+            <span class="module-tag">AddressLabel</span>
+          </article>
+
+          <!-- 13. HandoverProtocol -->
+          <article class="module-card" data-category="servis">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+            </div>
+            <h3>Zimmet Teslim / İade Protokolü</h3>
+            <p>Personele teslim edilen cihaz, şarj adaptörü ve çantaların yasal teslim-tesellüm tutanağı ve imza formu.</p>
+            <span class="module-tag">HandoverProtocol</span>
+          </article>
+
+          <!-- 14. FilesManager -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <h3>Dosya Yöneticisi & Ekler</h3>
+            <p>Servis fişlerine eklenen arıza fotoğrafları, faturalar, sürücü dosyaları ve dokümanların sunucuda depolanması.</p>
+            <span class="module-tag">FilesManager</span>
+          </article>
+
+          <!-- 15. Reports -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </div>
+            <h3>Raporlar & Analizler</h3>
+            <p>Arıza istatistikleri, en çok sorun çıkaran donanım marka/modelleri, toner tüketim grafikleri ve onarım süresi raporları.</p>
+            <span class="module-tag">Reports</span>
+          </article>
+
+          <!-- 16. Chat -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <h3>Dahili Sohbet Barı (Socket.IO)</h3>
+            <p>Ekranın sağ alt köşesinde oturan masaüstü sohbet barı; IT ekibi arasında anlık mesajlaşma ve fiş paylaşımı.</p>
+            <span class="module-tag">Chat / WebSocket</span>
+          </article>
+
+          <!-- 17. Bito AI -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+            </div>
+            <h3>Bito AI & Doğal Dil Sorgulama</h3>
+            <p>Envanter ve servis veritabanını tarayarak *"Muhasebedeki arızalı yazıcılar hangileri?"* gibi sorulara anında yanıt veren asistan.</p>
+            <span class="module-tag">snipeitAi / Bito AI</span>
+          </article>
+
+          <!-- 18. SystemUsers & Permissions -->
+          <article class="module-card" data-category="guvenlik">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <h3>Roller & Granüler Yetki Matrisi</h3>
+            <p>Super Admin, Admin, Teknisyen ve Standart Kullanıcı rolleri için modül bazlı (Görüntüle, Ekle, Düzenle, Sil) yetki tablosu.</p>
+            <span class="module-tag">SystemUsers / Permissions</span>
+          </article>
+
+          <!-- 19. Settings -->
+          <article class="module-card" data-category="guvenlik">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </div>
+            <h3>Snipe-IT & Sistem Ayarları</h3>
+            <p>Snipe-IT REST API URL ve Token yapılandırması, önbellek tazeleme zamanlayıcısı ve genel kurum parametreleri.</p>
+            <span class="module-tag">Settings</span>
+          </article>
+
+          <!-- 20. Themes -->
+          <article class="module-card" data-category="araclar">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"></circle><circle cx="17.5" cy="10.5" r=".5"></circle><circle cx="8.5" cy="7.5" r=".5"></circle><circle cx="6.5" cy="12.5" r=".5"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path></svg>
+            </div>
+            <h3>15+ Görsel Tema Desteği</h3>
+            <p>Karanlık, Cyberpunk, Aurora, Solaris, Sakura ve Minimalist gibi kullanıcının tercihine göre anında değişebilen görsel temalar.</p>
+            <span class="module-tag">Themes / ThemeModal</span>
+          </article>
+
+          <!-- 21. Auth -->
+          <article class="module-card" data-category="guvenlik">
+            <div class="module-icon-wrap">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+            </div>
+            <h3>Güvenli Kimlik Doğrulama</h3>
+            <p>Bcrypt parola hashleme, oturum yönetimi ve yetkisiz sayfa geçişlerini engelleyen React AuthContext mimarisi.</p>
+            <span class="module-tag">Auth / Security</span>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         6. Snipe-IT Integration Architecture (Sade SVG Şeması)
+         ======================================================================== -->
+    <section class="section snipeit-section" id="snipeit">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Mimari ve Veri Akışı</span>
+          <h2 class="section-title">Snipe-IT ile Kontrollü ve Güvenli Entegrasyon</h2>
+          <p class="section-desc">
+            ServiceTracker, Snipe-IT veritabanınıza doğrudan SQL sorgusu atmaz. Resmi REST API v1 üzerinden Bearer Token ile salt-okunur ve kontrollü istekler yapar.
+          </p>
+        </div>
+
+        <div class="diagram-card">
+          <div class="architecture-svg-wrap">
+            <svg viewBox="0 0 880 260" width="100%" height="260" style="display: block; font-family: var(--font-sans);" role="img" aria-label="Snipe-IT ve ServiceTracker Veri Akış Şeması">
+              <!-- Background Grid Line -->
+              <line x1="220" y1="130" x2="660" y2="130" stroke="var(--border-default)" stroke-width="2" stroke-dasharray="6 6" />
+
+              <!-- Box 1: Snipe-IT -->
+              <rect x="40" y="50" width="200" height="160" rx="12" fill="var(--bg-surface)" stroke="var(--border-default)" stroke-width="1.5" />
+              <text x="140" y="85" fill="var(--text-primary)" font-size="16" font-weight="700" text-anchor="middle">Snipe-IT (ITAM)</text>
+              <text x="140" y="110" fill="var(--text-muted)" font-size="12" text-anchor="middle">Kurumsal Demirbaş Portalı</text>
+              <line x1="55" y1="125" x2="225" y2="125" stroke="var(--border-subtle)" stroke-width="1" />
+              <text x="70" y="148" fill="var(--text-secondary)" font-size="12">• Varlık ve Kullanıcılar</text>
+              <text x="70" y="170" fill="var(--text-secondary)" font-size="12">• Zimmet İlişkileri</text>
+              <text x="70" y="192" fill="var(--text-secondary)" font-size="12">• Departman & Konumlar</text>
+
+              <!-- Arrow 1: API Call -->
+              <path d="M240 115 L350 115" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow)" />
+              <text x="295" y="105" fill="var(--accent)" font-size="11" font-family="var(--font-mono)" text-anchor="middle">REST API v1</text>
+              <text x="295" y="145" fill="var(--text-muted)" font-size="10" text-anchor="middle">Bearer Token</text>
+
+              <!-- Box 2: Local MySQL Cache -->
+              <rect x="350" y="70" width="180" height="120" rx="10" fill="var(--bg-elevated)" stroke="var(--accent-border)" stroke-width="1.5" />
+              <text x="440" y="105" fill="var(--accent)" font-size="14" font-weight="700" text-anchor="middle">Yerel MySQL Önbellek</text>
+              <text x="440" y="125" fill="var(--text-secondary)" font-size="11" text-anchor="middle">servicetracker_db</text>
+              <text x="440" y="150" fill="var(--text-muted)" font-size="11" text-anchor="middle">Milisaniyelik Anlık Arama</text>
+              <text x="440" y="168" fill="var(--text-muted)" font-size="10" text-anchor="middle">Offline Dayanıklı Mod</text>
+
+              <!-- Arrow 2: Local Query -->
+              <path d="M530 115 L640 115" stroke="var(--accent)" stroke-width="2" />
+              <text x="585" y="105" fill="var(--text-primary)" font-size="11" font-family="var(--font-mono)" text-anchor="middle">Hızlı Eşleme</text>
+
+              <!-- Box 3: ServiceTracker -->
+              <rect x="640" y="50" width="200" height="160" rx="12" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="740" y="85" fill="var(--text-primary)" font-size="16" font-weight="700" text-anchor="middle">ServiceTracker</text>
+              <text x="740" y="110" fill="var(--text-muted)" font-size="12" text-anchor="middle">Saha Servis Masası</text>
+              <line x1="655" y1="125" x2="825" y2="125" stroke="var(--border-subtle)" stroke-width="1" />
+              <text x="665" y="148" fill="var(--text-secondary)" font-size="12">• Teknik Arıza Fişleri</text>
+              <text x="665" y="170" fill="var(--text-secondary)" font-size="12">• Toner Sayaç & Stok</text>
+              <text x="665" y="192" fill="var(--text-secondary)" font-size="12">• Kargo & Bakım Tutanak</text>
+            </svg>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.875rem; color: var(--text-secondary);">
+            <span><strong>Önemli Güvenlik Notu:</strong> Snipe-IT sunucunuz kapalı olsa dahi ServiceTracker yerel veritabanıyla kesintisiz çalışmaya devam eder.</span>
+            <a href="docs/#snipeit-setup" class="btn btn-secondary btn-sm">Entegrasyon Adımlarını Oku →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         7. Fair Comparison Table (Adil ve Dürüst Karşılaştırma)
+         ======================================================================== -->
+    <section class="section" id="comparison">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Dürüst Karşılaştırma</span>
+          <h2 class="section-title">Snipe-IT ile ServiceTracker Arasındaki Rol Dağılımı</h2>
+          <p class="section-desc">
+            Snipe-IT donanım envanteri sayımında liderdir; ServiceTracker ise saha servis ve operasyon süreçlerini tamamlayan katmandır.
+          </p>
+        </div>
+
+        <div class="comparison-table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">İşlem / Fonksiyon</th>
+                <th style="width: 31%; text-align: center;">Yalnızca Snipe-IT</th>
+                <th style="width: 31%; text-align: center;">Snipe-IT + ServiceTracker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Demirbaş & IT Varlık Takibi (ITAM)</strong><br><small style="color:var(--text-muted)">Cihaz modelleri, seri numaraları, satın alma faturaları</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Yerleşik)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (API ile Senkron)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Personel Zimmet Eşleşmesi</strong><br><small style="color:var(--text-muted)">Kimin üzerinde hangi laptop/monitör var dökümü</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Yerleşik)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (User360'a Yansır)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Teknik Servis Arıza Fişi Aşamaları</strong><br><small style="color:var(--text-muted)">Yeni, Onarımda, Parça Bekliyor, Dış Servis, Teslim</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-out">Kapsam Dışı</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Entegre Modül)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Yazıcı Sayaç Logu & Toner Sarfiyatı</strong><br><small style="color:var(--text-muted)">Sayfa adedi okuma, CMYK renk seviyeleri, sayfa maliyeti</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Temel (Sadece adet sayımı)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Sayaç + Eşik Uyarısı)</span></td>
+              </tr>
+              <tr>
+                <td><strong>9 Adımlı Periyodik Donanım Bakımı</strong><br><small style="color:var(--text-muted)">Kasa toz temizliği, macun, port ve virüs kontrol adımları</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Temel (Tarih ve not kaydı)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Resmi İmzalı Tutanak)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Kargo Sevkiyatı & Termal Barkod Basımı</strong><br><small style="color:var(--text-muted)">100x150 mm termal kargo koli etiketi üretimi</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-out">Kapsam Dışı</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Entegre Lojistik)</span></td>
+              </tr>
+              <tr>
+                <td><strong>BitLocker Kurtarma Anahtarı Kasası</strong><br><small style="color:var(--text-muted)">48 haneli anahtar ve Key ID güvenli depolama</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Temel (Özel alan ile metin)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Şifreli Kasa + Kopyalama)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Islak İmzalı PDF Teslim Formları</strong><br><small style="color:var(--text-muted)">Müşteri ve teknisyen imza blokları</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-basic">Temel (Zimmet kabul formu)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Servis + Bakım + Zimmet)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Dahili Sohbet Barı & Bito AI</strong><br><small style="color:var(--text-muted)">IT içi Socket.IO anlık sohbeti ve doğal dille envanter sorgusu</small></td>
+                <td style="text-align: center;"><span class="table-tag tag-out">Kapsam Dışı</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Tam (Dahili Masaüstü Barı)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Lisans & Fiyatlandırma</strong></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Açık Kaynak (GPLv3)</span></td>
+                <td style="text-align: center;"><span class="table-tag tag-full">Açık Kaynak (MIT) • Ücretsiz</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6;">
+          * Bitrox ServiceTracker, Snipe-IT'nin yerine geçmez; saha servis fişi, sayaç takibi ve bakım süreçlerinde onu tamamlar.<br>
+          Bilgiler 20 Ekim 2026 tarihinde Snipe-IT resmi dokümantasyonu ve ServiceTracker v2.3.2 sürümü incelenerek doğrulanmıştır. Snipe-IT, Grokability Inc.'in tescilli markasıdır.
         </p>
 
-        <div class="support-pill-wrapper">
-          <span class="support-pill-label">
-            <i class="fa-solid fa-headset"></i> Destek & Öneri Hattı:
-          </span>
-          <a href="mailto:admin@bitrox.com.tr?subject=Bitrox%20ServiceTracker%20Hata%20/%20Gelistirme%20Bildirimi" class="support-pill-link">
-            <span>admin@bitrox.com.tr</span>
-            <i class="fa-solid fa-paper-plane"></i>
-          </a>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         8. Screenshots Gallery (Lightbox ile Büyütülebilir)
+         ======================================================================== -->
+    <section class="section" id="screenshots" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Arayüz Vitrini</span>
+          <h2 class="section-title">Gerçek Kullanım Ekran Görüntüleri</h2>
+          <p class="section-desc">
+            Saha teknisyenlerinin günlük kullandığı gerçek yönetim paneli ve modül arayüzleri. Büyütmek için kartlara tıklayın.
+          </p>
         </div>
+
+        <div class="gallery-grid">
+          
+          <div class="gallery-card" data-full="assets/screenshots/dashboard.png?v=5.1.0">
+            <img src="assets/screenshots/dashboard.png?v=5.1.0" alt="Yönetim Paneli ve Operasyon Kontrol Merkezi" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Operasyon Kontrol Merkezi (Dashboard)</div>
+              <div class="gallery-card-desc">Bugünkü kayıtlar, açık servisler, durum dağılımı ve 7 günlük iş yükü grafiği</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="assets/screenshots/service-ticket.png?v=5.1.0">
+            <img src="assets/screenshots/service-ticket.webp?v=5.2.0" decoding="async" alt="Teknik Servis Masası ve Arıza Fişleri" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Teknik Servis Fişleri Masası</div>
+              <div class="gallery-card-desc">SRV fiş no, envanter, kullanıcı, konum, servis durumu ve hızlı aksiyonlar</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="assets/screenshots/toner.png?v=5.1.0">
+            <img src="assets/screenshots/toner.webp?v=5.2.0" decoding="async" alt="Sarf Malzeme ve Toner Takip Masası" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Sarf Malzeme & Toner Takibi</div>
+              <div class="gallery-card-desc">Toner çıkışı, stok adetleri, kritik eşik uyarıları ve kartuş değişim geçmişi</div>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-full="assets/screenshots/calendar.png?v=5.1.0">
+            <img src="assets/screenshots/calendar.webp?v=5.2.0" decoding="async" alt="Master Operasyon Takvimi" class="gallery-card-img" width="1280" height="720" loading="lazy" />
+            <div class="gallery-card-meta">
+              <div class="gallery-card-title">Master Operasyon Takvimi</div>
+              <div class="gallery-card-desc">Servis fişleri, periyodik bakım, kargo hareketleri ve toner teslimat takvimi</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Lightbox Modal Container -->
+    <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-label="Görsel Büyütme Penceresi">
+      <div class="lightbox-content">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Kapat">×</button>
+        <img src="" alt="" class="lightbox-img" id="lightboxImg" />
+        <div class="lightbox-caption" id="lightboxCaption"></div>
       </div>
     </div>
-  </section>
 
-  <!-- ========================================================================
-       Footer
-       ======================================================================== -->
+    <!-- ========================================================================
+         9. Real Themes Showcase
+         ======================================================================== -->
+    <section class="section" id="themes">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Arayüz Seçenekleri</span>
+          <h2 class="section-title">Gerçek Temalarla Çalışma Alanınızı Özelleştirin</h2>
+          <p class="section-desc">
+            ServiceTracker kod tabanında (themes.css) tanımlı olan gerçek görsel temalar.
+          </p>
+        </div>
+
+        <div class="themes-grid">
+          
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #0f172a;"></span>
+              <span class="theme-dot" style="background: #3b82f6;"></span>
+              <span class="theme-dot" style="background: #f8fafc;"></span>
+            </div>
+            <div class="theme-title">Standart Koyu (Slate Dark)</div>
+            <div class="theme-desc">Varsayılan kurumsal gece teması. Göz yormayan koyu mavi ve antrasit zemin tonları.</div>
+          </div>
+
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #050508;"></span>
+              <span class="theme-dot" style="background: #f43f5e;"></span>
+              <span class="theme-dot" style="background: #06b6d4;"></span>
+            </div>
+            <div class="theme-title">Cyberpunk Neon</div>
+            <div class="theme-desc">Yüksek kontrastlı neon pembe ve camgöbeği hatlar. Gece vardiyaları için ideal.</div>
+          </div>
+
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #061a14;"></span>
+              <span class="theme-dot" style="background: #10b981;"></span>
+              <span class="theme-dot" style="background: #34d399;"></span>
+            </div>
+            <div class="theme-title">Aurora (Kuzey Işıkları)</div>
+            <div class="theme-desc">Zümrüt yeşili ve soğuk yeşil tonlar. Sakin ve dengeli kurumsal görünüm.</div>
+          </div>
+
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #140d05;"></span>
+              <span class="theme-dot" style="background: #f97316;"></span>
+              <span class="theme-dot" style="background: #fbbf24;"></span>
+            </div>
+            <div class="theme-title">Solaris Flame</div>
+            <div class="theme-desc">Canlı amber ve alev turuncusu vurgular. Aktif operasyon masaları için enerjik palet.</div>
+          </div>
+
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #0f0a1c;"></span>
+              <span class="theme-dot" style="background: #a855f7;"></span>
+              <span class="theme-dot" style="background: #ec4899;"></span>
+            </div>
+            <div class="theme-title">Midnight Dracula</div>
+            <div class="theme-desc">Derin mor ve menekşe aksanlar. Yazılım geliştiricilerin favori klasik paleti.</div>
+          </div>
+
+          <div class="theme-card">
+            <div class="theme-palette-row">
+              <span class="theme-dot" style="background: #f8fafc;"></span>
+              <span class="theme-dot" style="background: #2563eb;"></span>
+              <span class="theme-dot" style="background: #0f172a;"></span>
+            </div>
+            <div class="theme-title">Minimalist Açık (Clean Light)</div>
+            <div class="theme-desc">Gündüz aydınlık ofis ortamları için beyaz ve saf gri temizliği.</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         10. Multi-Tab Installation Section
+         ======================================================================== -->
+    <section class="section" id="install" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Kurulum Kılavuzu</span>
+          <h2 class="section-title">Kendi Sunucunuzda Dakikalar İçinde Başlatın</h2>
+          <p class="section-desc">
+            Ön koşullar: Node.js (v18.0+) ve MySQL / MariaDB (8.0+). Dilediğiniz dağıtım yöntemini seçin.
+          </p>
+        </div>
+
+        <div class="install-tabs" role="tablist">
+          <button type="button" class="install-tab-btn active" data-tab="bash" role="tab" aria-selected="true" aria-controls="install-bash" id="tab-bash">Linux / Bash</button>
+          <button type="button" class="install-tab-btn" data-tab="pm2" role="tab" aria-selected="false" aria-controls="install-pm2" id="tab-pm2">PM2 Daemon (Canlı Sunucu)</button>
+          <button type="button" class="install-tab-btn" data-tab="windows" role="tab" aria-selected="false" aria-controls="install-windows" id="tab-windows">PowerShell (Windows)</button>
+        </div>
+
+        <div class="code-block-window">
+          <div class="code-block-header">
+            <span class="code-block-title" id="installTabTitle">bash — bitrox-service-tracking</span>
+            <button type="button" class="btn-code-copy" data-target="activeCodePre">Komutları Kopyala</button>
+          </div>
+
+          <!-- Linux / Bash -->
+          <div class="install-code-block" id="install-bash" role="tabpanel" aria-labelledby="tab-bash">
+            <pre class="code-pre" id="activeCodePre"><code># 1. Depoyu GitHub'dan klonlayın
+git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+cd bitrox-service-tracking
+
+# 2. Bağımlılıkları yükleyin
+npm install
+
+# 3. Temiz MySQL veritabanı şemasını kurun
+mysql -u root -p &lt; database_schema.sql
+
+# 4. Çevre değişkenini yapılandırın (.env dosyasına DB şifrenizi yazın)
+cp .env.example .env
+
+# 5. Arayüzü derleyin ve sunucuyu başlatın
+npm run build
+npm start</code></pre>
+          </div>
+
+          <!-- Windows PowerShell -->
+          <div class="install-code-block" id="install-windows" role="tabpanel" aria-labelledby="tab-windows" style="display: none;">
+            <pre class="code-pre"><code># 1. PowerShell ile depoyu indirin
+git clone https://github.com/KingLyzer/bitrox-service-tracking.git
+Set-Location bitrox-service-tracking
+
+# 2. Bağımlılıkları yükleyin
+npm install
+
+# 3. .env oluşturun ve başlatın
+Copy-Item .env.example .env
+npm run build
+npm start</code></pre>
+          </div>
+
+          <!-- PM2 Daemon -->
+          <div class="install-code-block" id="install-pm2" role="tabpanel" aria-labelledby="tab-pm2" style="display: none;">
+            <pre class="code-pre"><code># 1. PM2 kurulu değilse kurun
+npm install -g pm2
+
+# 2. ServiceTracker uygulamasını arka planda başlatın
+pm2 start server/server.js --name "servicetracker"
+
+# 3. Sunucu yeniden başladığında otomatik çalışması için kaydedin
+pm2 save
+pm2 startup</code></pre>
+          </div>
+        </div>
+
+        <div class="install-warning-box">
+          <svg class="icon-svg" style="color: var(--warning); width: 22px; height: 22px;" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <div>
+            <strong>Güvenlik Uyarısı:</strong> Varsayılan giriş bilgileri Kullanıcı Adı: <code>admin</code> / Şifre: <code>admin123</code> olarak gelir. Sisteme ilk girişinizden hemen sonra <em>Ayarlar → Kullanıcı Yönetimi</em> sekmesinden şifrenizi mutlaka değiştiriniz.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         11. Security & Data Ownership
+         ======================================================================== -->
+    <section class="section" id="security">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Güvenlik ve Veri Sahipliği</span>
+          <h2 class="section-title">Verileriniz Tamamen Kendi Sunucunuzda Kalır</h2>
+          <p class="section-desc">
+            Üçüncü taraf bulut sağlayıcılarına bağımlılık yok. Kurumsal gizlilik prensipleriniz kendi altyapınızda korunur.
+          </p>
+        </div>
+
+        <div class="security-grid">
+          
+          <div class="security-card">
+            <div class="security-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            </div>
+            <h3>%100 Self-Hosted</h3>
+            <p>Yazılım kendi yerel ağınızda (LAN), şirket sunucunuzda veya kendi VPS sunucunuzda çalışır. Dışarıya telemetri verisi gönderilmez.</p>
+          </div>
+
+          <div class="security-card">
+            <div class="security-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h3>Bcrypt Şifreleme</h3>
+            <p>Tüm kullanıcı parolaları endüstri standardı tek yönlü Bcrypt algoritması ile hashlenerek saklanır; düz metin olarak depolanmaz.</p>
+          </div>
+
+          <div class="security-card">
+            <div class="security-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h3>Rol & Yetki Matrisi</h3>
+            <p>Super Admin, Admin, Teknisyen ve Kullanıcı rolleri için modül bazında okuma, yazma ve silme yetkileri tam denetim altındadır.</p>
+          </div>
+
+          <div class="security-card">
+            <div class="security-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>Bearer Token İletişimi</h3>
+            <p>Snipe-IT ile haberleşme salt-okunur Bearer Token yetkilendirmesiyle yapılır; veritabanı doğrudan dışa açılmaz.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         12. Open Source & Community
+         ======================================================================== -->
+    <section class="section" id="community" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Açık Kaynak & Topluluk</span>
+          <h2 class="section-title">Topluluk Odaklı Geliştirme</h2>
+          <p class="section-desc">
+            Bitrox ServiceTracker, kurumsal IT topluluğuna katkı sağlamak amacıyla açık kaynak ve MIT lisanslı olarak geliştirilmektedir.
+          </p>
+        </div>
+
+        <div class="grid-12">
+          
+          <div style="grid-column: span 6;">
+            <div class="split-card" style="height: 100%;">
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-3);">Katkıda Bulunun</h3>
+              <p style="margin-bottom: var(--space-4);">
+                Hata bildirimi yapmak, yeni özellik önermek veya koda katkıda bulunmak için GitHub depomuz herkese açıktır.
+              </p>
+              <ul class="step-list" style="margin-bottom: var(--space-6);">
+                <li class="step-item"><svg class="icon-svg" style="color:var(--accent);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg><span>Issue açarak karşılaştığınız hataları bildirebilirsiniz</span></li>
+                <li class="step-item"><svg class="icon-svg" style="color:var(--accent);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg><span>Pull Request göndererek modül ve şablon katkısı yapabilirsiniz</span></li>
+                <li class="step-item"><svg class="icon-svg" style="color:var(--accent);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg><span>GitHub'da repoyu yıldızlayarak projenin büyümesine destek olabilirsiniz</span></li>
+              </ul>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub Deposu ⭐</a>
+                <a href="https://github.com/KingLyzer/bitrox-service-tracking/issues" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">Issue Listesi →</a>
+                <a href="changelog/" class="btn btn-ghost btn-sm">Changelog (Sürüm Notları) →</a>
+              </div>
+            </div>
+          </div>
+
+          <div style="grid-column: span 6;">
+            <div class="split-card" style="height: 100%;">
+              <h3 style="font-size: 1.25rem; margin-bottom: var(--space-3);">Geliştirme Yol Haritası (Roadmap)</h3>
+              <p style="margin-bottom: var(--space-4);">
+                Gelecek sürümlerde planlanan ve topluluk geri bildirimleriyle şekillenen başlıca hedefler:
+              </p>
+              <ul class="step-list">
+                <li class="step-item"><span class="step-number" style="color:var(--success);">✓</span><span>v2.3: Snipe-IT önbellek motoru ve 9 adımlı bakım protokolü (Tamamlandı)</span></li>
+                <li class="step-item"><span class="step-number" style="color:var(--accent);">•</span><span>v2.4: Active Directory / LDAP kurumsal kullanıcı oturumu senkronizasyonu</span></li>
+                <li class="step-item"><span class="step-number" style="color:var(--accent);">•</span><span>v2.5: WhatsApp / Telegram webhook arıza durum bildirim motoru</span></li>
+                <li class="step-item"><span class="step-number" style="color:var(--text-muted);">•</span><span>v3.0: Mobil Android / iOS barkod tarayıcı saha teknisyen istemcisi</span></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         13. FAQ Accordion (8-10 Gerçek Soru)
+         ======================================================================== -->
+    <section class="section" id="faq">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Aklınıza Takılanlar</span>
+          <h2 class="section-title">Sıkça Sorulan Sorular</h2>
+          <p class="section-desc">
+            Kurulum, lisanslama ve entegrasyon süreçleriyle ilgili en çok merak edilen konular.
+          </p>
+        </div>
+
+        <div class="faq-accordion">
+          
+          <div class="faq-item open">
+            <button type="button" class="faq-question">
+              <span>Snipe-IT olmadan ServiceTracker tek başına çalışır mı?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Evet. Bitrox ServiceTracker hem bağımsız bir teknik servis, toner ve bakım masası olarak çalışabilir, hem de Snipe-IT ile entegre olabilir. Snipe-IT kapalıyken tüm müşteri, personel ve donanım kayıtları yerel MySQL veritabanınızda tutulur.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Yazılım için herhangi bir lisans veya kullanıcı başı ücret ödemem gerekir mi?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Hayır. Yazılım MIT lisansıyla açık kaynak olarak sunulmaktadır. Kullanıcı sayısı, cihaz adedi veya servis fişi limiti olmadan tamamen ücretsizdir.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Verilerimiz nerede saklanır? Dış buluta herhangi bir veri aktarılır mı?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Tüm verileriniz tamamen kendi yerel sunucunuzdaki (On-Premise / Self-Hosted) MySQL veritabanında saklanır. Hiçbir dış bulut sunucusuna veya üçüncü tarafa veri aktarımı yapılmaz.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Snipe-IT entegrasyonu mevcut veritabanıma doğrudan yazar mı?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Hayır. Entegrasyon doğrudan SQL bağlantısı kurmaz; Snipe-IT'nin resmi REST API v1 arayüzü üzerinden Bearer Token ile salt-okunur ve kontrollü istekler yapar. Snipe-IT tablolarınız doğrudan etkilenmez.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Sistem hangi işletim sistemlerinde kurulabilir?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Node.js (v18+) ve MySQL (v8.0+) destekleyen tüm modern işletim sistemlerinde (Debian, Ubuntu, CentOS, Rocky Linux, Windows Server, macOS) çalıştırılabilir.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Masaüstü uygulaması olarak çalıştırabilir miyim?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Evet. Depo içerisinde hazır Electron yapılandırması bulunmaktadır. <code>npm run build:win</code> veya <code>npm run build:linux</code> komutlarıyla Windows (.exe/zip) ve Linux (.AppImage/.deb) masaüstü çıktıları alınabilir.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Termal barkod yazıcılar ile uyumlu mudur?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Evet. Kargo ve adres etiketleri modülü, standart 100x150 mm termal etiket formatına uygun olarak çıktı üretir; Zebra, Xprinter ve benzeri tüm standart termal yazıcılarla doğrudan uyumludur.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>Yeni bir özellik talep etmek veya katkıda bulunmak için ne yapmalıyım?</span>
+              <svg class="icon-svg faq-icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer">
+              <p>GitHub sayfamızdaki Issues bölümünden özellik talebi (Feature Request) açabilir veya doğrudan Pull Request göndererek projeye katkı sağlayabilirsiniz.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         14. Final CTA Banner & Footer
+         ======================================================================== -->
+    <section class="section" style="padding-top: var(--space-12); padding-bottom: var(--space-12);">
+      <div class="container">
+        <div class="split-card" style="text-align: center; padding: var(--space-12) var(--space-6); background: var(--bg-surface); border-color: var(--border-default);">
+          <h2 style="font-size: 2.25rem; margin-bottom: var(--space-3); letter-spacing: -0.03em;">
+            IT Operasyonlarınızı Düzenlemeye Başlayın
+          </h2>
+          <p style="max-width: 600px; margin: 0 auto var(--space-6); font-size: 1.0625rem; color: var(--text-secondary);">
+            Bitrox ServiceTracker tamamen ücretsiz ve açık kaynak kodludur. Yerel sunucunuzda dakikalar içinde deneyin.
+          </p>
+          <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+            <a href="#install" class="btn btn-primary btn-lg">Hızlı Kurulum Rehberi</a>
+            <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg">GitHub'da Yıldızlayın ⭐</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         
         <div class="footer-brand">
-          <div class="brand-logo">
-            <img src="assets/logo.png" alt="Bitrox Logo" style="height: 34px; width: auto; object-fit: contain; border-radius: 6px;" />
+          <a href="/" class="brand">
+            <img src="assets/logo.webp?v=5.2.0" alt="Bitrox Logo" class="brand-logo-img" width="28" height="28" />
             <span>Bitrox ServiceTracker</span>
-          </div>
-          <p>
-            Kurumsal IT departmanları, servis birimleri ve envanter ekipleri için %100 ücretsiz, açık kaynaklı IT yönetim portalı.
-          </p>
-        </div>
-
-        <div class="footer-col">
-          <h5>Hızlı Bağlantılar</h5>
-          <ul class="footer-links">
-            <li><a href="#features" class="footer-link">Modüller</a></li>
-            <li><a href="#snipeit" class="footer-link">Snipe-IT</a></li>
-            <li><a href="#quick-start" class="footer-link">Hızlı Kurulum</a></li>
-            <li><a href="#stats" class="footer-link">Metrikler</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h5>Geliştirici</h5>
-          <ul class="footer-links">
-            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" class="footer-link">GitHub Reposu</a></li>
-            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking/issues" target="_blank" class="footer-link">Hata / İstek Bildir</a></li>
-            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking/blob/main/LICENSE" target="_blank" class="footer-link">MIT Lisansı</a></li>
-            <li><a href="https://github.com/KingLyzer" target="_blank" class="footer-link">KingLyzer Profili</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h5>Topluluk & Destek</h5>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">
-            Hata bildirimleri, yeni özellik önerileri ve destek talepleriniz için:
-          </p>
-          <a href="mailto:admin@bitrox.com.tr" class="footer-link" style="color: #fb923c; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px;">
-            <i class="fa-solid fa-envelope"></i> admin@bitrox.com.tr
           </a>
-          <div>
-            <a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" class="btn btn-github btn-sm" style="display: inline-flex;">
-              <i class="fa-brands fa-github"></i> Star Verin ⭐
-            </a>
+          <p>
+            Kurumsal IT departmanları ve teknik servis birimleri için açık kaynaklı IT servis masası ve operasyon portalı.
+          </p>
+          <div style="margin-top: 14px; font-size: 0.8125rem; color: var(--text-muted); font-family: var(--font-mono);">
+            Sürüm: v2.3.2 Production
           </div>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Gezinti</p>
+          <ul class="footer-links">
+            <li><a href="#features" class="footer-link">Özellikler</a></li>
+            <li><a href="#snipeit" class="footer-link">Snipe-IT Entegrasyonu</a></li>
+            <li><a href="#comparison" class="footer-link">Karşılaştırma</a></li>
+            <li><a href="#screenshots" class="footer-link">Ekran Görüntüleri</a></li>
+            <li><a href="#install" class="footer-link">Kurulum Kılavuzu</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Dokümanlar</p>
+          <ul class="footer-links">
+            <li><a href="docs/" class="footer-link">Kullanım Dokümanı</a></li>
+            <li><a href="docs/#snipeit-setup" class="footer-link">Snipe-IT Bağlantısı</a></li>
+            <li><a href="changelog/" class="footer-link">Sürüm Notları (Changelog)</a></li>
+            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer-link">MIT Lisansı</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">Topluluk & İletişim</p>
+          <ul class="footer-links">
+            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Reposu</a></li>
+            <li><a href="https://github.com/KingLyzer/bitrox-service-tracking/issues" target="_blank" rel="noopener noreferrer" class="footer-link">Hata Bildir (Issue)</a></li>
+            <li><a href="mailto:admin@bitrox.com.tr" class="footer-link">admin@bitrox.com.tr</a></li>
+            <li><a href="/en/" class="footer-link">English Website</a></li>
+          </ul>
         </div>
 
       </div>
 
       <div class="footer-bottom">
         <div>
-          © 2026 Bitrox ServiceTracker. MIT Lisansı ile açık kaynak olarak sunulmuştur.
+          © 2026 <strong>Bitrox ServiceTracker</strong>. MIT Lisansı ile açık kaynak olarak sunulmaktadır.
         </div>
         <div>
-          Geliştirici: <strong>KingLyzer</strong> | Topluluk Dostu
+          Geliştirici: <a href="https://github.com/KingLyzer" target="_blank" rel="noopener noreferrer" style="color: var(--accent-text); font-weight: 600;">KingLyzer</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Floating Back to Top Button -->
-  <button class="btn-back-to-top" id="btnBackToTop" title="Yukarı Çık" aria-label="Yukarı Çık">
-    <i class="fa-solid fa-arrow-up"></i>
-  </button>
-
   <!-- Toast Notification Container -->
-  <div class="toast-notice" id="toastNotice">
-    <i class="fa-solid fa-circle-check"></i>
-    <span id="toastMessage">Komut panoya kopyalandı!</span>
+  <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">
+    <svg class="icon-svg" style="color:var(--success);" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMessage">Panoya kopyalandı!</span>
   </div>
 
-  <!-- JavaScript File -->
-  <script src="script.js"></script>
+  <!-- Client Script -->
+  <script src="script.js?v=5.0.0"></script>
 </body>
 </html>
